@@ -1,88 +1,72 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
+using System.Collections;
+using ObeserverPattern;
 
 namespace NPC
 {
-    public class WaveManager : MonoBehaviour
+    public class WaveManager : MonoBehaviour, IWaveManager
     {
-        [Header("Referensi Utama")]
-        public UIManager uiManager;
-        public GameObject npcPrefab;
-
         [Header("Posisi Pergerakan")]
-        public Transform enterPosition; 
-        public Transform servicePosition; 
-        public Transform leavePosition;
+        // --- PERBAIKAN ---
+        // Jadikan field biasa yang bisa di-assign dari Inspector.
+        [SerializeField] private Transform _enterPosition;
+        [SerializeField] private Transform _servicePosition;
+        [SerializeField] private Transform _leavePosition;
 
-        [Header("Pengaturan Wave")]
-        public List<QuestData> wave1Quests;
+        // Implementasi dari interface IWaveManager
+        public Transform enterPosition => _enterPosition;
+        public Transform servicePosition => _servicePosition;
+        public Transform leavePosition => _leavePosition;
         
-        [Header("Pool Tampilan NPC")]
-        public List<AppearanceData> maleAppearances;
-        public List<AppearanceData> femaleAppearances;
+        [Header("Pengaturan Wave")]
+        [SerializeField] private List<QuestData> wave1Quests;
 
-        private Queue<QuestData> currentQuestQueue;
-        public GameObject currentNpcObject { get; private set; }
+        private List<QuestData> availableQuestsInWave;
 
-        private List<AppearanceData> allAppearances;
-
-        void Awake()
+        private void OnEnable()
         {
-            allAppearances = maleAppearances.Concat(femaleAppearances).ToList();
+            EventManager.Subscribe<NPCTurnFinishedEvent>(HandleNPCTurnFinished);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unsubscribe<NPCTurnFinishedEvent>(HandleNPCTurnFinished);
+        }
+
+        private void HandleNPCTurnFinished(NPCTurnFinishedEvent e)
+        {
+            StartCoroutine(SpawnNextNPCWithDelay(2f));
         }
 
         void Start()
         {
-            if (allAppearances == null || allAppearances.Count == 0)
-            {
-                Debug.LogError("Tidak ada AppearanceData yang diatur di WaveManager!");
-                return;
-            }
             StartWave(1);
         }
 
         public void StartWave(int waveNumber)
         {
-            currentQuestQueue = new Queue<QuestData>();
-            
-            List<QuestData> selectedWave = (waveNumber == 1) ? wave1Quests : null;
-            
-            if (selectedWave != null)
+            if (waveNumber == 1)
             {
-                foreach (var quest in selectedWave)
-                {
-                    currentQuestQueue.Enqueue(quest);
-                }
+                availableQuestsInWave = new List<QuestData>(wave1Quests);
             }
-            
             StartCoroutine(SpawnNextNPCWithDelay(1f));
         }
 
         private void SpawnNextNPC()
         {
-            if (currentQuestQueue.Count > 0)
+            if (availableQuestsInWave != null && availableQuestsInWave.Count > 0)
             {
-                QuestData nextQuest = currentQuestQueue.Dequeue();
-                int randomIndex = Random.Range(0, allAppearances.Count);
-                AppearanceData randomAppearance = allAppearances[randomIndex];
-            
-                currentNpcObject = Instantiate(npcPrefab, enterPosition.position, Quaternion.identity);
-                
-                NPCController npcController = currentNpcObject.GetComponent<NPCController>();
-                npcController.Setup(nextQuest, randomAppearance, this, uiManager, servicePosition);
+                int randomIndex = Random.Range(0, availableQuestsInWave.Count);
+                QuestData randomQuest = availableQuestsInWave[randomIndex];
+                availableQuestsInWave.RemoveAt(randomIndex);
+                EventManager.Raise(new RequestNPCSpawnEvent { questData = randomQuest });
             }
             else
             {
-                Debug.Log("Wave selesai!");
+                Debug.Log("Wave selesai! Semua quest telah diberikan.");
             }
-        }
-
-        public void OnNPCHasLeft()
-        {
-            currentNpcObject = null;
-            StartCoroutine(SpawnNextNPCWithDelay(2f));
         }
         
         private IEnumerator SpawnNextNPCWithDelay(float delay)

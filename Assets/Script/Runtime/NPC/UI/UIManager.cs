@@ -1,39 +1,49 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using ObeserverPattern;
 
 namespace NPC
 {
     public class UIManager : MonoBehaviour
-    {   
+    {
         [Header("Elemen UI")]
-        public GameObject chatBubbleObject;
-        public TextMeshProUGUI dialogueText;
-        public TextMeshProUGUI moodIndicatorText;
+        [SerializeField] private GameObject chatBubbleObject;
+        [SerializeField] private TextMeshProUGUI dialogueText;
+        [SerializeField] private TextMeshProUGUI moodIndicatorText;
 
         [Header("Pengaturan Typewriter")]
-        [Tooltip("Kecepatan munculnya huruf per detik")]
-        public float charactersPerSecond = 50f;
+        [SerializeField] private float charactersPerSecond = 50f;
+
         private Coroutine typingCoroutine;
 
-        void Start()
+        private void OnEnable()
         {
-            chatBubbleObject.SetActive(false);
-            moodIndicatorText.text = "";
+            // Berlangganan ke semua event yang relevan
+            EventManager.Subscribe<ShowDialogueEvent>(HandleShowDialogue);
+            EventManager.Subscribe<HideDialogueEvent>(HandleHideDialogue);
+            EventManager.Subscribe<UpdateNPCMoodEvent>(HandleUpdateMood);
         }
 
-        public void ShowDialogue(string text)
+        private void OnDisable()
+        {
+            // Berhenti langganan untuk mencegah error
+            EventManager.Unsubscribe<ShowDialogueEvent>(HandleShowDialogue);
+            EventManager.Unsubscribe<HideDialogueEvent>(HandleHideDialogue);
+            EventManager.Unsubscribe<UpdateNPCMoodEvent>(HandleUpdateMood);
+        }
+
+        private void HandleShowDialogue(ShowDialogueEvent e)
         {
             chatBubbleObject.SetActive(true);
-
             if (typingCoroutine != null)
             {
                 StopCoroutine(typingCoroutine);
             }
-            typingCoroutine = StartCoroutine(TypeDialogue(text));
+            typingCoroutine = StartCoroutine(TypeDialogue(e.dialogueText));
         }
 
-        public void HideDialogue()
+        private void HandleHideDialogue(HideDialogueEvent e)
         {
             if (typingCoroutine != null)
             {
@@ -42,35 +52,9 @@ namespace NPC
             chatBubbleObject.SetActive(false);
         }
 
-        private IEnumerator TypeDialogue(string text)
+        private void HandleUpdateMood(UpdateNPCMoodEvent e)
         {
-            dialogueText.text = "";
-            
-            for (int i = 0; i < text.Length; i++)
-            {
-                if (text[i] == '<')
-                {
-                    int closingTagIndex = text.IndexOf('>', i);
-                    if (closingTagIndex != -1)
-                    {
-                        string tag = text.Substring(i, closingTagIndex - i + 1);
-                        dialogueText.text += tag;
-                        
-                        i = closingTagIndex;
-                        
-                        continue;
-                    }
-                }
-                
-                // Jika bukan tag, ketik huruf seperti biasa
-                dialogueText.text += text[i];
-                yield return new WaitForSeconds(1f / charactersPerSecond);
-            }
-        }
-
-        public void UpdateMoodUI(NPCController.MoodState mood)
-        {
-            switch (mood)
+            switch (e.newMood)
             {
                 case NPCController.MoodState.Happy:
                     moodIndicatorText.text = "Senang";
@@ -88,6 +72,27 @@ namespace NPC
                     moodIndicatorText.text = "Pergi";
                     moodIndicatorText.color = Color.grey;
                     break;
+            }
+        }
+        
+        private IEnumerator TypeDialogue(string text)
+        {
+            dialogueText.text = "";
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == '<')
+                {
+                    int closingTagIndex = text.IndexOf('>', i);
+                    if (closingTagIndex != -1)
+                    {
+                        string tag = text.Substring(i, closingTagIndex - i + 1);
+                        dialogueText.text += tag;
+                        i = closingTagIndex;
+                        continue;
+                    }
+                }
+                dialogueText.text += text[i];
+                yield return new WaitForSeconds(1f / charactersPerSecond);
             }
         }
     }

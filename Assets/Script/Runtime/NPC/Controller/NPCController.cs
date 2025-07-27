@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using ObeserverPattern;
 
 namespace NPC
 {
@@ -19,9 +20,14 @@ namespace NPC
         [Header("Referensi Data NPC")]
         private QuestData questData;
         private AppearanceData appearanceData;
-        private WaveManager waveManager;
+        // private WaveManager waveManager;
+
+        private Transform servicePosition;
+        private Transform leavePosition;
+
         private UIManager uiManager;
         [SerializeField] private float highopHeight;
+        private Transform leaveTarget;
 
         // --- Status Internal ---
         public enum MoodState { Happy, Neutral, Angry, Gone }
@@ -31,46 +37,44 @@ namespace NPC
         private bool hasLeft = false;
         private Tween walkAnimation;
         private Tween headAnimation;
-        private bool doneWalking = false;
+        private bool isWalking = false;
 
-
-        // Fungsi setup yang dipanggil oleh WaveManager
-        public void Setup(QuestData quest, AppearanceData appearance, WaveManager manager, UIManager ui, Transform targetPosition)
+        public void Initialize(QuestData quest, AppearanceData appearance, Transform servicePos, Transform leavePos)
         {
-            // Simpan data
             this.questData = quest;
             this.appearanceData = appearance;
-            this.waveManager = manager;
-            this.uiManager = ui;
+            this.servicePosition = servicePos;
+            this.leavePosition = leavePos;
+        }
+        
+        private void Start()
+        {
             hasLeft = false;
 
-            // Terapkan semua sprite dari AppearanceData
-            bodyRenderer.sprite = appearance.bodySprite;
-            hairRenderer.sprite = appearance.hairSprite;
-            
-            // Setup mood awal dan visual wajah
+            // Terapkan data visual dan mood
+            bodyRenderer.sprite = appearanceData.bodySprite;
+            hairRenderer.sprite = appearanceData.hairSprite;
             currentMood = MoodState.Happy;
             moodTimer = timePerMoodLevel;
             UpdateMoodAndVisuals();
 
-            // Gerakan masuk
-            transform.DOMove(targetPosition.position, 2.5f).SetEase(Ease.OutCubic).OnComplete(() =>
+            // Mulai bergerak ke posisi service
+            Transform targetPosition = FindObjectOfType<WaveManager>().servicePosition;
+            transform.DOMove(targetPosition.position, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
             {
                 StopWalkAnimation();
-                uiManager.ShowDialogue(quest.dialogue);
-                doneWalking = true;
-                moodTimer += 2.5f;
-
+                EventManager.Raise(new ShowDialogueEvent { dialogueText = questData.dialogue });
                 StartHeadAnimation();
+                moodTimer += 2.5f;
+                isWalking = true;
             });
-            
+
             StartWalkAnimation(highopHeight, 0.4f);
         }
 
-
         void Update()
         {
-            if (hasLeft && !doneWalking) return;
+            if (hasLeft && !isWalking) return;
 
             moodTimer -= Time.deltaTime;
             if (moodTimer <= 0)
@@ -82,7 +86,7 @@ namespace NPC
          public void ReceivePotion(string playerPotionName)
         {
             if (hasLeft) return;
-            uiManager.HideDialogue();
+            EventManager.Raise(new HideDialogueEvent());
             if (playerPotionName.ToLower() == questData.requiredPotionName.ToLower())
             {
                 HandleCorrectPotion();
@@ -112,21 +116,20 @@ namespace NPC
             DegradeMood();
 
             if (!hasLeft)
-            {
-                uiManager.ShowDialogue(questData.dialogue);
+            {   
+                EventManager.Raise(new ShowDialogueEvent{ dialogueText = questData.dialogue });
             }
         }
 
         private void DegradeMood()
         {
-            if (currentMood == MoodState.Happy) currentMood = MoodState.Neutral;
-            else if (currentMood == MoodState.Neutral) currentMood = MoodState.Angry;
-            else if (currentMood == MoodState.Angry)
+            if (currentMood >= MoodState.Angry)
             {
                 Debug.Log("NPC sudah terlalu marah dan pergi!");
                 Leave();
-                return; 
+                return;
             }
+            currentMood++;
 
             moodTimer = timePerMoodLevel;
             UpdateMoodAndVisuals();
@@ -136,14 +139,17 @@ namespace NPC
         {
             if (hasLeft) return;
             hasLeft = true;
+            isWalking = false;
             currentMood = MoodState.Gone;
 
             UpdateMoodAndVisuals();
-            uiManager.HideDialogue();
+            EventManager.Raise(new HideDialogueEvent());
+            leaveTarget = FindObjectOfType<WaveManager>().leavePosition;
             
-            transform.DOMove(waveManager.leavePosition.position, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
+            transform.DOMove(leaveTarget.position, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
             {
-                waveManager.OnNPCHasLeft();
+
+                EventManager.Raise(new NPCTurnFinishedEvent());
                 Destroy(gameObject);
             });
 
@@ -179,7 +185,7 @@ namespace NPC
 
         private void UpdateMoodAndVisuals()
         {
-            uiManager.UpdateMoodUI(currentMood);
+            EventManager.Raise(new UpdateNPCMoodEvent { newMood = currentMood });
             switch (currentMood)
             {
                 case MoodState.Happy: faceRenderer.sprite = appearanceData.happyFaceSprite; break;
@@ -206,7 +212,10 @@ namespace NPC
         {
             walkAnimation.Kill();
         }
-        transform.DOLocalMoveY(waveManager.servicePosition.transform.localPosition.y, 0.1f);
+
+        float localPositionY = FindObjectOfType<WaveManager>().servicePosition.transform.localPosition.y;
+        
+        transform.DOLocalMoveY(localPositionY, 0.1f);
     }
     }
 }
