@@ -223,6 +223,7 @@ MonoBehaviour:
   chatBubbleObject: {fileID: 1220306471}
   dialogueText: {fileID: 1220306473}
   moodIndicatorText: {fileID: 1249181699}
+  charactersPerSecond: 50
 --- !u!114 &373308507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,10 +241,15 @@ MonoBehaviour:
   enterPosition: {fileID: 2126327126}
   servicePosition: {fileID: 944492166}
   leavePosition: {fileID: 2126327126}
-  wave1Npcs:
-  - {fileID: 11400000, guid: 5f745bbbd88d5bd4eb7d064d2f6fd5f8, type: 2}
-  - {fileID: 11400000, guid: 5f745bbbd88d5bd4eb7d064d2f6fd5f8, type: 2}
-  - {fileID: 11400000, guid: 5f745bbbd88d5bd4eb7d064d2f6fd5f8, type: 2}
+  wave1Quests:
+  - {fileID: 11400000, guid: 38a35802520a1c843953ea6cf0eed7b0, type: 2}
+  - {fileID: 11400000, guid: 38a35802520a1c843953ea6cf0eed7b0, type: 2}
+  - {fileID: 11400000, guid: 38a35802520a1c843953ea6cf0eed7b0, type: 2}
+  maleAppearances:
+  - {fileID: 11400000, guid: 8a688917ff67d584c893a972cc5083cb, type: 2}
+  femaleAppearances:
+  - {fileID: 11400000, guid: ec6260949ce0df5409a9a0e7ea00a702, type: 2}
+  - {fileID: 11400000, guid: 1a2058de99757c149a22a93a9edfc8a0, type: 2}
 --- !u!4 &373308508
 Transform:
   m_ObjectHideFlags: 0

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e179539a85bc26479af7c95ba3b24fb, type: 3}
+  m_Name: Appearance_FemaleRedRed
+  m_EditorClassIdentifier: 
+  gender: 0
+  bodySprite: {fileID: 21300000, guid: cec3c00e41111724189a4d408941215f, type: 3}
+  hairSprite: {fileID: 21300000, guid: 4c8051e54631ea0418130d7df7b28cee, type: 3}
+  happyFaceSprite: {fileID: 21300000, guid: 10ce978fb2e325047b82eecccd391ad6, type: 3}
+  neutralFaceSprite: {fileID: 21300000, guid: e2065671f49e29848bb57636e82038bc, type: 3}
+  angryFaceSprite: {fileID: 21300000, guid: 38e3854f62a755e4bb6a7f2d38e59e92, type: 3}
