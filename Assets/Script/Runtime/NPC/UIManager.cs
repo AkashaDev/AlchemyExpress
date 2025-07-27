@@ -5,7 +5,7 @@ using TMPro; // Pastikan untuk menggunakan TextMeshPro
 namespace NPC
 {
     public class UIManager : MonoBehaviour
-    {
+    {   
         [Header("Elemen UI")]
         public GameObject chatBubbleObject; // GameObject induk dari gelembung chat
         public TextMeshProUGUI dialogueText; // Komponen teks untuk dialog

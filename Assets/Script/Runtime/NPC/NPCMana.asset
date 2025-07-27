@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24360bde654c3d4428e90038f01c96c8, type: 3}
-  m_Name: New NPC Data
+  m_Name: NPCMana
   m_EditorClassIdentifier: 
   npcName: Tejo
   npcSprite: {fileID: 21300000, guid: 7654a8cbdb9075d40806bd46bb817fc2, type: 2}
-  dialogue: Mas aku njauk potion heal
+  dialogue: Mas aku njauk potion Mana
   requiredPotionName: Heal
   rewardHappy: 1000
   rewardNeutral: 700

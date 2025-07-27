@@ -6,22 +6,24 @@ namespace NPC
 {
     public class WaveManager : MonoBehaviour
     {
-        [Header("Referensi Prefab & UI")]
-        public GameObject npcPrefab; // Prefab NPC yang sudah ada NPCController
-        public Transform npcSpawnPoint; // Posisi di mana NPC akan muncul
-        public UIManager uiManager; // Referensi ke UI Manager
+        [Header("Referensi Utama")]
+        public UIManager uiManager;
+        public GameObject npcPrefab;
+
+        [Header("Posisi Pergerakan")]
+        public Transform enterPosition; 
+        public Transform servicePosition; 
+        public Transform leavePosition;
 
         [Header("Pengaturan Wave")]
-        public List<NPCData> wave1Npcs; // Daftar data NPC untuk wave 1
-        public List<NPCData> wave2Npcs; // Daftar data NPC untuk wave 2
-        // Tambahkan list lain untuk wave selanjutnya
+        public List<NPCData> wave1Npcs;
+        // public List<NPCData> wave2Npcs;
 
         private Queue<NPCData> currentWaveQueue;
-        private GameObject currentNpcObject;
+        public GameObject currentNpcObject { get; private set; }
 
         void Start()
         {
-            // Contoh: Memulai wave pertama saat game dimulai
             StartWave(1);
         }
 
@@ -29,12 +31,8 @@ namespace NPC
         {
             Debug.Log($"Memulai Wave {waveNumber}!");
             currentWaveQueue = new Queue<NPCData>();
-
-            List<NPCData> selectedWave = null;
-            if (waveNumber == 1) selectedWave = wave1Npcs;
-            if (waveNumber == 2) selectedWave = wave2Npcs;
-            // Tambahkan kondisi lain untuk wave selanjutnya
-
+            List<NPCData> selectedWave = (waveNumber == 1) ? wave1Npcs : null;
+            
             if (selectedWave != null)
             {
                 foreach (var npc in selectedWave)
@@ -42,9 +40,8 @@ namespace NPC
                     currentWaveQueue.Enqueue(npc);
                 }
             }
-
-            // Panggil NPC pertama
-            SpawnNextNPC();
+            
+            StartCoroutine(SpawnNextNPCWithDelay(1f));
         }
 
         private void SpawnNextNPC()
@@ -52,27 +49,24 @@ namespace NPC
             if (currentWaveQueue.Count > 0)
             {
                 NPCData nextNpcData = currentWaveQueue.Dequeue();
-                currentNpcObject = Instantiate(npcPrefab, npcSpawnPoint.position, Quaternion.identity);
-
-                // Mengirimkan semua data dan referensi yang dibutuhkan ke NPC baru
+                currentNpcObject = Instantiate(npcPrefab, enterPosition.position, Quaternion.identity);
+                
                 NPCController npcController = currentNpcObject.GetComponent<NPCController>();
-                npcController.Setup(nextNpcData, this, uiManager);
+                npcController.Setup(nextNpcData, this, uiManager, servicePosition);
             }
             else
             {
                 Debug.Log("Wave selesai!");
-                // Di sini Anda bisa menambahkan logika untuk akhir wave (misal: menampilkan skor)
             }
         }
 
-        // Fungsi ini dipanggil oleh NPCController saat ia pergi
-        public void NPCHasLeft()
+        // Fungsi ini dipanggil SETELAH NPC selesai pergi
+        public void OnNPCHasLeft()
         {
             currentNpcObject = null;
-            // Tunggu sebentar sebelum memanggil NPC selanjutnya
             StartCoroutine(SpawnNextNPCWithDelay(2f));
         }
-
+        
         private IEnumerator SpawnNextNPCWithDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
