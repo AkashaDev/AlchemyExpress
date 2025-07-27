@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Tejo
   npcSprite: {fileID: 21300000, guid: 7654a8cbdb9075d40806bd46bb817fc2, type: 2}
-  dialogue: Tes-tes
+  dialogue: Mas aku njauk potion heal
   requiredPotionName: Heal
   rewardHappy: 1000
   rewardNeutral: 700
