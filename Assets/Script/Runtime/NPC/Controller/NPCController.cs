@@ -148,13 +148,12 @@ namespace NPC
             });
 
             Flip();
+            StopHeadAnimation();
             StartWalkAnimation(highopHeight,0.4f);
         }
 
         private void StartHeadAnimation()
         {
-            StopHeadAnimation();
-
             float tiltAngle = 5f;
             float tiltDuration = 1.5f;
 
