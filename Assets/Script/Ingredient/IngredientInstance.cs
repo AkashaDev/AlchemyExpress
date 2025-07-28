@@ -12,12 +12,14 @@ public class IngredientInstance : MonoBehaviour
     private IngredientRuntimeData runtimeData;
     private int rotationIndex = 0;
     private List<GameObject> renderedCells = new List<GameObject>();
+    private Vector2Int pivotCellLocal = Vector2Int.zero;
 
     public void Setup(IngredientSO source)
     {
         data = source;
         runtimeData = new IngredientRuntimeData(source);
         rotationIndex = 0;
+        pivotCellLocal = Vector2Int.zero;
 
         if (spriteObject != null)
         {
@@ -34,9 +36,12 @@ public class IngredientInstance : MonoBehaviour
     {
         if (!runtimeData.canRotate) return;
 
+        Vector3 worldPivotBefore = transform.TransformPoint((Vector2)pivotCellLocal);
         rotationIndex = (rotationIndex + 1) % 4;
         Redraw();
         UpdateSpriteVisualTransform();
+        Vector3 worldPivotAfter = transform.TransformPoint((Vector2)pivotCellLocal);
+        transform.position += worldPivotBefore - worldPivotAfter;
     }
 
     public void Redraw()
@@ -45,12 +50,18 @@ public class IngredientInstance : MonoBehaviour
             Destroy(cell);
         renderedCells.Clear();
 
-        Vector2Int[] shape = runtimeData.GetRotatedShape(rotationIndex);
+        Vector2Int[] shape = runtimeData.GetRotatedShape(rotationIndex, pivotCellLocal);
 
         foreach (var cellPos in shape)
         {
             GameObject cell = Instantiate(cellPrefab, transform);
             cell.transform.localPosition = new Vector3(cellPos.x, cellPos.y, 0);
+
+            if (cell.GetComponent<BoxCollider2D>() == null)
+            {
+                var box = cell.AddComponent<BoxCollider2D>();
+                box.isTrigger = true;
+            }
 
             SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
             if (sr != null && cellSprite != null)
@@ -88,7 +99,7 @@ public class IngredientInstance : MonoBehaviour
 
     public Vector2Int[] GetRotatedShapeForExternal()
     {
-        return runtimeData.GetRotatedShape(rotationIndex);
+        return runtimeData.GetRotatedShape(rotationIndex, pivotCellLocal);
     }
 
     private Vector2Int[] GetRotatedShape(int rotation)
@@ -114,7 +125,7 @@ public class IngredientInstance : MonoBehaviour
 
     private void UpdateSpriteVisualTransform()
     {
-        Vector2Int[] shape = GetRotatedShape(rotationIndex);
+        Vector2Int[] shape = runtimeData.GetRotatedShape(rotationIndex, pivotCellLocal);
 
         // Hitung posisi tengah shape untuk memusatkan sprite
         Vector2 avg = Vector2.zero;
@@ -150,7 +161,8 @@ public class IngredientInstance : MonoBehaviour
 
     public Vector2 GetPivotWorldPosition()
     {
-        Vector2Int[] shape = GetRotatedShapeForExternal();
+        return transform.TransformPoint((Vector2)pivotCellLocal);
+        /*Vector2Int[] shape = GetRotatedShapeForExternal();
 
         // Cari sel (0,0) dalam bentuk lokal
         foreach (var cell in shape)
@@ -164,7 +176,7 @@ public class IngredientInstance : MonoBehaviour
         }
 
         // fallback jika tidak ada (seharusnya tidak terjadi)
-        return transform.position;
+        return transform.position;*/
     }
 
     public void SetRotationIndex(int index)
@@ -172,5 +184,10 @@ public class IngredientInstance : MonoBehaviour
         rotationIndex = index % 4;
         Redraw();
         UpdateSpriteVisualTransform();
+    }
+
+    public void SetPivotCell(Vector2Int cell)
+    {
+        pivotCellLocal = cell;
     }
 }

@@ -32,9 +32,10 @@ public class IngredientDraggable : MonoBehaviour
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         isDragging = true;
-        offset = transform.position - cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 worldMousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        worldMousePos.z = 0;
+        offset = transform.position - worldMousePos;
 
-        // Putus parent saat mulai drag
         transform.SetParent(null);
         cauldron?.ClearPreview();
         lastPreviewPos = null;
@@ -42,6 +43,17 @@ public class IngredientDraggable : MonoBehaviour
         if (isPlacedInCauldron)
         {
             cauldron?.UnregisterIngredient(instance);
+        }
+
+        // Deteksi cell child yang diklik
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
+        if (hit.collider != null && hit.collider.transform.IsChildOf(transform))
+        {
+            Vector2 localHitPos = transform.InverseTransformPoint(hit.point);
+            Vector2Int clickedCell = new Vector2Int(Mathf.RoundToInt(localHitPos.x), Mathf.RoundToInt(localHitPos.y));
+            instance.SetPivotCell(clickedCell);
         }
     }
 
