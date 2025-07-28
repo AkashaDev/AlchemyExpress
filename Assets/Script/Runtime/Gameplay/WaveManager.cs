@@ -9,8 +9,6 @@ namespace NPC
     public class WaveManager : MonoBehaviour, IWaveManager
     {
         [Header("Posisi Pergerakan")]
-        // --- PERBAIKAN ---
-        // Jadikan field biasa yang bisa di-assign dari Inspector.
         [SerializeField] private Transform _enterPosition;
         [SerializeField] private Transform _servicePosition;
         [SerializeField] private Transform _leavePosition;
@@ -47,7 +45,7 @@ namespace NPC
 
         public void StartWave(int waveNumber)
         {
-            if (waveNumber == 1)
+            if (waveNumber == 1 )
             {
                 availableQuestsInWave = new List<QuestData>(wave1Quests);
             }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using AlchemyExpress.Quest;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Quest_", menuName = "Alchemy/Quest Data")]
@@ -8,6 +10,7 @@ public class QuestData : ScriptableObject
     [TextArea(5, 10)]
     public string dialogue;
     public string requiredPotionName;
+    public LevelDifficult levelDifficults;
 
     [Header("Reward Berdasarkan Mood")]
     public int rewardHappy;
