@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PolygonCollider2D))]
 public class IngredientInstance : MonoBehaviour
 {
     [Header("Data")]
@@ -63,6 +64,31 @@ public class IngredientInstance : MonoBehaviour
 
             renderedCells.Add(cell);
         }
+
+        UpdatePolygonCollider(); // ← Tambahkan update collider setiap redraw
+    }
+
+    private void UpdatePolygonCollider()
+    {
+        PolygonCollider2D polygon = GetComponent<PolygonCollider2D>();
+        if (polygon == null) return;
+
+        Vector2Int[] shape = GetRotatedShape(rotationIndex);
+
+        polygon.pathCount = shape.Length;
+
+        for (int i = 0; i < shape.Length; i++)
+        {
+            Vector2Int pos = shape[i];
+
+            Vector2[] square = new Vector2[4];
+            square[0] = new Vector2(pos.x, pos.y);
+            square[1] = new Vector2(pos.x + 1, pos.y);
+            square[2] = new Vector2(pos.x + 1, pos.y + 1);
+            square[3] = new Vector2(pos.x, pos.y + 1);
+
+            polygon.SetPath(i, square);
+        }
     }
 
     private Vector2Int[] GetRotatedShape(int rotation)
@@ -108,13 +134,12 @@ public class IngredientInstance : MonoBehaviour
 
     private Quaternion GetSpriteRotation(int rotationIndex)
     {
-        // Mapping rotasi khusus untuk bentuk seperti L
         switch (rotationIndex % 4)
         {
             case 0: return Quaternion.Euler(0, 0, 0);
-            case 1: return Quaternion.Euler(0, 0, -270); // swap dengan -90
+            case 1: return Quaternion.Euler(0, 0, -270);
             case 2: return Quaternion.Euler(0, 0, -180);
-            case 3: return Quaternion.Euler(0, 0, -90);  // swap dengan -270
+            case 3: return Quaternion.Euler(0, 0, -90);
             default: return Quaternion.identity;
         }
     }
