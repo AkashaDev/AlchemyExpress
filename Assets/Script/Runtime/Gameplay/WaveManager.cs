@@ -125,7 +125,6 @@ namespace NPC
 
                 int randomIndex = Random.Range(0, _questsForCurrentDay.Count);
                 QuestData randomQuest = _questsForCurrentDay[randomIndex];
-                _questsForCurrentDay.RemoveAt(randomIndex); 
 
                 Debug.Log($"Spawning NPC #{_npcsSpawnedThisDay}/{_npcsToSpawnThisDay} untuk hari ke-{_currentDay}.");
                 EventManager.Raise(new RequestNPCSpawnEvent { questData = randomQuest });
