@@ -12,6 +12,9 @@ public class QuestData : ScriptableObject
     public string requiredPotionName;
     public LevelDifficult levelDifficults;
 
+    [Header("Recipe")]
+    public List<IngredientSO> requiredIngredients;
+
     [Header("Reward Berdasarkan Mood")]
     public int rewardHappy;
     public int rewardNeutral;

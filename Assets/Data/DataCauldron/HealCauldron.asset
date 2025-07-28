@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e41a31c65f7a80a42a168f01de614c45, type: 3}
   m_Name: HealCauldron
   m_EditorClassIdentifier: 
-  width: 0
-  height: 0
+  width: 2
+  height: 2
   tiles: 

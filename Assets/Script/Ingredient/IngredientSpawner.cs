@@ -1,36 +1,74 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using ObeserverPattern;
+using AlchemyExpress.Quest;
 
 public class IngredientSpawner : MonoBehaviour
 {
-    [Header("Ingredient Settings")]
-    public IngredientSO[] ingredientPool;
     public GameObject ingredientPrefab;
-    public Transform spawnPoint;
+    private Transform _spawnPoint;
+    private float _spawnInterval;
+    private Coroutine _spawnLoopCoroutine;
 
-    [Header("Timing")]
-    public float spawnInterval = 2f;
+    private Queue<IngredientSO> _spawnQueue = new Queue<IngredientSO>();
 
-    private void Start()
+    public void SetSpawnPoint(Transform newPoint) => _spawnPoint = newPoint;
+    public void SetSpawnInterval(float newInterval) => _spawnInterval = newInterval;
+
+    private void OnEnable()
     {
-        StartCoroutine(SpawnLoop());
+        EventManager.Subscribe<RequestNPCSpawnEvent>(HandleNewQuest);
     }
 
-    IEnumerator SpawnLoop()
+    private void OnDisable()
     {
-        while (true)
+        EventManager.Unsubscribe<RequestNPCSpawnEvent>(HandleNewQuest);
+    }
+
+    private void HandleNewQuest(RequestNPCSpawnEvent e)
+    {
+        if (e.questData?.requiredIngredients == null) return;
+        foreach (var ingredient in e.questData.requiredIngredients)
         {
-            SpawnRandomIngredient();
-            yield return new WaitForSeconds(spawnInterval);
+            _spawnQueue.Enqueue(ingredient);
         }
     }
 
-    void SpawnRandomIngredient()
+    public void StartSpawning()
     {
-        IngredientSO selected = ingredientPool[Random.Range(0, ingredientPool.Length)];
-        GameObject obj = Instantiate(ingredientPrefab, spawnPoint.position, Quaternion.identity);
-        IngredientInstance instance = obj.GetComponent<IngredientInstance>();
-        instance.Setup(selected);
+        if (_spawnLoopCoroutine == null)
+        {
+            _spawnLoopCoroutine = StartCoroutine(SpawnLoop());
+        }
+    }
+
+    public void StopSpawning()
+    {
+        if (_spawnLoopCoroutine != null)
+        {
+            StopCoroutine(_spawnLoopCoroutine);
+            _spawnLoopCoroutine = null;
+        }
+    }
+
+    private IEnumerator SpawnLoop()
+    {
+        while (true)
+        {
+            if (_spawnQueue.Count > 0)
+            {
+                IngredientSO ingredientToSpawn = _spawnQueue.Dequeue();
+                SpawnIngredient(ingredientToSpawn);
+            }
+            yield return new WaitForSeconds(_spawnInterval);
+        }
+    }
+
+    private void SpawnIngredient(IngredientSO selectedIngredient)
+    {
+        if (selectedIngredient == null || _spawnPoint == null) return;
+        GameObject obj = Instantiate(ingredientPrefab, _spawnPoint.position, Quaternion.identity);
+        obj.GetComponent<IngredientInstance>()?.Setup(selectedIngredient);
     }
 }
