@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ea65ea65e5bef5546bd4951b855b83e0
+guid: 7e18e24592819934eb9b8b8fa266da3f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -46,8 +46,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.39, y: 0.57}
+  alignment: 9
+  spritePivot: {x: 0.56, y: 0.47}
   spritePixelsToUnits: 1000
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -108,91 +108,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: customer M head 1_0
-      rect:
-        serializedVersion: 2
-        x: 117
-        y: 0
-        width: 498
-        height: 720
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fde75d819a8d3984ebf714f2c343287b
-      internalID: -1888714720
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: customer M head 1_1
-      rect:
-        serializedVersion: 2
-        x: 520
-        y: 84
-        width: 12
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07165e8968c433842ac575f492235974
-      internalID: 1858307653
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: customer M head 1_2
-      rect:
-        serializedVersion: 2
-        x: 544
-        y: 96
-        width: 20
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4a8f3ca2746a6724e9fbf27da741dae8
-      internalID: 1257039663
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: customer M head 1_3
-      rect:
-        serializedVersion: 2
-        x: 658
-        y: 0
-        width: 71
-        height: 95
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 408f23b00e44bc14ba1367cb54444318
-      internalID: -223289498
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -203,11 +119,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      customer M head 1_0: -1888714720
-      customer M head 1_1: 1858307653
-      customer M head 1_2: 1257039663
-      customer M head 1_3: -223289498
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

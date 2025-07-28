@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Appearance_MaleBlond 1
   m_EditorClassIdentifier: 
   gender: 0
-  bodySprite: {fileID: 21300000, guid: 069cdd7618fd3104ea674e4aecc8f8bc, type: 3}
-  hairSprite: {fileID: 21300000, guid: ea65ea65e5bef5546bd4951b855b83e0, type: 3}
+  bodySprite: {fileID: 21300000, guid: 88da1af223eb84041aeb9b5eebbed138, type: 3}
+  hairSprite: {fileID: 21300000, guid: 084e535e88055ed45a13d222fbe7a881, type: 3}
   happyFaceSprite: {fileID: 21300000, guid: 2bc7678640290a541aa0c5a2aafa3b1a, type: 3}
   neutralFaceSprite: {fileID: 21300000, guid: b6da5bb29e412e74d900cffe6d9f5d6a, type: 3}
   angryFaceSprite: {fileID: 21300000, guid: 271ed300d9abe094bb3bab7f6e6d3063, type: 3}
