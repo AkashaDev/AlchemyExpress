@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e179539a85bc26479af7c95ba3b24fb, type: 3}
   m_Name: Appearance_FemaleRedRed
   m_EditorClassIdentifier: 
-  gender: 0
+  gender: 1
   bodySprite: {fileID: 21300000, guid: cec3c00e41111724189a4d408941215f, type: 3}
   hairSprite: {fileID: 21300000, guid: 4c8051e54631ea0418130d7df7b28cee, type: 3}
   happyFaceSprite: {fileID: 21300000, guid: 10ce978fb2e325047b82eecccd391ad6, type: 3}

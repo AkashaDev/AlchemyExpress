@@ -274,7 +274,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcPrefab: {fileID: 2522840977635568712, guid: fbad6a6145621bd488e681f9c561b7bc, type: 3}
   waveManagerProvider: {fileID: 373308507}
-  maleAppearances: []
+  maleAppearances:
+  - {fileID: 11400000, guid: 6af5d65d345ea454c95a9b9ba2835469, type: 2}
+  - {fileID: 11400000, guid: e33a9dce971d1c6459fc743902424a43, type: 2}
+  - {fileID: 11400000, guid: 36d14fdf3d6e13b46af69ae35dd3e5f9, type: 2}
+  - {fileID: 11400000, guid: 62ca0d0a51360b940b8372387f41b813, type: 2}
   femaleAppearances:
   - {fileID: 11400000, guid: ec6260949ce0df5409a9a0e7ea00a702, type: 2}
   - {fileID: 11400000, guid: 1a2058de99757c149a22a93a9edfc8a0, type: 2}
