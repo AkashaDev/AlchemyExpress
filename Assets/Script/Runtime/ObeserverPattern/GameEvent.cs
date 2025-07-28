@@ -1,0 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public struct NPCTurnFinishedEvent { }
+
+public struct ShowDialogueEvent
+{
+    public string dialogueText;
+}
+
+public struct HideDialogueEvent {}
+
+public struct UpdateNPCMoodEvent
+{
+    public NPC.NPCController.MoodState newMood;
+}
+
+public struct RequestNPCSpawnEvent
+{
+    public QuestData questData;
+}
