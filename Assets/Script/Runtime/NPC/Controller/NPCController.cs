@@ -1,36 +1,45 @@
-using UnityEngine;
 using System.Collections;
 using DG.Tweening;
 using ObeserverPattern;
+using UnityEngine;
 
 namespace NPC
 {
-        public class NPCController : MonoBehaviour
-        {
-
+    public class NPCController : MonoBehaviour
+    {
         [Header("Referensi Komponen")]
         public Transform visualsTransform;
         public Transform headTransform;
 
         [Header("Referensi Sprite Renderer")]
         public SpriteRenderer bodyRenderer;
-        public SpriteRenderer hairRenderer; 
+        public SpriteRenderer hairRenderer;
         public SpriteRenderer faceRenderer;
 
         [Header("Referensi Data NPC")]
         private QuestData questData;
         private AppearanceData appearanceData;
+
         // private WaveManager waveManager;
 
         private Transform servicePosition;
         private Transform leavePosition;
 
         private UIManager uiManager;
-        [SerializeField] private float highopHeight;
+
+        [SerializeField]
+        private float highopHeight;
         private Transform leaveTarget;
 
         // --- Status Internal ---
-        public enum MoodState { Happy, Neutral, Angry, Gone }
+        public enum MoodState
+        {
+            Happy,
+            Neutral,
+            Angry,
+            Gone,
+        }
+
         private MoodState currentMood;
         private float moodTimer;
         public float timePerMoodLevel = 25f;
@@ -39,14 +48,19 @@ namespace NPC
         private Tween headAnimation;
         private bool isWalking = false;
 
-        public void Initialize(QuestData quest, AppearanceData appearance, Transform servicePos, Transform leavePos)
+        public void Initialize(
+            QuestData quest,
+            AppearanceData appearance,
+            Transform servicePos,
+            Transform leavePos
+        )
         {
             this.questData = quest;
             this.appearanceData = appearance;
             this.servicePosition = servicePos;
             this.leavePosition = leavePos;
         }
-        
+
         private void Start()
         {
             hasLeft = false;
@@ -60,21 +74,25 @@ namespace NPC
 
             // Mulai bergerak ke posisi service
             Transform targetPosition = FindObjectOfType<WaveManager>().servicePosition;
-            transform.DOMove(targetPosition.position, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                StopWalkAnimation();
-                EventManager.Raise(new ShowDialogueEvent { dialogueText = questData.dialogue });
-                StartHeadAnimation();
-                moodTimer += 2.5f;
-                isWalking = true;
-            });
+            transform
+                .DOMove(targetPosition.position, 2.4f)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    StopWalkAnimation();
+                    EventManager.Raise(new ShowDialogueEvent { dialogueText = questData.dialogue });
+                    StartHeadAnimation();
+                    moodTimer += 2.4f;
+                    isWalking = true;
+                });
 
             StartWalkAnimation(highopHeight, 0.4f);
         }
 
         void Update()
         {
-            if (hasLeft && !isWalking) return;
+            if (hasLeft && !isWalking)
+                return;
 
             moodTimer -= Time.deltaTime;
             if (moodTimer <= 0)
@@ -83,9 +101,10 @@ namespace NPC
             }
         }
 
-         public void ReceivePotion(string playerPotionName)
+        public void ReceivePotion(string playerPotionName)
         {
-            if (hasLeft) return;
+            if (hasLeft)
+                return;
             EventManager.Raise(new HideDialogueEvent());
             if (playerPotionName.ToLower() == questData.requiredPotionName.ToLower())
             {
@@ -102,9 +121,15 @@ namespace NPC
             int reward = 0;
             switch (currentMood)
             {
-                case MoodState.Happy: reward = questData.rewardHappy; break;
-                case MoodState.Neutral: reward = questData.rewardNeutral; break;
-                case MoodState.Angry: reward = questData.rewardAngry; break;
+                case MoodState.Happy:
+                    reward = questData.rewardHappy;
+                    break;
+                case MoodState.Neutral:
+                    reward = questData.rewardNeutral;
+                    break;
+                case MoodState.Angry:
+                    reward = questData.rewardAngry;
+                    break;
             }
             Debug.Log($"Ramuan Benar! Player mendapat {reward} gold.");
             Leave();
@@ -116,8 +141,8 @@ namespace NPC
             DegradeMood();
 
             if (!hasLeft)
-            {   
-                EventManager.Raise(new ShowDialogueEvent{ dialogueText = questData.dialogue });
+            {
+                EventManager.Raise(new ShowDialogueEvent { dialogueText = questData.dialogue });
             }
         }
 
@@ -137,7 +162,8 @@ namespace NPC
 
         private void Leave()
         {
-            if (hasLeft) return;
+            if (hasLeft)
+                return;
             hasLeft = true;
             isWalking = false;
             currentMood = MoodState.Gone;
@@ -145,17 +171,19 @@ namespace NPC
             UpdateMoodAndVisuals();
             EventManager.Raise(new HideDialogueEvent());
             leaveTarget = FindObjectOfType<WaveManager>().leavePosition;
-            
-            transform.DOMove(leaveTarget.position, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
-            {
 
-                EventManager.Raise(new NPCTurnFinishedEvent());
-                Destroy(gameObject);
-            });
+            transform
+                .DOMove(leaveTarget.position, 2.4f)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    EventManager.Raise(new NPCTurnFinishedEvent());
+                    Destroy(gameObject);
+                });
 
             Flip();
             StopHeadAnimation();
-            StartWalkAnimation(highopHeight,0.4f);
+            StartWalkAnimation(highopHeight, 0.4f);
         }
 
         private void StartHeadAnimation()
@@ -163,10 +191,11 @@ namespace NPC
             float tiltAngle = 5f;
             float tiltDuration = 1.5f;
 
-            headAnimation = headTransform.DORotate(new Vector3(0, 0, tiltAngle), tiltDuration)
+            headAnimation = headTransform
+                .DORotate(new Vector3(0, 0, tiltAngle), tiltDuration)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo)
-                .SetLink(headTransform.gameObject); 
+                .SetLink(headTransform.gameObject);
         }
 
         private void StopHeadAnimation()
@@ -188,34 +217,44 @@ namespace NPC
             EventManager.Raise(new UpdateNPCMoodEvent { newMood = currentMood });
             switch (currentMood)
             {
-                case MoodState.Happy: faceRenderer.sprite = appearanceData.happyFaceSprite; break;
-                case MoodState.Neutral: faceRenderer.sprite = appearanceData.neutralFaceSprite; break;
-                case MoodState.Angry: faceRenderer.sprite = appearanceData.angryFaceSprite; break;
-                case MoodState.Gone: ; break;
+                case MoodState.Happy:
+                    faceRenderer.sprite = appearanceData.happyFaceSprite;
+                    break;
+                case MoodState.Neutral:
+                    faceRenderer.sprite = appearanceData.neutralFaceSprite;
+                    break;
+                case MoodState.Angry:
+                    faceRenderer.sprite = appearanceData.angryFaceSprite;
+                    break;
+                case MoodState.Gone:
+                    ;
+                    break;
             }
         }
-    
-    private void StartWalkAnimation(float hopHeight, float oneWayDuration)
-    {
-        // Hentikan animasi lama jika ada
-        if (walkAnimation != null) walkAnimation.Kill();
-        
-            walkAnimation = visualsTransform.DOLocalMoveY(transform.localPosition.y + hopHeight, oneWayDuration)
-            .SetEase(Ease.OutSine)
-            .SetLoops(-1, LoopType.Yoyo)
-            .SetLink(visualsTransform.gameObject); 
-    }
 
-    private void StopWalkAnimation()
-    {
-        if (walkAnimation != null)
+        private void StartWalkAnimation(float hopHeight, float oneWayDuration)
         {
-            walkAnimation.Kill();
+            if (walkAnimation != null)
+                walkAnimation.Kill();
+
+            walkAnimation = visualsTransform
+                .DOLocalMoveY(transform.localPosition.y + hopHeight, oneWayDuration)
+                .SetEase(Ease.OutSine)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetLink(visualsTransform.gameObject);
         }
 
-        float localPositionY = FindObjectOfType<WaveManager>().servicePosition.transform.localPosition.y;
-        
-        transform.DOLocalMoveY(localPositionY, 0.1f);
-    }
+        private void StopWalkAnimation()
+        {
+            if (walkAnimation != null)
+            {
+                walkAnimation.Kill();
+            }
+
+            float localPositionY =
+                FindObjectOfType<WaveManager>().servicePosition.transform.localPosition.y;
+
+            transform.DOLocalMoveY(localPositionY, 0.1f);
+        }
     }
 }
