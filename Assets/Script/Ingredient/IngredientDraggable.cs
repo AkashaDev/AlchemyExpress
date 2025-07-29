@@ -33,8 +33,6 @@ public class IngredientDraggable : MonoBehaviour
 
         isDragging = true;
         offset = transform.position - cam.ScreenToWorldPoint(Input.mousePosition);
-
-        // Putus parent saat mulai drag
         transform.SetParent(null);
         cauldron?.ClearPreview();
         lastPreviewPos = null;
@@ -50,11 +48,10 @@ public class IngredientDraggable : MonoBehaviour
         isDragging = false;
 
         Vector2 pivotWorldPos = instance.GetPivotWorldPosition();
-Vector2Int dropPos = new Vector2Int(Mathf.RoundToInt(pivotWorldPos.x), Mathf.RoundToInt(pivotWorldPos.y));
+        Vector2Int dropPos = cauldron.WorldToGridPosition(pivotWorldPos);
 
         if (cauldron != null && cauldron.CanAcceptIngredient(instance, dropPos))
         {
-            // Dapatkan tile tempat ingredient akan masuk
             Transform tileTransform = cauldron.GetTileTransformAt(dropPos);
 
             if (tileTransform != null)
@@ -75,20 +72,19 @@ Vector2Int dropPos = new Vector2Int(Mathf.RoundToInt(pivotWorldPos.x), Mathf.Rou
         {
             if (isPlacedInCauldron && lastValidGridPos.HasValue && lastTileTransform != null)
             {
-                // Kembali ke posisi valid terakhir
                 transform.SetParent(lastTileTransform);
                 transform.localPosition = Vector3.zero;
                 instance.SetRotationIndex(lastValidRotationIndex);
             }
             else
             {
-                // Kembali ke conveyor
                 transform.SetParent(null);
                 transform.position = originalPosition;
             }
 
             OnRejectedFeedback();
         }
+
         cauldron?.ClearPreview();
         lastPreviewPos = null;
     }
@@ -99,10 +95,9 @@ Vector2Int dropPos = new Vector2Int(Mathf.RoundToInt(pivotWorldPos.x), Mathf.Rou
         {
             Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition) + offset;
             mousePos.z = 0;
-
             transform.position = mousePos;
 
-            Vector2Int gridPos = new Vector2Int(Mathf.RoundToInt(mousePos.x), Mathf.RoundToInt(mousePos.y));
+            Vector2Int gridPos = cauldron.WorldToGridPosition(mousePos);
 
             if (lastPreviewPos != gridPos)
             {
@@ -117,6 +112,7 @@ Vector2Int dropPos = new Vector2Int(Mathf.RoundToInt(pivotWorldPos.x), Mathf.Rou
 
                 lastPreviewPos = gridPos;
             }
+
             if (Input.GetKeyDown(KeyCode.R))
             {
                 instance.RotateClockwise();
@@ -124,22 +120,13 @@ Vector2Int dropPos = new Vector2Int(Mathf.RoundToInt(pivotWorldPos.x), Mathf.Rou
         }
     }
 
-
     private void OnPlacedInCauldronFeedback()
     {
         Debug.Log("Ingredient berhasil ditempatkan di cauldron!");
-        // Tambahkan efek visual/suara/warna jika diinginkan
-    }
-
-    private void OnInvalidMoveFeedback()
-    {
-        Debug.Log("Posisi tidak valid, kembali ke tempat sebelumnya.");
-        // Tambahkan efek getaran atau highlight merah
     }
 
     private void OnRejectedFeedback()
     {
         Debug.Log("Ingredient ditolak, kembali ke conveyor.");
-        // Tambahkan efek seperti scale down, suara tolak, animasi bounce
     }
 }
