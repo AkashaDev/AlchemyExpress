@@ -9,9 +9,13 @@ public class IngredientDragController : MonoBehaviour
     private IngredientInstance current;
     private Vector3 offset;
     private Vector3 originalPos;
-    private Vector2Int? lastGridPos;
-    private int lastRotation = 0;
-    private bool isDragging;
+
+    private Vector2Int? lastValidGridPos = null;
+    private int lastValidRotationIndex = 0;
+    private Vector2Int? lastGridPos = null;
+
+    private bool isDragging = false;
+    private bool isPlacedInCauldron = false;
 
     void Update()
     {
@@ -48,8 +52,12 @@ public class IngredientDragController : MonoBehaviour
                 isDragging = true;
                 originalPos = inst.transform.position;
                 offset = inst.transform.position - mouseWorld;
-                cauldron.gridBehavior.RemoveIngredient(current);
+
                 cauldron.gridBehavior.ClearPreview();
+
+                if (isPlacedInCauldron)
+                    cauldron.gridBehavior.RemoveIngredient(current);
+
                 lastGridPos = null;
             }
         }
@@ -78,6 +86,7 @@ public class IngredientDragController : MonoBehaviour
         current.RotateClockwise();
         Vector2Int gridPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
         cauldron.gridBehavior.ClearPreview();
+
         bool canPlace = cauldron.gridBehavior.CanPlaceIngredient(current, gridPos);
         Vector2Int[] shape = current.GetRotatedShapeForExternal();
         cauldron.gridBehavior.PreviewPlacement(shape, gridPos, canPlace);
@@ -93,17 +102,43 @@ public class IngredientDragController : MonoBehaviour
             current.transform.position = cauldron.gridBehavior.GridToWorld(dropPos);
             current.transform.SetParent(cauldron.tileParent);
             cauldron.gridBehavior.PlaceIngredient(current, dropPos);
-            Debug.Log("Ditempatkan");
+
+            lastValidGridPos = dropPos;
+            lastValidRotationIndex = current.GetRotationIndex();
+            isPlacedInCauldron = true;
+
+            OnPlacedInCauldronFeedback();
         }
         else
         {
-            current.transform.position = originalPos;
-            current.SetRotationIndex(lastRotation);
-            Debug.Log("Ditolak");
+            if (isPlacedInCauldron && lastValidGridPos.HasValue)
+            {
+                current.transform.position = cauldron.gridBehavior.GridToWorld(lastValidGridPos.Value);
+                current.SetRotationIndex(lastValidRotationIndex);
+                current.transform.SetParent(cauldron.tileParent);
+                cauldron.gridBehavior.PlaceIngredient(current, lastValidGridPos.Value);
+            }
+            else
+            {
+                current.transform.SetParent(null);
+                current.transform.position = originalPos;
+            }
+
+            OnRejectedFeedback();
         }
 
         cauldron.gridBehavior.ClearPreview();
         current = null;
         lastGridPos = null;
+    }
+
+    void OnPlacedInCauldronFeedback()
+    {
+        Debug.Log("Ingredient berhasil ditempatkan di cauldron!");
+    }
+
+    void OnRejectedFeedback()
+    {
+        Debug.Log("Ingredient ditolak, kembali ke conveyor.");
     }
 }
