@@ -132,7 +132,7 @@ public class CauldronSpawner : MonoBehaviour
         {
             for (int x = 0; x < template.width; x++)
             {
-                Vector3 pos = offset + new Vector3(x + 0.5f, y + 0.5f, 0);
+                Vector3 pos = offset + new Vector3(x, y, 0);
                 Vector3 size = Vector3.one;
 
                 if (template.IsBlocked(x, y))
