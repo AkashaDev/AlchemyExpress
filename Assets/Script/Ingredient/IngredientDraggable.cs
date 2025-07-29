@@ -13,7 +13,6 @@ public class IngredientDraggable : MonoBehaviour
     private Vector3 originalPosition;
     private Vector2Int? lastValidGridPos = null;
     private Vector2Int? lastPreviewPos = null;
-    private Transform lastTileTransform = null;
     private int lastValidRotationIndex = 0;
 
     private bool isDragging = false;
@@ -34,12 +33,12 @@ public class IngredientDraggable : MonoBehaviour
         isDragging = true;
         offset = transform.position - cam.ScreenToWorldPoint(Input.mousePosition);
         transform.SetParent(null);
-        cauldron?.ClearPreview();
+        cauldron?.gridBehavior.ClearPreview();
         lastPreviewPos = null;
 
         if (isPlacedInCauldron)
         {
-            cauldron?.UnregisterIngredient(instance);
+            cauldron?.gridBehavior.RemoveIngredient(instance);
         }
     }
 
@@ -48,20 +47,16 @@ public class IngredientDraggable : MonoBehaviour
         isDragging = false;
 
         Vector2 pivotWorldPos = instance.GetPivotWorldPosition();
-        Vector2Int dropPos = cauldron.WorldToGridPosition(pivotWorldPos);
+        Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(pivotWorldPos);
 
-        if (cauldron != null && cauldron.CanAcceptIngredient(instance, dropPos))
+        if (cauldron != null && cauldron.gridBehavior.CanPlaceIngredient(instance, dropPos))
         {
-            Transform tileTransform = cauldron.GetTileTransformAt(dropPos);
+            // Tempatkan ingredient langsung di world space
+            transform.position = cauldron.gridBehavior.GridToWorld(dropPos);
+            transform.SetParent(cauldron.tileParent); // optional parenting
 
-            if (tileTransform != null)
-            {
-                transform.SetParent(tileTransform);
-                transform.localPosition = Vector3.zero;
-                lastTileTransform = tileTransform;
-            }
+            cauldron.gridBehavior.PlaceIngredient(instance, dropPos);
 
-            cauldron.RegisterIngredient(instance, dropPos);
             lastValidGridPos = dropPos;
             isPlacedInCauldron = true;
             lastValidRotationIndex = instance.GetRotationIndex();
@@ -70,11 +65,12 @@ public class IngredientDraggable : MonoBehaviour
         }
         else
         {
-            if (isPlacedInCauldron && lastValidGridPos.HasValue && lastTileTransform != null)
+            if (isPlacedInCauldron && lastValidGridPos.HasValue)
             {
-                transform.SetParent(lastTileTransform);
-                transform.localPosition = Vector3.zero;
+                transform.position = cauldron.gridBehavior.GridToWorld(lastValidGridPos.Value);
                 instance.SetRotationIndex(lastValidRotationIndex);
+                transform.SetParent(cauldron.tileParent);
+                cauldron.gridBehavior.PlaceIngredient(instance, lastValidGridPos.Value);
             }
             else
             {
@@ -85,7 +81,7 @@ public class IngredientDraggable : MonoBehaviour
             OnRejectedFeedback();
         }
 
-        cauldron?.ClearPreview();
+        cauldron?.gridBehavior.ClearPreview();
         lastPreviewPos = null;
     }
 
@@ -97,17 +93,17 @@ public class IngredientDraggable : MonoBehaviour
             mousePos.z = 0;
             transform.position = mousePos;
 
-            Vector2Int gridPos = cauldron.WorldToGridPosition(mousePos);
+            Vector2Int gridPos = cauldron.gridBehavior.WorldToGrid(mousePos);
 
             if (lastPreviewPos != gridPos)
             {
-                cauldron?.ClearPreview();
+                cauldron?.gridBehavior.ClearPreview();
 
                 if (cauldron != null)
                 {
                     Vector2Int[] shape = instance.GetRotatedShapeForExternal();
-                    bool valid = cauldron.CanAcceptIngredient(instance, gridPos);
-                    cauldron.PreviewPlacement(shape, gridPos, valid);
+                    bool valid = cauldron.gridBehavior.CanPlaceIngredient(instance, gridPos);
+                    cauldron.gridBehavior.PreviewPlacement(shape, gridPos, valid);
                 }
 
                 lastPreviewPos = gridPos;
@@ -116,6 +112,12 @@ public class IngredientDraggable : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
             {
                 instance.RotateClockwise();
+                Vector2Int newGridPos = cauldron.gridBehavior.WorldToGrid(transform.position);
+                cauldron.gridBehavior.ClearPreview();
+
+                Vector2Int[] newShape = instance.GetRotatedShapeForExternal();
+                bool valid = cauldron.gridBehavior.CanPlaceIngredient(instance, newGridPos);
+                cauldron.gridBehavior.PreviewPlacement(newShape, newGridPos, valid);
             }
         }
     }
