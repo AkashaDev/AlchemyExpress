@@ -1169,7 +1169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19cf99fe7f5cae4fba21d8aaa488a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSpacing: 1
+  minimumItemGap: 0.1
   endPointOffset: 0.5
   visualSpeedFactor: -0.05
   spawnPoint: {fileID: 1631326481}
@@ -1665,7 +1665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 860e8d0e94c50f94794ff9d2920236a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cauldronTemplate: {fileID: 11400000, guid: d8ff2fa7f52d6044fbc10bba4bab4aee, type: 2}
+  template: {fileID: 11400000, guid: ad7653cac58228f46a92e7bf2694856a, type: 2}
   tilePrefab: {fileID: 2706766671580815269, guid: 8abde7754e6d80b4bb022e03dfa56e8e, type: 3}
   tileParent: {fileID: 6992490189097284762}
 --- !u!1 &8888626543857215864
