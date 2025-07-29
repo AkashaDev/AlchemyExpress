@@ -4,23 +4,21 @@ using UnityEngine;
 [RequireComponent(typeof(PolygonCollider2D))]
 public class IngredientInstance : MonoBehaviour
 {
-    [Header("Data")]
     public IngredientSO data;
+    public GameObject cellPrefab;
+    public Sprite cellSprite;
+    public Transform spriteObject;
 
-    [Header("Visual")]
-    public GameObject cellPrefab;          // Prefab untuk grid putih
-    public Sprite cellSprite;              // Sprite visual untuk grid cell
-    public Transform spriteObject;         // Sprite utama (SpriteVisual)
-
-    private List<GameObject> renderedCells = new List<GameObject>();
+    private IngredientRuntimeData runtimeData;
     private int rotationIndex = 0;
+    private List<GameObject> renderedCells = new List<GameObject>();
 
-    public void Setup(IngredientSO ingredient)
+    public void Setup(IngredientSO source)
     {
-        data = ingredient;
+        data = source;
+        runtimeData = new IngredientRuntimeData(source);
         rotationIndex = 0;
 
-        // Set sprite utama ke SpriteVisual
         if (spriteObject != null)
         {
             SpriteRenderer sr = spriteObject.GetComponent<SpriteRenderer>();
@@ -28,12 +26,15 @@ public class IngredientInstance : MonoBehaviour
                 sr.sprite = data.itemSprite;
         }
 
+        Debug.Log("[IngredientInstance] Setup called with: " + source.name);
         Redraw();
         UpdateSpriteVisualTransform();
     }
 
     public void RotateClockwise()
     {
+        if (!runtimeData.canRotate) return;
+
         rotationIndex = (rotationIndex + 1) % 4;
         Redraw();
         UpdateSpriteVisualTransform();
@@ -41,16 +42,13 @@ public class IngredientInstance : MonoBehaviour
 
     public void Redraw()
     {
-        // Hapus cell sebelumnya
         foreach (var cell in renderedCells)
             Destroy(cell);
         renderedCells.Clear();
 
-        // Dapatkan shape setelah rotasi
-        Vector2Int[] rotatedShape = GetRotatedShape(rotationIndex);
+        Vector2Int[] shape = runtimeData.GetRotatedShape(rotationIndex);
 
-        // Gambar ulang cell
-        foreach (var cellPos in rotatedShape)
+        foreach (var cellPos in shape)
         {
             GameObject cell = Instantiate(cellPrefab, transform);
             cell.transform.localPosition = new Vector3(cellPos.x, cellPos.y, 0);
@@ -65,15 +63,13 @@ public class IngredientInstance : MonoBehaviour
             renderedCells.Add(cell);
         }
 
-        UpdatePolygonCollider(); // ← Tambahkan update collider setiap redraw
+        UpdatePolygonCollider(shape);
     }
 
-    private void UpdatePolygonCollider()
+    private void UpdatePolygonCollider(Vector2Int[] shape)
     {
         PolygonCollider2D polygon = GetComponent<PolygonCollider2D>();
         if (polygon == null) return;
-
-        Vector2Int[] shape = GetRotatedShape(rotationIndex);
 
         polygon.pathCount = shape.Length;
 
@@ -91,42 +87,36 @@ public class IngredientInstance : MonoBehaviour
         }
     }
 
-    private Vector2Int[] GetRotatedShape(int rotation)
+    public Vector2Int[] GetRotatedShapeForExternal()
     {
-        Vector2Int[] rotated = new Vector2Int[data.shapeCells.Length];
+        return runtimeData.GetRotatedShape(rotationIndex);
+    }
 
-        for (int i = 0; i < data.shapeCells.Length; i++)
+    public Vector2Int[] GetOccupiedGridPositions(Vector2Int pivot)
+    {
+        var shape = GetRotatedShapeForExternal();
+        Vector2Int[] result = new Vector2Int[shape.Length];
+
+        for (int i = 0; i < shape.Length; i++)
         {
-            Vector2Int c = data.shapeCells[i];
-
-            switch (rotation % 4)
-            {
-                case 0: rotated[i] = c; break;
-                case 1: rotated[i] = new Vector2Int(-c.y, c.x); break;
-                case 2: rotated[i] = new Vector2Int(-c.x, -c.y); break;
-                case 3: rotated[i] = new Vector2Int(c.y, -c.x); break;
-            }
+            result[i] = pivot + shape[i];
         }
 
-        return rotated;
+        return result;
     }
 
     private void UpdateSpriteVisualTransform()
     {
-        Vector2Int[] shape = GetRotatedShape(rotationIndex);
-
-        // Hitung posisi tengah shape untuk memusatkan sprite
+        Vector2Int[] shape = runtimeData.GetRotatedShape(rotationIndex);
         Vector2 avg = Vector2.zero;
+
         foreach (var pos in shape)
             avg += (Vector2)pos;
         avg /= shape.Length;
 
         if (spriteObject != null)
         {
-            // Posisikan sprite utama di tengah shape
             spriteObject.localPosition = avg;
-
-            // Atur rotasi sprite visual
             spriteObject.localRotation = GetSpriteRotation(rotationIndex);
             spriteObject.localScale = Vector3.one;
         }
@@ -142,5 +132,22 @@ public class IngredientInstance : MonoBehaviour
             case 3: return Quaternion.Euler(0, 0, -90);
             default: return Quaternion.identity;
         }
+    }
+
+    public int GetRotationIndex()
+    {
+        return rotationIndex;
+    }
+
+    public Vector2 GetPivotWorldPosition()
+    {
+        return transform.position;
+    }
+
+    public void SetRotationIndex(int index)
+    {
+        rotationIndex = index % 4;
+        Redraw();
+        UpdateSpriteVisualTransform();
     }
 }
