@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fb9096ac3c8aab4fbaf190799074576, type: 3}
+  m_Name: itchy
+  m_EditorClassIdentifier: 
+  recipeName: itchy
+  requiredIngredientsName:
+  - Daun
+  - Daun
+  - Daun
+  - Daun
+  - Water
+  resultPotion: {fileID: 11400000, guid: ca1424d5860fd5445b0fc9fb2bac8890, type: 2}
