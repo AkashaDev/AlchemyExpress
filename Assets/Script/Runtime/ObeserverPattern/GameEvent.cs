@@ -20,3 +20,8 @@ public struct RequestNPCSpawnEvent
 {
     public QuestData questData;
 }
+
+public struct RequestNPCQuitEvent
+{
+    public QuestData questData;
+}

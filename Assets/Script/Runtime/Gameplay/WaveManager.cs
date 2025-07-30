@@ -24,6 +24,7 @@ namespace NPC
         private List<QuestData> EasyQuestsPool;
         private List<QuestData> MediumQuestsPool;
         private List<QuestData> HardQuestsPool;
+        private List<QuestData> _activeQuests = new List<QuestData>();
 
         private int _currentDay = 0;
         private int _npcsToSpawnThisDay;
@@ -40,11 +41,13 @@ namespace NPC
         private void OnEnable()
         {
             EventManager.Subscribe<NPCTurnFinishedEvent>(HandleNPCTurnFinished);
+            EventManager.Subscribe<RequestNPCQuitEvent>(HandleNPCQuit);
         }
 
         private void OnDisable()
         {
             EventManager.Unsubscribe<NPCTurnFinishedEvent>(HandleNPCTurnFinished);
+            EventManager.Unsubscribe<RequestNPCQuitEvent>(HandleNPCQuit);
         }
 
         void Start()
@@ -84,7 +87,6 @@ namespace NPC
                 Debug.Log($"Akan ada {_npcsToSpawnThisDay} pelanggan dengan quest tingkat EASY - HARD.");
             }
 
-            // Memulai spawn NPC pertama untuk hari ini
             StartCoroutine(SpawnNextNPCWithDelay(1.5f));
         }
         
@@ -118,7 +120,6 @@ namespace NPC
         /// </summary>
         private void SpawnNextNPC()
         {
-            // Pastikan quest untuk hari ini masih tersedia
             if (_questsForCurrentDay != null && _questsForCurrentDay.Count > 0)
             {
                 _npcsSpawnedThisDay++;
@@ -133,6 +134,16 @@ namespace NPC
             {
                 Debug.LogWarning("Quest untuk hari ini telah habis! Tidak ada NPC baru yang bisa di-spawn.");
                 return;
+            }
+        }
+
+        private void HandleNPCQuit(RequestNPCQuitEvent e)
+        {
+            if (e.questData != null && _activeQuests.Contains(e.questData))
+            {
+                _activeQuests.Remove(e.questData);
+                EventManager.Raise(new RequestNPCSpawnEvent { questData = e.questData });
+                Debug.Log($"Quest '{e.questData.name}' selesai. Sisa quest aktif: {_activeQuests.Count}");
             }
         }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq; // Dibutuhkan untuk memfilter
+using System.Linq;
 using ObeserverPattern;
 using AlchemyExpress.Quest;
 
@@ -30,23 +30,52 @@ public class IngredientSpawner : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Subscribe<RequestNPCSpawnEvent>(HandleNewQuest);
+        // ✨ TAMBAHKAN: Langganan event saat NPC pergi
+        EventManager.Subscribe<RequestNPCQuitEvent>(HandleNPCQuit);
     }
 
     private void OnDisable()
     {
         EventManager.Unsubscribe<RequestNPCSpawnEvent>(HandleNewQuest);
+        // ✨ TAMBAHKAN: Hentikan langganan event
+        EventManager.Unsubscribe<RequestNPCQuitEvent>(HandleNPCQuit);
     }
 
     /// <summary>
-    /// Menangani quest baru dengan menambahkan bahannya ke daftar 'needed'.
+    /// Menambah bahan ke daftar prioritas saat NPC datang.
     /// </summary>
     private void HandleNewQuest(RequestNPCSpawnEvent e)
     {
         if (e.questData?.requiredIngredients == null) return;
 
-        Debug.Log($"Quest baru diterima. Menambahkan {e.questData.requiredIngredients.Count} bahan yang dibutuhkan.");
         _neededIngredients.AddRange(e.questData.requiredIngredients);
+        UpdateFillerIngredients(); // Perbarui daftar pengisi
+        Debug.Log($"NPC datang. Bahan prioritas ditambahkan. Total prioritas: {_neededIngredients.Count}");
+    }
 
+    /// <summary>
+    /// ✨ FUNGSI BARU: Menghapus bahan dari daftar prioritas saat NPC pergi.
+    /// </summary>
+    private void HandleNPCQuit(RequestNPCQuitEvent e)
+    {
+        if (e.questData?.requiredIngredients == null) return;
+
+        foreach (var ingredient in e.questData.requiredIngredients)
+        {
+            if (_neededIngredients.Contains(ingredient))
+            {
+                _neededIngredients.Remove(ingredient);
+            }
+        }
+        UpdateFillerIngredients(); // Perbarui lagi daftar pengisi
+        Debug.Log($"NPC pergi. Bahan prioritas dihapus. Sisa prioritas: {_neededIngredients.Count}");
+    }
+
+    /// <summary>
+    /// Memperbarui daftar bahan pengisi agar tidak mengandung bahan prioritas.
+    /// </summary>
+    private void UpdateFillerIngredients()
+    {
         _fillerIngredients = allIngredientsPool.Except(_neededIngredients).ToList();
     }
 
@@ -67,13 +96,12 @@ public class IngredientSpawner : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Loop utama dengan sistem probabilitas 50/50.
-    /// </summary>
     private IEnumerator SpawnLoop()
     {
         while (true)
         {
+            // Logika spawn 50/50 tidak perlu diubah, karena ia sudah
+            // bergantung pada isi dari _neededIngredients.
             IngredientSO ingredientToSpawn = null;
 
             if (_neededIngredients.Count > 0)
@@ -82,7 +110,6 @@ public class IngredientSpawner : MonoBehaviour
                 {
                     int randomIndex = Random.Range(0, _neededIngredients.Count);
                     ingredientToSpawn = _neededIngredients[randomIndex];
-                    _neededIngredients.RemoveAt(randomIndex);
                 }
                 else
                 {

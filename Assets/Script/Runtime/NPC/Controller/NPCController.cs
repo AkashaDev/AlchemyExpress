@@ -168,6 +168,8 @@ namespace NPC
             isWalking = false;
             currentMood = MoodState.Gone;
 
+            EventManager.Raise(new RequestNPCQuitEvent { questData = this.questData });
+
             UpdateMoodAndVisuals();
             EventManager.Raise(new HideDialogueEvent());
             leaveTarget = FindObjectOfType<WaveManager>().leavePosition;

@@ -16,9 +16,9 @@ MonoBehaviour:
   requiredPotionName: Heal
   levelDifficults: 0
   requiredIngredients:
-  - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}
   - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
-  - {fileID: 11400000, guid: 3192a005447f8cb4f8130f569ce70e55, type: 2}
+  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
+  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500
