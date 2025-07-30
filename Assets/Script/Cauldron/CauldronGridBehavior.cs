@@ -7,23 +7,33 @@ public class CauldronGridBehavior : MonoBehaviour
     public int width;
     public int height;
     public Vector3 origin;
-    private SpriteRenderer[,] tileRenderers;
 
-    [SerializeField]
-    public List<int> debugGrid;
+    private int xOffset;
+    private int yOffset;
+
+    private SpriteRenderer[,] tileRenderers;
+    [SerializeField] public List<int> debugGrid;
 
     private int[,] gridStatus;
     private IngredientInstance[,] gridOwner;
     private List<IngredientInstance> placedIngredients = new List<IngredientInstance>();
     [SerializeField] private List<string> debugIngredientNames = new List<string>();
 
-
-
     public void Initialize(int width, int height, Vector3 origin, bool[] blockedTiles)
     {
         this.width = width;
         this.height = height;
+
+        // Perubahan: Sesuaikan origin untuk grid berukuran genap
         this.origin = origin;
+        if (width % 2 == 0) // Jika lebar genap
+            this.origin.x += 0.5f;
+        if (height % 2 == 0) // Jika tinggi genap
+            this.origin.y += 0.5f;
+
+        // ... kode existing di bawah tetap sama ...
+        xOffset = width / 2;
+        yOffset = height / 2;
 
         gridStatus = new int[width, height];
         gridOwner = new IngredientInstance[width, height];
@@ -43,15 +53,22 @@ public class CauldronGridBehavior : MonoBehaviour
         }
     }
 
+    public Vector3 GridToWorld(Vector2Int gridPos)
+    {
+        return origin + new Vector3(gridPos.x, gridPos.y, 0);
+    }
+
     public Vector2Int WorldToGrid(Vector2 worldPos)
     {
         Vector2 local = worldPos - (Vector2)origin;
         return new Vector2Int(Mathf.RoundToInt(local.x), Mathf.RoundToInt(local.y));
     }
 
-    public Vector3 GridToWorld(Vector2Int gridPos)
+    private bool TryGetArrayIndex(Vector2Int gridPos, out int x, out int y)
     {
-        return origin + new Vector3(gridPos.x, gridPos.y, 0);
+        x = gridPos.x + xOffset;
+        y = gridPos.y + yOffset;
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     public bool CanPlaceIngredient(IngredientInstance inst, Vector2Int pivot)
@@ -60,8 +77,8 @@ public class CauldronGridBehavior : MonoBehaviour
 
         foreach (var pos in occupied)
         {
-            if (!IsInsideGrid(pos)) return false;
-            if (gridStatus[pos.x, pos.y] != 0) return false;
+            if (!TryGetArrayIndex(pos, out int x, out int y)) return false;
+            if (gridStatus[x, y] != 0) return false;
         }
 
         return true;
@@ -71,14 +88,15 @@ public class CauldronGridBehavior : MonoBehaviour
     {
         foreach (var pos in inst.GetOccupiedGridPositions(pivot))
         {
-            gridStatus[pos.x, pos.y] = 1;
-            gridOwner[pos.x, pos.y] = inst;
-            debugGrid[pos.y * width + pos.x] = 1;
-            
+            if (TryGetArrayIndex(pos, out int x, out int y))
+            {
+                gridStatus[x, y] = 1;
+                gridOwner[x, y] = inst;
+                debugGrid[y * width + x] = 1;
+            }
         }
         placedIngredients.Add(inst);
         UpdateDebugIngredientNames();
-
     }
 
     public void RemoveIngredient(IngredientInstance inst)
@@ -92,16 +110,19 @@ public class CauldronGridBehavior : MonoBehaviour
                     gridStatus[x, y] = 0;
                     gridOwner[x, y] = null;
                     debugGrid[y * width + x] = 0;
-                    placedIngredients.Remove(inst);
                 }
             }
         }
+
+        placedIngredients.Remove(inst);
+        UpdateDebugIngredientNames();
     }
 
     public bool IsInsideGrid(Vector2Int pos)
     {
-        return pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height;
+        return TryGetArrayIndex(pos, out _, out _);
     }
+
     public void ClearPreview()
     {
         if (tileRenderers == null) return;
@@ -125,9 +146,9 @@ public class CauldronGridBehavior : MonoBehaviour
         foreach (var offset in shape)
         {
             Vector2Int pos = pivot + offset;
-            if (IsInsideGrid(pos))
+            if (TryGetArrayIndex(pos, out int x, out int y))
             {
-                var renderer = tileRenderers[pos.x, pos.y];
+                var renderer = tileRenderers[x, y];
                 renderer.color = valid ? Color.green : Color.red;
             }
         }
@@ -136,12 +157,6 @@ public class CauldronGridBehavior : MonoBehaviour
     public void SetTileRenderers(SpriteRenderer[,] renderers)
     {
         tileRenderers = renderers;
-    }
-
-
-    private SpriteRenderer GetTileSpriteRenderer(int x, int y)
-    {
-        return null;
     }
 
     public List<IngredientInstance> GetCurrentIngredients()
@@ -164,26 +179,20 @@ public class CauldronGridBehavior : MonoBehaviour
             .Select(p => p.data.ingredientName)
             .ToList();
     }
+
     public void ClearAll()
     {
-        // Hapus semua object dari scene
         foreach (var ingredient in placedIngredients)
         {
             if (ingredient != null)
             {
+                RemoveIngredient(ingredient);
                 Destroy(ingredient.gameObject);
             }
         }
 
-        // Kosongkan data grid internal jika kamu punya (misalnya array 2D)
-        // gridArray[x, y] = null; ← kamu bersihkan juga jika pakai sistem grid seperti itu
-
-        // Kosongkan list tracking
         placedIngredients.Clear();
-
-        // Optional: bersihkan preview jika masih muncul
         ClearPreview();
-
         Debug.Log(" Cauldron dibersihkan.");
     }
 }
