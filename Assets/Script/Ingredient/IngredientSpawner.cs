@@ -106,7 +106,7 @@ public class IngredientSpawner : MonoBehaviour
 
             if (_neededIngredients.Count > 0)
             {
-                if (Random.value < 0.5f)
+                if (Random.value < 0.7f)
                 {
                     int randomIndex = Random.Range(0, _neededIngredients.Count);
                     ingredientToSpawn = _neededIngredients[randomIndex];

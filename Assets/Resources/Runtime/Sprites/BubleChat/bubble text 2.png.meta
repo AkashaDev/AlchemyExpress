@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6b6ca39713e40bc4ebeaacd093824471
+guid: 0dea9905f524b1a44a2f5a1f92e02c8b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -110,26 +110,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DummyBuubleChat_0
+      name: bubble text 2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 160
+        x: 51
+        y: 119
+        width: 585
+        height: 277
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 50, y: 31, z: 24, w: 39}
-      outline:
-      - - {x: -122, y: 59}
-        - {x: -122, y: 80}
-        - {x: -45, y: 80}
-        - {x: -45, y: 59}
+      pivot: {x: 0, y: 0}
+      border: {x: 128, y: 101, z: 108, w: 128}
+      outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 08c9e86d4d6270a43a9e708c5001043e
-      internalID: 1437210942
+      spriteID: 1d42f4428a79d5e4d9e7eaf62d14edf8
+      internalID: -1468046098
       vertices: []
       indices: 
       edges: []
@@ -145,7 +141,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      DummyBuubleChat_0: 1437210942
+      bubble text 2_0: -1468046098
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

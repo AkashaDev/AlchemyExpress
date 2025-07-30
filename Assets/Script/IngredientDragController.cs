@@ -100,6 +100,9 @@ public class IngredientDragController : MonoBehaviour
 
         Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
 
+
+        cauldron.gridBehavior.ClearPreview();
+        
         if (cauldron.gridBehavior.CanPlaceIngredient(current, dropPos))
         {
             current.transform.position = cauldron.gridBehavior.GridToWorld(dropPos);

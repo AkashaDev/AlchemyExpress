@@ -10,6 +10,7 @@ namespace NPC
         [Header("Elemen UI")]
         [SerializeField] private GameObject chatBubbleObject;
         [SerializeField] private TextMeshProUGUI dialogueText;
+        [SerializeField] private TextMeshProUGUI dialogueTextAfter;
         [SerializeField] private TextMeshProUGUI moodIndicatorText;
 
         [Header("Pengaturan Typewriter")]
@@ -78,6 +79,7 @@ namespace NPC
         private IEnumerator TypeDialogue(string text)
         {
             dialogueText.text = "";
+            dialogueTextAfter.text = "";
             for (int i = 0; i < text.Length; i++)
             {
                 if (text[i] == '<')
@@ -87,11 +89,13 @@ namespace NPC
                     {
                         string tag = text.Substring(i, closingTagIndex - i + 1);
                         dialogueText.text += tag;
+                        dialogueTextAfter.text += tag;
                         i = closingTagIndex;
                         continue;
                     }
                 }
                 dialogueText.text += text[i];
+                dialogueTextAfter.text += text[i];
                 yield return new WaitForSeconds(1f / charactersPerSecond);
             }
         }
