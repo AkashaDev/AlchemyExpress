@@ -80,7 +80,7 @@ public class CauldronGridBehavior : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                if (gridOwner[x, y] == inst)
+                if (gridOwner[x, y] != null && gridOwner[x, y].Equals(inst))
                 {
                     gridStatus[x, y] = 0;
                     gridOwner[x, y] = null;
