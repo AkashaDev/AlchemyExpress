@@ -3,8 +3,11 @@ using UnityEngine.EventSystems;
 
 public class IngredientDragController : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
-    [SerializeField] private CauldronSpawner cauldron;
+    [SerializeField]
+    private Camera cam;
+
+    [SerializeField]
+    private CauldronSpawner cauldron;
 
     private IngredientInstance current;
     private Vector3 offset;
@@ -35,9 +38,13 @@ public class IngredientDragController : MonoBehaviour
 
         Vector3 mouseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 mousePos2D = new Vector2(mouseWorld.x, mouseWorld.y);
-        Collider2D hit = Physics2D.OverlapPoint(mousePos2D);
 
-        if (hit != null)
+        Collider2D[] hits = Physics2D.OverlapPointAll(mousePos2D);
+
+        if (hits.Length == 0)
+            return;
+
+        foreach (Collider2D hit in hits)
         {
             IngredientInstance inst = hit.GetComponent<IngredientInstance>();
             if (inst != null)
@@ -45,11 +52,19 @@ public class IngredientDragController : MonoBehaviour
                 current = inst;
                 isDragging = true;
                 offset = inst.transform.position - mouseWorld;
-                current.RememberSpawnPosition();
+
+                if (cauldron.gridBehavior.IsIngredientPlaced(current))
+                {
+                    cauldron.gridBehavior.RemoveIngredient(current);
+                }
+                else
+                {
+                    current.RememberSpawnPosition();
+                }
 
                 cauldron.gridBehavior.ClearPreview();
-                cauldron.gridBehavior.RemoveIngredient(current);
                 lastGridPos = null;
+
             }
         }
     }
@@ -89,13 +104,17 @@ public class IngredientDragController : MonoBehaviour
 
         Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
 
+        cauldron.gridBehavior.ClearPreview();
         if (cauldron.gridBehavior.CanPlaceIngredient(current, dropPos))
         {
             current.transform.position = cauldron.gridBehavior.GridToWorld(dropPos);
             current.transform.SetParent(cauldron.tileParent);
             cauldron.gridBehavior.PlaceIngredient(current, dropPos);
 
-            current.RememberPlacedInCauldron(current.transform.position, current.GetRotationIndex());
+            current.RememberPlacedInCauldron(
+                current.transform.position,
+                current.GetRotationIndex()
+            );
 
             OnPlacedInCauldronFeedback();
         }
@@ -105,9 +124,17 @@ public class IngredientDragController : MonoBehaviour
             {
                 current.ReturnToLastKnownValidPosition(cauldron);
 
-                if (cauldron.gridBehavior.CanPlaceIngredient(current, cauldron.gridBehavior.WorldToGrid(current.transform.position)))
+                if (
+                    cauldron.gridBehavior.CanPlaceIngredient(
+                        current,
+                        cauldron.gridBehavior.WorldToGrid(current.transform.position)
+                    )
+                )
                 {
-                    cauldron.gridBehavior.PlaceIngredient(current, cauldron.gridBehavior.WorldToGrid(current.transform.position));
+                    cauldron.gridBehavior.PlaceIngredient(
+                        current,
+                        cauldron.gridBehavior.WorldToGrid(current.transform.position)
+                    );
                     Debug.Log("Fallback placement berhasil.");
                 }
                 else

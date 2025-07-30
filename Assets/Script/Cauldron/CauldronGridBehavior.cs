@@ -15,9 +15,9 @@ public class CauldronGridBehavior : MonoBehaviour
     private int[,] gridStatus;
     private IngredientInstance[,] gridOwner;
     private List<IngredientInstance> placedIngredients = new List<IngredientInstance>();
-    [SerializeField] private List<string> debugIngredientNames = new List<string>();
 
-
+    [SerializeField]
+    private List<string> debugIngredientNames = new List<string>();
 
     public void Initialize(int width, int height, Vector3 origin, bool[] blockedTiles)
     {
@@ -60,8 +60,10 @@ public class CauldronGridBehavior : MonoBehaviour
 
         foreach (var pos in occupied)
         {
-            if (!IsInsideGrid(pos)) return false;
-            if (gridStatus[pos.x, pos.y] != 0) return false;
+            if (!IsInsideGrid(pos))
+                return false;
+            if (gridStatus[pos.x, pos.y] != 0)
+                return false;
         }
 
         return true;
@@ -74,37 +76,42 @@ public class CauldronGridBehavior : MonoBehaviour
             gridStatus[pos.x, pos.y] = 1;
             gridOwner[pos.x, pos.y] = inst;
             debugGrid[pos.y * width + pos.x] = 1;
-            
         }
         placedIngredients.Add(inst);
         UpdateDebugIngredientNames();
-
     }
 
     public void RemoveIngredient(IngredientInstance inst)
     {
+        if (!placedIngredients.Contains(inst))
+            return;
+
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                if (gridOwner[x, y] != null && gridOwner[x, y].Equals(inst))
+                if (gridOwner[x, y] == inst)
                 {
                     gridStatus[x, y] = 0;
                     gridOwner[x, y] = null;
                     debugGrid[y * width + x] = 0;
-                    placedIngredients.Remove(inst);
                 }
             }
         }
+
+        placedIngredients.Remove(inst);
+        UpdateDebugIngredientNames();
     }
 
     public bool IsInsideGrid(Vector2Int pos)
     {
         return pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height;
     }
+
     public void ClearPreview()
     {
-        if (tileRenderers == null) return;
+        if (tileRenderers == null)
+            return;
 
         for (int y = 0; y < height; y++)
         {
@@ -120,7 +127,8 @@ public class CauldronGridBehavior : MonoBehaviour
 
     public void PreviewPlacement(Vector2Int[] shape, Vector2Int pivot, bool valid)
     {
-        if (tileRenderers == null) return;
+        if (tileRenderers == null)
+            return;
 
         foreach (var offset in shape)
         {
@@ -137,7 +145,6 @@ public class CauldronGridBehavior : MonoBehaviour
     {
         tileRenderers = renderers;
     }
-
 
     private SpriteRenderer GetTileSpriteRenderer(int x, int y)
     {
@@ -164,6 +171,7 @@ public class CauldronGridBehavior : MonoBehaviour
             .Select(p => p.data.ingredientName)
             .ToList();
     }
+
     public void ClearAll()
     {
         // Hapus semua object dari scene
@@ -185,5 +193,14 @@ public class CauldronGridBehavior : MonoBehaviour
         ClearPreview();
 
         Debug.Log(" Cauldron dibersihkan.");
+    }
+
+    public bool IsIngredientPlaced(IngredientInstance inst)
+    {
+        if (inst == null)
+            return false;
+
+        // Cukup periksa apakah item tersebut ada di dalam daftar pelacakan kita.
+        return placedIngredients.Contains(inst);
     }
 }
