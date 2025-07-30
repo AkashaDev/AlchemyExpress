@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CauldronGridBehavior : MonoBehaviour
@@ -13,6 +14,8 @@ public class CauldronGridBehavior : MonoBehaviour
 
     private int[,] gridStatus;
     private IngredientInstance[,] gridOwner;
+    private List<IngredientInstance> placedIngredients = new List<IngredientInstance>();
+    [SerializeField] private List<string> debugIngredientNames = new List<string>();
 
 
 
@@ -71,7 +74,11 @@ public class CauldronGridBehavior : MonoBehaviour
             gridStatus[pos.x, pos.y] = 1;
             gridOwner[pos.x, pos.y] = inst;
             debugGrid[pos.y * width + pos.x] = 1;
+            
         }
+        placedIngredients.Add(inst);
+        UpdateDebugIngredientNames();
+
     }
 
     public void RemoveIngredient(IngredientInstance inst)
@@ -85,6 +92,7 @@ public class CauldronGridBehavior : MonoBehaviour
                     gridStatus[x, y] = 0;
                     gridOwner[x, y] = null;
                     debugGrid[y * width + x] = 0;
+                    placedIngredients.Remove(inst);
                 }
             }
         }
@@ -133,6 +141,49 @@ public class CauldronGridBehavior : MonoBehaviour
 
     private SpriteRenderer GetTileSpriteRenderer(int x, int y)
     {
-        return null; // ← untuk sementara placeholder
+        return null;
+    }
+
+    public List<IngredientInstance> GetCurrentIngredients()
+    {
+        return new List<IngredientInstance>(placedIngredients);
+    }
+
+    public List<string> GetIngredientNamesInCauldron()
+    {
+        return placedIngredients
+            .Where(p => p != null && p.data != null)
+            .Select(p => p.data.ingredientName)
+            .ToList();
+    }
+
+    private void UpdateDebugIngredientNames()
+    {
+        debugIngredientNames = placedIngredients
+            .Where(p => p != null && p.data != null)
+            .Select(p => p.data.ingredientName)
+            .ToList();
+    }
+    public void ClearAll()
+    {
+        // Hapus semua object dari scene
+        foreach (var ingredient in placedIngredients)
+        {
+            if (ingredient != null)
+            {
+                Destroy(ingredient.gameObject);
+            }
+        }
+
+        // Kosongkan data grid internal jika kamu punya (misalnya array 2D)
+        // gridArray[x, y] = null; ← kamu bersihkan juga jika pakai sistem grid seperti itu
+
+        // Kosongkan list tracking
+        placedIngredients.Clear();
+
+        // Optional: bersihkan preview jika masih muncul
+        ClearPreview();
+
+        Debug.Log(" Cauldron dibersihkan.");
     }
 }

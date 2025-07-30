@@ -458,10 +458,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ingredientPool:
-  - {fileID: 11400000, guid: 460c2dc3c748e0842a44c589c6d2d923, type: 2}
-  - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}
+  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
+  - {fileID: 11400000, guid: c185fc5a3e1604742ae0ae58b7a084d6, type: 2}
   ingredientPrefab: {fileID: 1393387713619002044, guid: 00fe19d8d737e4e4594ba3d6c18ed0ae, type: 3}
   spawnPoint: {fileID: 294088569}
+  maxSpawn: 10
   spawnInterval: 5
 --- !u!4 &294088569
 Transform:
@@ -473,6 +474,53 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &508511281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 508511283}
+  - component: {fileID: 508511282}
+  m_Layer: 0
+  m_Name: Brewer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &508511282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508511281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7efab1b5f0fead41968057a4167b107, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cauldron: {fileID: 1356157048}
+  allRecipes:
+  - {fileID: 11400000, guid: 31cca7b9728e42a44a935616f3553b21, type: 2}
+--- !u!4 &508511283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508511281}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.045326807, y: 0.040777486, z: -0.0156901}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -585,7 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 860e8d0e94c50f94794ff9d2920236a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: ad7653cac58228f46a92e7bf2694856a, type: 2}
+  template: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}
   tilePrefab: {fileID: 1204541206038390309, guid: 7c28a0b7b4c049c4aa1994dc6738b862, type: 3}
   tileParent: {fileID: 552034517}
   gridBehavior: {fileID: 1356157048}
@@ -621,6 +669,7 @@ MonoBehaviour:
   height: 0
   origin: {x: 0, y: 0, z: 0}
   debugGrid: 
+  debugIngredientNames: []
 --- !u!1001 &6144735335550558513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -693,3 +742,4 @@ SceneRoots:
   - {fileID: 6144735335550558513}
   - {fileID: 1356157047}
   - {fileID: 529936109}
+  - {fileID: 508511283}
