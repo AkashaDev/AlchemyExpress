@@ -1231,8 +1231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19cf99fe7f5cae4fba21d8aaa488a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
   minimumItemGap: 0.1
-  endPointOffset: 0.5
   visualSpeedFactor: -0.1
   spawnPoint: {fileID: 1631326481}
 --- !u!114 &1432860193
