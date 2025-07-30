@@ -195,4 +195,12 @@ public class CauldronGridBehavior : MonoBehaviour
         ClearPreview();
         Debug.Log(" Cauldron dibersihkan.");
     }
+
+    public bool IsIngredientPlaced(IngredientInstance inst)
+    {
+        if (inst == null)
+            return false;
+
+        return placedIngredients.Contains(inst);
+    }
 }

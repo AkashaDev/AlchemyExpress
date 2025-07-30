@@ -35,9 +35,13 @@ public class IngredientDragController : MonoBehaviour
 
         Vector3 mouseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 mousePos2D = new Vector2(mouseWorld.x, mouseWorld.y);
-        Collider2D hit = Physics2D.OverlapPoint(mousePos2D);
 
-        if (hit != null)
+        Collider2D[] hits = Physics2D.OverlapPointAll(mousePos2D);
+
+        if (hits.Length == 0)
+            return;
+
+        foreach (Collider2D hit in hits)
         {
             IngredientInstance inst = hit.GetComponent<IngredientInstance>();
             if (inst != null)
@@ -45,10 +49,17 @@ public class IngredientDragController : MonoBehaviour
                 current = inst;
                 isDragging = true;
                 offset = inst.transform.position - mouseWorld;
+
+                if (cauldron.gridBehavior.IsIngredientPlaced(current))
+                {
+                    cauldron.gridBehavior.RemoveIngredient(current);
+                }
+                else
+                {
                 current.RememberSpawnPosition();
+                }
 
                 cauldron.gridBehavior.ClearPreview();
-                cauldron.gridBehavior.RemoveIngredient(current);
                 lastGridPos = null;
             }
         }
