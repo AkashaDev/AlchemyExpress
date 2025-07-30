@@ -8,6 +8,8 @@ public class IngredientSpawner : MonoBehaviour
     public IngredientSO[] ingredientPool;
     public GameObject ingredientPrefab;
     public Transform spawnPoint;
+    private int spawnCount = 0;
+    public int maxSpawn = 10;
 
     [Header("Timing")]
     public float spawnInterval = 2f;
@@ -19,9 +21,10 @@ public class IngredientSpawner : MonoBehaviour
 
     IEnumerator SpawnLoop()
     {
-        while (true)
+        while (spawnCount < maxSpawn)
         {
             SpawnRandomIngredient();
+            spawnCount++;
             yield return new WaitForSeconds(spawnInterval);
         }
     }
@@ -32,5 +35,6 @@ public class IngredientSpawner : MonoBehaviour
         GameObject obj = Instantiate(ingredientPrefab, spawnPoint.position, Quaternion.identity);
         IngredientInstance instance = obj.GetComponent<IngredientInstance>();
         instance.Setup(selected);
+        instance.RememberSpawnPosition();
     }
 }

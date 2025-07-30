@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class IngredientDragController : MonoBehaviour
@@ -8,14 +8,8 @@ public class IngredientDragController : MonoBehaviour
 
     private IngredientInstance current;
     private Vector3 offset;
-    private Vector3 originalPos;
-
-    private Vector2Int? lastValidGridPos = null;
-    private int lastValidRotationIndex = 0;
     private Vector2Int? lastGridPos = null;
-
     private bool isDragging = false;
-    private bool isPlacedInCauldron = false;
 
     void Update()
     {
@@ -50,14 +44,10 @@ public class IngredientDragController : MonoBehaviour
             {
                 current = inst;
                 isDragging = true;
-                originalPos = inst.transform.position;
                 offset = inst.transform.position - mouseWorld;
 
                 cauldron.gridBehavior.ClearPreview();
-
-                if (isPlacedInCauldron)
-                    cauldron.gridBehavior.RemoveIngredient(current);
-
+                cauldron.gridBehavior.RemoveIngredient(current); // aman meski belum pernah ditaruh
                 lastGridPos = null;
             }
         }
@@ -97,39 +87,41 @@ public class IngredientDragController : MonoBehaviour
         isDragging = false;
 
         Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
+
         if (cauldron.gridBehavior.CanPlaceIngredient(current, dropPos))
         {
             current.transform.position = cauldron.gridBehavior.GridToWorld(dropPos);
             current.transform.SetParent(cauldron.tileParent);
             cauldron.gridBehavior.PlaceIngredient(current, dropPos);
 
-            lastValidGridPos = dropPos;
-            lastValidRotationIndex = current.GetRotationIndex();
-            isPlacedInCauldron = true;
+            current.RememberPlacedInCauldron(current.transform.position, current.GetRotationIndex());
 
             OnPlacedInCauldronFeedback();
         }
         else
         {
-            if (isPlacedInCauldron && lastValidGridPos.HasValue)
+            if (current.HasEverBeenPlaced)
             {
-                current.transform.position = cauldron.gridBehavior.GridToWorld(lastValidGridPos.Value);
-                current.SetRotationIndex(lastValidRotationIndex);
-                current.transform.SetParent(cauldron.tileParent);
-                cauldron.gridBehavior.PlaceIngredient(current, lastValidGridPos.Value);
+                current.ReturnToLastKnownValidPosition(cauldron);
+
+                if (cauldron.gridBehavior.CanPlaceIngredient(current, cauldron.gridBehavior.WorldToGrid(current.transform.position)))
+                {
+                    cauldron.gridBehavior.PlaceIngredient(current, cauldron.gridBehavior.WorldToGrid(current.transform.position));
+                    Debug.Log("Fallback placement berhasil.");
+                }
+                else
+                {
+                    Debug.LogError("Fallback placement gagal, grid sudah terisi/tidak valid.");
+                    current.ResetToSpawnPoint();
+                }
             }
             else
             {
-                current.transform.SetParent(null);
-                current.transform.position = originalPos;
+                current.ResetToSpawnPoint();
             }
 
             OnRejectedFeedback();
         }
-
-        cauldron.gridBehavior.ClearPreview();
-        current = null;
-        lastGridPos = null;
     }
 
     void OnPlacedInCauldronFeedback()
