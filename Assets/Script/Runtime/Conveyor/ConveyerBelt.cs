@@ -6,7 +6,6 @@ using UnityEngine;
 public class ConveyorBelt : MonoBehaviour
 {
     [Header("Pengaturan Gerak")]
-    // ✨ DIUBAH: 'itemSpacing' sekarang menjadi 'minimumItemGap' untuk lebih jelas
     [Tooltip("Jarak 'gap' KOSONG minimal antar tepi item.")]
     [SerializeField] private float minimumItemGap = 0.1f;
 
@@ -74,12 +73,10 @@ public class ConveyorBelt : MonoBehaviour
             Rigidbody2D currentItem = itemsOnBelt[i];
             Rigidbody2D itemInFront = (i == 0) ? null : itemsOnBelt[i - 1];
             
-            // Panggil fungsi yang telah diperbarui
             MoveItemWithDynamicSpacing(currentItem, itemInFront, stopPositionX, direction);
         }
     }
 
-    // ✨ FUNGSI INTI YANG DIPERBARUI ✨
     private void MoveItemWithDynamicSpacing(Rigidbody2D currentItem, Rigidbody2D itemInFront, float stopPositionX, float direction)
     {
         Vector2 potentialNewPosition = currentItem.position + (Vector2.right * speed * Time.fixedDeltaTime);
@@ -87,17 +84,14 @@ public class ConveyorBelt : MonoBehaviour
 
         if (itemInFront != null)
         {
-            // Ambil komponen IngredientInstance dari kedua item
             IngredientInstance currentIngredient = currentItem.GetComponent<IngredientInstance>();
             IngredientInstance frontIngredient = itemInFront.GetComponent<IngredientInstance>();
 
             if (currentIngredient != null && frontIngredient != null)
             {
-                // Hitung lebar masing-masing item berdasarkan shapeCells mereka
                 float currentItemHalfWidth = GetIngredientWidth(currentIngredient) / 2f;
                 float frontItemHalfWidth = GetIngredientWidth(frontIngredient) / 2f;
 
-                // Hitung batas jarak yang dinamis
                 float spacingLimit = itemInFront.position.x - 
                                      (direction * (frontItemHalfWidth + currentItemHalfWidth + minimumItemGap));
                 

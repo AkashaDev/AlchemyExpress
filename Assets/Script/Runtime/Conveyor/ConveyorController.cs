@@ -24,7 +24,6 @@ public class ConveyorController : MonoBehaviour
         _conveyorBelt.Initialize(conveyorSpeed);
         _spawner.SetSpawnPoint(_conveyorBelt.spawnPoint);
 
-        // Logika ini tetap sama dan benar
         float spawnInterval = 1f / (conveyorSpeed * itemDensity);
         _spawner.SetSpawnInterval(spawnInterval);
         _spawner.StartSpawning();

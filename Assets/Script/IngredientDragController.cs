@@ -45,9 +45,10 @@ public class IngredientDragController : MonoBehaviour
                 current = inst;
                 isDragging = true;
                 offset = inst.transform.position - mouseWorld;
+                current.RememberSpawnPosition();
 
                 cauldron.gridBehavior.ClearPreview();
-                cauldron.gridBehavior.RemoveIngredient(current); // aman meski belum pernah ditaruh
+                cauldron.gridBehavior.RemoveIngredient(current);
                 lastGridPos = null;
             }
         }
