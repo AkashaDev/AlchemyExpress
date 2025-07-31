@@ -10,6 +10,7 @@ public class IngredientDragController : MonoBehaviour
     private Vector3 offset;
     private Vector2Int? lastGridPos = null;
     private bool isDragging = false;
+    private Collider2D currentCollider;
 
     void Update()
     {
@@ -50,17 +51,22 @@ public class IngredientDragController : MonoBehaviour
                 isDragging = true;
                 offset = inst.transform.position - mouseWorld;
 
+                currentCollider = current.GetComponent<Collider2D>();
+                if (currentCollider != null) currentCollider.enabled = false;
+
                 if (cauldron.gridBehavior.IsIngredientPlaced(current))
                 {
                     cauldron.gridBehavior.RemoveIngredient(current);
                 }
                 else
                 {
-                current.RememberSpawnPosition();
+                    current.RememberSpawnPosition();
                 }
 
                 cauldron.gridBehavior.ClearPreview();
                 lastGridPos = null;
+                
+                break;
             }
         }
     }
@@ -99,8 +105,8 @@ public class IngredientDragController : MonoBehaviour
         isDragging = false;
 
         Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
-
-
+        
+        if (currentCollider != null) currentCollider.enabled = true;
         cauldron.gridBehavior.ClearPreview();
         
         if (cauldron.gridBehavior.CanPlaceIngredient(current, dropPos))
