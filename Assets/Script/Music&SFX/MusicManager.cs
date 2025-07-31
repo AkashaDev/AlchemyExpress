@@ -35,18 +35,22 @@ public class MusicManager : MonoBehaviour
         while (percent < 1)
         {
             percent += Time.deltaTime * 1 / fadeDuration;
-            musicSource.volume = Mathf.Lerp(1f, 0, percent);
             yield return null;
         }
         musicSource.clip = nextrack;
         musicSource.Play();
 
         percent = 0;
-        while(percent < 1)
+        while (percent < 1)
         {
             percent += Time.deltaTime * 1 / fadeDuration;
-            musicSource.volume = Mathf.Lerp(0, 1f, percent);
             yield return null;
         }
+    }
+    
+    public float SFXVMusic
+    {
+        get => musicSource.volume;
+        set => musicSource.volume = value;
     }
 }
