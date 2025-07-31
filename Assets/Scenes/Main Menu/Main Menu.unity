@@ -2439,7 +2439,7 @@ MonoBehaviour:
   musicSlider: {fileID: 955491957}
   sfxSlider: {fileID: 930787405}
   overallSlider: {fileID: 1796842369}
-  sceneName: Level Module Scene
+  sceneName: Conveyer Module
 --- !u!4 &1124805795
 Transform:
   m_ObjectHideFlags: 0
