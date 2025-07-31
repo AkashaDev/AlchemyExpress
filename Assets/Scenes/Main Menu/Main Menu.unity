@@ -521,6 +521,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 3cc50c4f5bcd7124c89dfc6a02c206d4, type: 2}
   musicSlider: {fileID: 955491957}
   sfxSlider: {fileID: 930787405}
+  sceneName: Conveyer Module
 --- !u!1 &388646347
 GameObject:
   m_ObjectHideFlags: 0
@@ -2593,6 +2594,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 3cc50c4f5bcd7124c89dfc6a02c206d4, type: 2}
   musicSlider: {fileID: 955491957}
   sfxSlider: {fileID: 930787405}
+  sceneName: 
 --- !u!1 &1793497917
 GameObject:
   m_ObjectHideFlags: 0

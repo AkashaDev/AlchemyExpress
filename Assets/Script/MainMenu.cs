@@ -10,6 +10,9 @@ public class MainMenu : MonoBehaviour
     public AudioMixer audioMixer;
     public Slider musicSlider;
     public Slider sfxSlider;
+    [SerializeField]
+    private string sceneName;
+    
     private void Start()
     {
         LoadVolume();
@@ -17,7 +20,7 @@ public class MainMenu : MonoBehaviour
     }
     public void PlayGame()
     {
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadSceneAsync(sceneName);
         MusicManager.Instance.PlayMusic("Game");
         
     }
