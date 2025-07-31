@@ -301,6 +301,7 @@ MonoBehaviour:
   cauldron: {fileID: 8888626543857215866}
   allRecipes:
   - {fileID: 11400000, guid: 31cca7b9728e42a44a935616f3553b21, type: 2}
+  recipeBook: {fileID: 11400000, guid: 4884cb0148353334c98394d3edc799b4, type: 2}
 --- !u!1 &373308505
 GameObject:
   m_ObjectHideFlags: 0

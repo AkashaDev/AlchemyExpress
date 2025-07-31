@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Air (elemen)
   m_EditorClassIdentifier: 
   ingredientId: 5
-  ingredientName: Air (elemen)
+  ingredientName: Water
   ingredientImage: {fileID: 0}
   description: elemen yang penting bagi kehidupan.

@@ -8,6 +8,9 @@ public class PotionBrewer : MonoBehaviour
     public CauldronGridBehavior cauldron;
     public List<RecipeSO> allRecipes;
 
+    [Header("Referensi Buku Resep")]
+    public RecipeBookData recipeBook;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
@@ -16,20 +19,23 @@ public class PotionBrewer : MonoBehaviour
         }
     }
 
-    private void TryBrewPotion() 
+    private void TryBrewPotion()
     {
-        List<IngredientInstance> ingredients = cauldron.GetCurrentIngredients();
-
-        foreach (RecipeSO recipe in allRecipes)
+        if (recipeBook == null)
         {
-            if (IsMatch(recipe, ingredients))
+            Debug.LogError("RecipeBookData belum di-assign di PotionBrewer!");
+            return;
+        }
+
+        List<IngredientInstance> ingredientsInCauldron = cauldron.GetCurrentIngredients();
+
+        foreach (Potion potionRecipe in recipeBook.allPotions)
+        {
+            if (IsMatch(potionRecipe, ingredientsInCauldron))
             {
-                Debug.Log(" Resep cocok! Menghasilkan: " + recipe.resultPotion.potionName);
+                Debug.Log("Resep cocok! Menghasilkan: " + potionRecipe.potionName);
 
-                // Tampilkan hasil potion secara visual
-                SpawnPotionObject(recipe.resultPotion);
-
-                // Bersihkan cauldron
+                SpawnPotionObject(potionRecipe);
                 cauldron.ClearAll();
 
                 return;
@@ -39,23 +45,33 @@ public class PotionBrewer : MonoBehaviour
         Debug.Log("Tidak cocok dengan resep manapun.");
     }
 
-    bool IsMatch(RecipeSO recipe, List<IngredientInstance> placed)
+    bool IsMatch(Potion recipe, List<IngredientInstance> placedIngredients)
     {
-        List<string> names = placed
+        List<string> requiredNames = recipe
+            .requiredIngredients.Select(ingredient => ingredient.ingredientName)
+            .ToList();
+
+        List<string> placedNames = placedIngredients
             .Where(i => i != null && i.data != null)
             .Select(i => i.data.ingredientName)
             .ToList();
 
-        return recipe.requiredIngredientsName.All(r => names.Contains(r))
-            && names.Count == recipe.requiredIngredientsName.Count;
+        if (requiredNames.Count != placedNames.Count)
+        {
+            return false;
+        }
+
+        requiredNames.Sort();
+        placedNames.Sort();
+
+        return requiredNames.SequenceEqual(placedNames);
     }
 
-    void SpawnPotionObject(PotionSO potion)
+    void SpawnPotionObject(Potion potion)
     {
-        // Ini hanya contoh logika visual
         GameObject go = new GameObject("Potion_" + potion.potionName);
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = potion.icon;
+        sr.sprite = potion.potionImage;
         sr.sortingOrder = 10;
 
         go.transform.position = new Vector3(0, 0, 0);
