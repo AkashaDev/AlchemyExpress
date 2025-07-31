@@ -13,5 +13,5 @@ public class Potion : ScriptableObject
     
     [Header("Recipe")]
     public Ingredient[] requiredIngredients;
-    public int[] ingredientQuantities; // Jumlah setiap bahan yang dibutuhkan
+     // Jumlah setiap bahan yang dibutuhkan
 }
