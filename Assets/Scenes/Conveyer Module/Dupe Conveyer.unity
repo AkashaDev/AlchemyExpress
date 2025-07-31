@@ -1383,7 +1383,7 @@ Transform:
   m_GameObject: {fileID: 1561103546}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.09, y: -1.12, z: 0}
+  m_LocalPosition: {x: 17, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1729,11 +1729,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientPrefab: {fileID: 1393387713619002044, guid: 00fe19d8d737e4e4594ba3d6c18ed0ae, type: 3}
   allIngredientsPool:
-  - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}
   - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
-  - {fileID: 11400000, guid: 460c2dc3c748e0842a44c589c6d2d923, type: 2}
-  - {fileID: 11400000, guid: 3192a005447f8cb4f8130f569ce70e55, type: 2}
+  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
   - {fileID: 11400000, guid: c185fc5a3e1604742ae0ae58b7a084d6, type: 2}
+  - {fileID: 11400000, guid: 460c2dc3c748e0842a44c589c6d2d923, type: 2}
+  - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}
 --- !u!224 &6992490189097284762
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1765,7 +1765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 860e8d0e94c50f94794ff9d2920236a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: ad7653cac58228f46a92e7bf2694856a, type: 2}
+  template: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}
   tilePrefab: {fileID: 2706766671580815269, guid: 8abde7754e6d80b4bb022e03dfa56e8e, type: 3}
   tileParent: {fileID: 1561103547}
   gridBehavior: {fileID: 8888626543857215866}
