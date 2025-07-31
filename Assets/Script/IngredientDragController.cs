@@ -20,7 +20,7 @@ public class IngredientDragController : MonoBehaviour
         {
             HandleDragging();
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.Mouse1))
                 Rotate();
         }
 

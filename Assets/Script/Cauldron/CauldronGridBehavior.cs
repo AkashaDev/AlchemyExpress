@@ -182,7 +182,7 @@ public class CauldronGridBehavior : MonoBehaviour
 
     public void ClearAll()
     {
-        foreach (var ingredient in placedIngredients)
+        foreach (var ingredient in placedIngredients.ToList())
         {
             if (ingredient != null)
             {
@@ -192,8 +192,8 @@ public class CauldronGridBehavior : MonoBehaviour
         }
 
         placedIngredients.Clear();
+        debugIngredientNames.Clear();
         ClearPreview();
-        Debug.Log(" Cauldron dibersihkan.");
     }
 
     public bool IsIngredientPlaced(IngredientInstance inst)
