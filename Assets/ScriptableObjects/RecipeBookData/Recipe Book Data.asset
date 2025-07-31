@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2a94da968916a64f919095438dcc349, type: 3}
   m_Name: Recipe Book Data
   m_EditorClassIdentifier: 
-  allPotions: []
+  allPotions:
+  - {fileID: 11400000, guid: d6fa0e1f70b1c9f429a9e01e656b2c6f, type: 2}
+  - {fileID: 11400000, guid: f6b901fdc1049384da873c62c1067f67, type: 2}
+  - {fileID: 11400000, guid: 051a20e003a62d640b18d488a2594c98, type: 2}
+  - {fileID: 11400000, guid: e109dda2b7f32874d9f21f9acca45f6f, type: 2}
+  - {fileID: 11400000, guid: 4c3a1dde94eb1a94e94ae3ba75453893, type: 2}
