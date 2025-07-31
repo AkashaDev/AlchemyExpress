@@ -6,20 +6,19 @@ using UnityEngine;
 public class ConveyorBelt : MonoBehaviour
 {
     [Header("Pengaturan Gerak")]
+    [Tooltip("Kecepatan dasar gerak item. Gunakan nilai negatif untuk bergerak ke kiri.")]
+    [SerializeField] private float speed = 2.0f;
+
     [Tooltip("Jarak 'gap' KOSONG minimal antar tepi item.")]
     [SerializeField] private float minimumItemGap = 0.1f;
 
-    [Tooltip("Offset dari ujung conveyor untuk titik berhenti. Biasanya setengah dari lebar item.")]
-    [SerializeField] private float endPointOffset = 0.5f;
-
     [Header("Pengaturan Visual")]
-    [Tooltip("Faktor pengali untuk kecepatan scroll tekstur. Gunakan nilai negatif untuk membalik arah visual jika perlu.")]
+    [Tooltip("Faktor pengali untuk kecepatan scroll tekstur.")]
     [SerializeField] private float visualSpeedFactor = 0.25f;
 
     [Header("Referensi Komponen")]
     public Transform spawnPoint;
-
-    private float speed;
+    
     private BoxCollider2D _beltCollider;
     private Renderer _renderer;
 
@@ -34,7 +33,7 @@ public class ConveyorBelt : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         GetComponent<Rigidbody2D>().isKinematic = true;
     }
-
+    
     private void Update()
     {
         if (_renderer?.material == null) return;
@@ -44,107 +43,72 @@ public class ConveyorBelt : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Bagian deteksi dan pengurutan tidak berubah
         float direction = Mathf.Sign(speed);
         if (direction == 0) return;
 
         Collider2D[] overlappingColliders = Physics2D.OverlapBoxAll(
-            _beltCollider.bounds.center,
-            _beltCollider.bounds.size,
-            0f
+            (Vector2)transform.position + _beltCollider.offset,
+            _beltCollider.size,
+            transform.eulerAngles.z
         );
 
-        List<Rigidbody2D> itemsOnBelt = overlappingColliders
-            .Select(col => col.GetComponent<Rigidbody2D>())
-            .Where(rb => rb != null && rb.GetComponent<IngredientInstance>() != null)
+        // ✨ PERBAIKAN KUNCI 1: Ubah List menjadi <Collider2D> untuk mengakses .bounds
+        List<Collider2D> itemCollidersOnBelt = overlappingColliders
+            .Where(col => col.GetComponent<IngredientInstance>() != null)
             .ToList();
+        
+        if (itemCollidersOnBelt.Count == 0) return;
 
-        if (itemsOnBelt.Count == 0) return;
-
-        itemsOnBelt = (direction > 0)
-            ? itemsOnBelt.OrderByDescending(rb => rb.transform.position.x).ToList()
-            : itemsOnBelt.OrderBy(rb => rb.transform.position.x).ToList();
+        // ✨ PERBAIKAN KUNCI 2: Urutkan berdasarkan PUSAT COLLIDER, bukan posisi transform
+        itemCollidersOnBelt = (direction > 0)
+            ? itemCollidersOnBelt.OrderByDescending(col => col.bounds.center.x).ToList()
+            : itemCollidersOnBelt.OrderBy(col => col.bounds.center.x).ToList();
 
         float beltEdgeX = transform.position.x + _beltCollider.offset.x + (direction * _beltCollider.size.x / 2);
-        float stopPositionX = beltEdgeX - (direction * endPointOffset);
 
-        for (int i = 0; i < itemsOnBelt.Count; i++)
+        for (int i = itemCollidersOnBelt.Count - 1; i >= 0; i--)
         {
-            Rigidbody2D currentItem = itemsOnBelt[i];
-            Rigidbody2D itemInFront = (i == 0) ? null : itemsOnBelt[i - 1];
+            Collider2D currentItemCollider = itemCollidersOnBelt[i];
+            if (currentItemCollider == null) continue;
+
+            Collider2D itemInFrontCollider = (i == 0) ? null : itemCollidersOnBelt[i - 1];
             
-            MoveItemWithDynamicSpacing(currentItem, itemInFront, stopPositionX, direction);
+            MoveItemWithSpacing(currentItemCollider, itemInFrontCollider, beltEdgeX, direction);
         }
     }
 
-    private void MoveItemWithDynamicSpacing(Rigidbody2D currentItem, Rigidbody2D itemInFront, float stopPositionX, float direction)
+    private void MoveItemWithSpacing(Collider2D currentItemCollider, Collider2D itemInFrontCollider, float beltEdgeX, float direction)
     {
-        Vector2 potentialNewPosition = currentItem.position + (Vector2.right * speed * Time.fixedDeltaTime);
-        float maxAllowedPosition = stopPositionX;
+        Rigidbody2D currentItemRb = currentItemCollider.attachedRigidbody;
+        if (currentItemRb == null) return;
 
-        if (itemInFront != null)
+        float currentItemHalfWidth = currentItemCollider.bounds.size.x / 2f;
+        float edgeStopPosition = beltEdgeX - (direction * currentItemHalfWidth);
+        float finalStopPosition = edgeStopPosition;
+
+        if (itemInFrontCollider != null)
         {
-            IngredientInstance currentIngredient = currentItem.GetComponent<IngredientInstance>();
-            IngredientInstance frontIngredient = itemInFront.GetComponent<IngredientInstance>();
+            float itemInFrontHalfWidth = itemInFrontCollider.bounds.size.x / 2f;
+            float frontItemCenterX = itemInFrontCollider.bounds.center.x;
+            
+            float spacingLimit = frontItemCenterX - (direction * (itemInFrontHalfWidth + currentItemHalfWidth + minimumItemGap));
 
-            if (currentIngredient != null && frontIngredient != null)
-            {
-                float currentItemHalfWidth = GetIngredientWidth(currentIngredient) / 2f;
-                float frontItemHalfWidth = GetIngredientWidth(frontIngredient) / 2f;
-
-                float spacingLimit = itemInFront.position.x - 
-                                     (direction * (frontItemHalfWidth + currentItemHalfWidth + minimumItemGap));
-                
-                maxAllowedPosition = (direction > 0)
-                    ? Mathf.Min(maxAllowedPosition, spacingLimit)
-                    : Mathf.Max(maxAllowedPosition, spacingLimit);
-            }
+            finalStopPosition = (direction > 0)
+                ? Mathf.Min(edgeStopPosition, spacingLimit)
+                : Mathf.Max(edgeStopPosition, spacingLimit);
         }
+
+        // Hitung posisi baru berdasarkan pivot saat ini
+        Vector2 potentialNewPosition = currentItemRb.position + (Vector2.right * speed * Time.fixedDeltaTime);
+        
+        // ✨ PERBAIKAN KUNCI 3: Kompensasi perbedaan antara pivot dan pusat bounds
+        float pivotToCenterOffsetX = currentItemCollider.bounds.center.x - currentItemRb.position.x;
+        float correctedFinalStopPosition = finalStopPosition - pivotToCenterOffsetX;
 
         potentialNewPosition.x = (direction > 0)
-            ? Mathf.Min(potentialNewPosition.x, maxAllowedPosition)
-            : Mathf.Max(potentialNewPosition.x, maxAllowedPosition);
-
-        currentItem.MovePosition(potentialNewPosition);
-    }
-
-    private float GetIngredientWidth(IngredientInstance ingredient)
-    {
-        Vector2Int[] shape = ingredient.GetRotatedShapeForExternal();
-        if (shape == null || shape.Length == 0) return 1f; // Default width
-
-        int minX = shape[0].x;
-        int maxX = shape[0].x;
-        foreach (var cell in shape)
-        {
-            if (cell.x < minX) minX = cell.x;
-            if (cell.x > maxX) maxX = cell.x;
-        }
-        
-        return (maxX - minX) + 1;
-    }
-    
-    private void OnDrawGizmosSelected()
-    {
-        BoxCollider2D beltCollider = GetComponent<BoxCollider2D>();
-        if (beltCollider == null) return;
-
-        float currentSpeed = Application.isPlaying ? this.speed : 2.0f;
-        float direction = Mathf.Sign(currentSpeed);
-
-        Vector2 boxCenter = (Vector2)transform.position + beltCollider.offset;
-        Vector2 boxSize = beltCollider.size;
-        
-        Gizmos.color = new Color(1, 0.92f, 0.016f, 0.5f); 
-        Gizmos.DrawCube(boxCenter, boxSize);
-
-        float beltEdgeX = transform.position.x + beltCollider.offset.x + (direction * beltCollider.size.x / 2);
-        float stopPositionX = beltEdgeX - (direction * endPointOffset);
-        
-        float topY = beltCollider.bounds.center.y + beltCollider.bounds.extents.y;
-        float bottomY = beltCollider.bounds.center.y - beltCollider.bounds.extents.y;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(stopPositionX, bottomY, 0), new Vector3(stopPositionX, topY, 0));
+            ? Mathf.Min(potentialNewPosition.x, correctedFinalStopPosition)
+            : Mathf.Max(potentialNewPosition.x, correctedFinalStopPosition);
+            
+        currentItemRb.MovePosition(potentialNewPosition);
     }
 }

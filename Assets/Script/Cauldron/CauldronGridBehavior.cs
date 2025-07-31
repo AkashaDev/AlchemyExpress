@@ -134,7 +134,7 @@ public class CauldronGridBehavior : MonoBehaviour
                 if (gridStatus[x, y] == -1)
                     tileRenderers[x, y].color = Color.black;
                 else
-                    tileRenderers[x, y].color = Color.white;
+                    tileRenderers[x, y].color = new Color(1f, 1f, 1f, 0.3f);
             }
         }
     }
@@ -194,5 +194,13 @@ public class CauldronGridBehavior : MonoBehaviour
         placedIngredients.Clear();
         debugIngredientNames.Clear();
         ClearPreview();
+    }
+
+    public bool IsIngredientPlaced(IngredientInstance inst)
+    {
+        if (inst == null)
+            return false;
+
+        return placedIngredients.Contains(inst);
     }
 }
