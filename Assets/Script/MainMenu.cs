@@ -31,6 +31,7 @@ public class MainMenu : MonoBehaviour
         }
 
         LoadVolume();
+        UpdateOverallVolume(overralVolume);
 
         if (sfxSlider != null && musicSlider != null)
         {
