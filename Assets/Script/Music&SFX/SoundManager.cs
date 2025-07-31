@@ -23,10 +23,10 @@ public class SoundManager : MonoBehaviour
             //DontDestroyOnLoad(gameObject);
         }
     }
-    
+
     public void PlaySound3D(AudioClip clip, Vector3 pos)
     {
-        if(clip != null)
+        if (clip != null)
         {
             AudioSource.PlayClipAtPoint(clip, pos);
         }
@@ -40,5 +40,11 @@ public class SoundManager : MonoBehaviour
     public void PlaySound2D(string soundName)
     {
         sfx2DLibrary.PlayOneShot(sfxLibrary.GetClipFromName(soundName));
+    }
+    
+    public float SFXVolume
+    {
+        get => sfx2DLibrary.volume;
+        set => sfx2DLibrary.volume = value;
     }
 }
