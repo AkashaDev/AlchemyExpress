@@ -58,6 +58,6 @@ public class PotionBrewer : MonoBehaviour
         sr.sprite = potion.icon;
         sr.sortingOrder = 10;
 
-        go.transform.position = new Vector3(0, 0, 0); // tempat munculnya potion
+        go.transform.position = new Vector3(0, 0, 0);
     }
 }

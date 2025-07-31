@@ -2166,7 +2166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 860e8d0e94c50f94794ff9d2920236a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: ad7653cac58228f46a92e7bf2694856a, type: 2}
+  template: {fileID: 11400000, guid: 96c1e3b7d26c75b4991aeae18200d634, type: 2}
   tilePrefab: {fileID: 2706766671580815269, guid: 8abde7754e6d80b4bb022e03dfa56e8e, type: 3}
   tileParent: {fileID: 1561103547}
   gridBehavior: {fileID: 8888626543857215866}
