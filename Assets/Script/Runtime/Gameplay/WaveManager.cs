@@ -1,74 +1,152 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
 using ObeserverPattern;
+using AlchemyExpress.Quest;
 
 namespace NPC
 {
     public class WaveManager : MonoBehaviour, IWaveManager
     {
         [Header("Posisi Pergerakan")]
-        // --- PERBAIKAN ---
-        // Jadikan field biasa yang bisa di-assign dari Inspector.
         [SerializeField] private Transform _enterPosition;
         [SerializeField] private Transform _servicePosition;
         [SerializeField] private Transform _leavePosition;
 
-        // Implementasi dari interface IWaveManager
         public Transform enterPosition => _enterPosition;
         public Transform servicePosition => _servicePosition;
         public Transform leavePosition => _leavePosition;
-        
-        [Header("Pengaturan Wave")]
-        [SerializeField] private List<QuestData> wave1Quests;
 
-        private List<QuestData> availableQuestsInWave;
+        [Header("Pengaturan Wave")]
+        [SerializeField] private List<QuestData> QuestsList;
+
+        private List<QuestData> EasyQuestsPool;
+        private List<QuestData> MediumQuestsPool;
+        private List<QuestData> HardQuestsPool;
+        private List<QuestData> _activeQuests = new List<QuestData>();
+
+        private int _currentDay = 0;
+        private int _npcsToSpawnThisDay;
+        private int _npcsSpawnedThisDay;
+        private List<QuestData> _questsForCurrentDay;
+
+        private void Awake()
+        {
+            EasyQuestsPool = QuestsList.Where(q => q.levelDifficults == LevelDifficult.easy).ToList();
+            MediumQuestsPool = QuestsList.Where(q => q.levelDifficults == LevelDifficult.medium).ToList();
+            HardQuestsPool = QuestsList.Where(q => q.levelDifficults == LevelDifficult.hard).ToList();
+        }
 
         private void OnEnable()
         {
             EventManager.Subscribe<NPCTurnFinishedEvent>(HandleNPCTurnFinished);
+            EventManager.Subscribe<RequestNPCQuitEvent>(HandleNPCQuit);
         }
 
         private void OnDisable()
         {
             EventManager.Unsubscribe<NPCTurnFinishedEvent>(HandleNPCTurnFinished);
-        }
-
-        private void HandleNPCTurnFinished(NPCTurnFinishedEvent e)
-        {
-            StartCoroutine(SpawnNextNPCWithDelay(2f));
+            EventManager.Unsubscribe<RequestNPCQuitEvent>(HandleNPCQuit);
         }
 
         void Start()
         {
-            StartWave(1);
+            StartNextDay();
         }
 
-        public void StartWave(int waveNumber)
+        /// <summary>
+        /// Mempersiapkan dan memulai hari berikutnya.
+        /// </summary>
+        private void StartNextDay()
         {
-            if (waveNumber == 1)
+            _currentDay++;
+            _npcsSpawnedThisDay = 0;
+            Debug.Log($"--- Memulai Hari ke-{_currentDay} ---");
+
+            // Atur jumlah NPC dan jenis quest berdasarkan hari
+            if (_currentDay == 1)
             {
-                availableQuestsInWave = new List<QuestData>(wave1Quests);
+                _npcsToSpawnThisDay = 3;
+                _questsForCurrentDay = new List<QuestData>(EasyQuestsPool);
+                Debug.Log($"Akan ada {_npcsToSpawnThisDay} pelanggan dengan quest tingkat EASY.");
             }
-            StartCoroutine(SpawnNextNPCWithDelay(1f));
+            else if (_currentDay == 2)
+            {
+                _npcsToSpawnThisDay = 4;
+                _questsForCurrentDay = new List<QuestData>(EasyQuestsPool);
+                _questsForCurrentDay.AddRange(MediumQuestsPool);
+                Debug.Log($"Akan ada {_npcsToSpawnThisDay} pelanggan dengan quest tingkat EASY - MEDIUM.");
+            }
+            else
+            {
+                _npcsToSpawnThisDay = (5 + (_currentDay - 3));
+                _questsForCurrentDay = new List<QuestData>(EasyQuestsPool);
+                _questsForCurrentDay.AddRange(MediumQuestsPool);
+                _questsForCurrentDay.AddRange(HardQuestsPool);
+                Debug.Log($"Akan ada {_npcsToSpawnThisDay} pelanggan dengan quest tingkat EASY - HARD.");
+            }
+
+            StartCoroutine(SpawnNextNPCWithDelay(1.5f));
+        }
+        
+        /// <summary>
+        /// Menangani event ketika giliran NPC selesai.
+        /// </summary>
+        private void HandleNPCTurnFinished(NPCTurnFinishedEvent e)
+        {
+            // Cek apakah masih ada NPC yang harus di-spawn untuk hari ini
+            if (_npcsSpawnedThisDay < _npcsToSpawnThisDay)
+            {
+                // Jika ya, spawn NPC berikutnya
+                StartCoroutine(SpawnNextNPCWithDelay(2f));
+            }
+            else
+            {
+                // Jika tidak, berarti hari ini selesai. Mulai hari berikutnya setelah jeda.
+                Debug.Log($"Semua pelanggan untuk hari ke-{_currentDay} telah dilayani. Mempersiapkan hari berikutnya...");
+                StartCoroutine(StartNextDayAfterDelay(5f)); // Jeda 5 detik sebelum hari baru
+            }
         }
 
+        private IEnumerator StartNextDayAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            StartNextDay();
+        }
+
+        /// <summary>
+        /// Logika utama untuk memilih quest dan men-spawn NPC.
+        /// </summary>
         private void SpawnNextNPC()
         {
-            if (availableQuestsInWave != null && availableQuestsInWave.Count > 0)
+            if (_questsForCurrentDay != null && _questsForCurrentDay.Count > 0)
             {
-                int randomIndex = Random.Range(0, availableQuestsInWave.Count);
-                QuestData randomQuest = availableQuestsInWave[randomIndex];
-                availableQuestsInWave.RemoveAt(randomIndex);
+                _npcsSpawnedThisDay++;
+
+                int randomIndex = Random.Range(0, _questsForCurrentDay.Count);
+                QuestData randomQuest = _questsForCurrentDay[randomIndex];
+
+                Debug.Log($"Spawning NPC #{_npcsSpawnedThisDay}/{_npcsToSpawnThisDay} untuk hari ke-{_currentDay}.");
                 EventManager.Raise(new RequestNPCSpawnEvent { questData = randomQuest });
             }
             else
             {
-                Debug.Log("Wave selesai! Semua quest telah diberikan.");
+                Debug.LogWarning("Quest untuk hari ini telah habis! Tidak ada NPC baru yang bisa di-spawn.");
+                return;
             }
         }
-        
+
+        private void HandleNPCQuit(RequestNPCQuitEvent e)
+        {
+            if (e.questData != null && _activeQuests.Contains(e.questData))
+            {
+                _activeQuests.Remove(e.questData);
+                EventManager.Raise(new RequestNPCSpawnEvent { questData = e.questData });
+                Debug.Log($"Quest '{e.questData.name}' selesai. Sisa quest aktif: {_activeQuests.Count}");
+            }
+        }
+
         private IEnumerator SpawnNextNPCWithDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
