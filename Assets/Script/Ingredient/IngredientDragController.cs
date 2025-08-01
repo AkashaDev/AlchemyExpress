@@ -11,6 +11,7 @@ public class IngredientDragController : MonoBehaviour
     private Vector2Int? lastGridPos = null;
     private bool isDragging = false;
     private Collider2D currentCollider;
+    [SerializeField] private TrashAreaGrid trashArea;
 
     void Update()
     {
@@ -69,6 +70,7 @@ public class IngredientDragController : MonoBehaviour
                 break;
             }
         }
+        current.IsBeingDragged = true;
     }
 
     void HandleDragging()
@@ -103,20 +105,28 @@ public class IngredientDragController : MonoBehaviour
     void TryPlace()
     {
         isDragging = false;
+        current.IsBeingDragged = false;
 
-        Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
-        
         if (currentCollider != null) currentCollider.enabled = true;
         cauldron.gridBehavior.ClearPreview();
-        
+
+        // 1. Cek jika di-drop di trash area
+        if (trashArea != null && trashArea.IsInsideTrashArea(current.transform.position))
+        {
+            Debug.Log($"Ingredient {current.name} dibuang ke tempat sampah.");
+            Destroy(current.gameObject);
+            return; // Penting: hentikan proses di sini
+        }
+
+        // 2. Coba tempatkan di cauldron
+        Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
+
         if (cauldron.gridBehavior.CanPlaceIngredient(current, dropPos))
         {
             current.transform.position = cauldron.gridBehavior.GridToWorld(dropPos);
             current.transform.SetParent(cauldron.tileParent);
             cauldron.gridBehavior.PlaceIngredient(current, dropPos);
-
             current.RememberPlacedInCauldron(current.transform.position, current.GetRotationIndex());
-
             OnPlacedInCauldronFeedback();
         }
         else
@@ -143,6 +153,10 @@ public class IngredientDragController : MonoBehaviour
 
             OnRejectedFeedback();
         }
+        isDragging = false;
+
+        if (current != null)
+            current.IsBeingDragged = false;
     }
 
     void OnPlacedInCauldronFeedback()

@@ -19,6 +19,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
   - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
   - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
+  - {fileID: 11400000, guid: c185fc5a3e1604742ae0ae58b7a084d6, type: 2}
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500

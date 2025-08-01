@@ -21,6 +21,7 @@ public class IngredientInstance : MonoBehaviour
     private bool hasEverBeenPlacedInCauldron = false;
     private Vector3 lastCauldronWorldPos;
     private int lastCauldronRotationIndex;
+    public bool IsBeingDragged { get; set; }
 
     // === Public API ===
 
