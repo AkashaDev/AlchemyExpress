@@ -9,10 +9,10 @@ public class IngredientItem : MonoBehaviour
     public TextMeshProUGUI ingredientName;
     public TextMeshProUGUI ingredientQuantity;
     
-    public void SetupIngredient(Ingredient ingredient, int quantity)
+    public void SetupIngredient(IngredientSO ingredient, int quantity)
     {
         if(ingredientImage != null)
-            ingredientImage.sprite = ingredient.ingredientImage;
+            ingredientImage.sprite = ingredient.itemIcon;
             
         if(ingredientName != null)
             ingredientName.text = ingredient.ingredientName;
