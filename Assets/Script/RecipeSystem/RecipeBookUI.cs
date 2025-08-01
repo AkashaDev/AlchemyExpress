@@ -82,22 +82,14 @@ public class RecipeBookUI : MonoBehaviour
         ClearIngredientsList();
         
         // Create ingredient items
-        for(int i = 0; i < potion.requiredIngredients.Length; i++)
-        {
-            if(potion.requiredIngredients[i] != null)
-            {
-                GameObject ingredientItem = Instantiate(ingredientPrefab, ingredientsListParent);
-                
-                IngredientItem ingredientScript = ingredientItem.GetComponent<IngredientItem>();
-                if(ingredientScript != null)
-                {
-                    int quantity = i < potion.ingredientQuantities.Length ? potion.ingredientQuantities[i] : 1;
-                    ingredientScript.SetupIngredient(potion.requiredIngredients[i], quantity);
-                }
-                
-                currentIngredientItems.Add(ingredientItem);
-            }
-        }
+        
+foreach (Ingredient ingredient in potion.requiredIngredients)
+{
+    GameObject ingredientItem = Instantiate(ingredientPrefab, ingredientsListParent);
+    ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.ingredientImage;
+    // Hanya tampilkan nama bahan, karena jumlah diasumsikan 1
+    ingredientItem.GetComponentInChildren<TMP_Text>().text = ingredient.ingredientName; 
+}
     }
     
     public void CloseRecipeDetail()
