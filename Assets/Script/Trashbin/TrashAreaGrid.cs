@@ -18,12 +18,10 @@ public class TrashAreaGrid : MonoBehaviour
         return trashCollider.OverlapPoint(worldPos);
     }
 
-    // Optional: Visual feedback saat bahan di atas trash
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.GetComponent<IngredientInstance>() != null)
         {
-            // Visual feedback (ubah warna, dll)
             Debug.Log("Bahan di atas trash area");
         }
     }

@@ -110,15 +110,12 @@ public class IngredientDragController : MonoBehaviour
         if (currentCollider != null) currentCollider.enabled = true;
         cauldron.gridBehavior.ClearPreview();
 
-        // 1. Cek jika di-drop di trash area
         if (trashArea != null && trashArea.IsInsideTrashArea(current.transform.position))
         {
             Debug.Log($"Ingredient {current.name} dibuang ke tempat sampah.");
             Destroy(current.gameObject);
-            return; // Penting: hentikan proses di sini
+            return; 
         }
-
-        // 2. Coba tempatkan di cauldron
         Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
 
         if (cauldron.gridBehavior.CanPlaceIngredient(current, dropPos))
