@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientId: 1
   ingredientName: Bunga tulip
-  ingredientImage: {fileID: 0}
+  ingredientImage: {fileID: 21300000, guid: db25ba7383f24ac4e924b962957c9e8b, type: 3}
   description: 'indah tapi jangan sampai terlena
 
 '

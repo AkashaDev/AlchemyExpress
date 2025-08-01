@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientId: 5
   ingredientName: Air (elemen)
-  ingredientImage: {fileID: 0}
+  ingredientImage: {fileID: 21300000, guid: c6f3c952f005dcd44b4688f6e25725af, type: 3}
   description: elemen yang penting bagi kehidupan.

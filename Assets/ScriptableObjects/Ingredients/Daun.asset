@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientId: 4
   ingredientName: 'Daun '
-  ingredientImage: {fileID: 0}
+  ingredientImage: {fileID: 21300000, guid: 2e654fac37c73a04988994db70e76889, type: 3}
   description: bagian yang berkontribusi besar untuk sebuah pohon yang akan dilupakan
     saat terjatuh.
