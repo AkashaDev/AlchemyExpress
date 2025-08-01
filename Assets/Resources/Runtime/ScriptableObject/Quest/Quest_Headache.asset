@@ -10,15 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
-  m_Name: Quest_Mana
+  m_Name: Quest_Headache
   m_EditorClassIdentifier: 
-  dialogue: Saya membutuhkan Potion untuk <b>Gatal-Gatal</b>
-  Potion: {fileID: 11400000, guid: f6b901fdc1049384da873c62c1067f67, type: 2}
+  dialogue: Last night it seems that I overexerted myself to find food for my horse,
+    now <b>my head hurts</b> a lot, please give me medicine to relieve my <b>headache.</b>
+  Potion: {fileID: 11400000, guid: 4c3a1dde94eb1a94e94ae3ba75453893, type: 2}
   levelDifficults: 0
-  requiredIngredients:
-  - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}
-  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
-  - {fileID: 11400000, guid: 460c2dc3c748e0842a44c589c6d2d923, type: 2}
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500

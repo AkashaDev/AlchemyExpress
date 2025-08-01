@@ -10,15 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
-  m_Name: Quest_Heal
+  m_Name: Quest_Scratch Wound
   m_EditorClassIdentifier: 
-  dialogue: Saya membutuhkan Potion untuk <b>Heal</b>
+  dialogue: <b>My hand got scratched</b> when cutting wood, I need medicine to speed
+    up the healing
   Potion: {fileID: 11400000, guid: 051a20e003a62d640b18d488a2594c98, type: 2}
   levelDifficults: 0
-  requiredIngredients:
-  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
-  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
-  - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500
