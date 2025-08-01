@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Level Module/Level Module Scene.unity
     guid: 96cdbb6ff94270446835032701dc9324
   - enabled: 1
-    path: Assets/Scenes/Gameplay/GameplayeModule.unity
+    path: Assets/Scenes/Gameplay/GameplayModule.unity
     guid: 0fe0a9372cc500c4ca45146c8b401164
   m_configObjects: {}
