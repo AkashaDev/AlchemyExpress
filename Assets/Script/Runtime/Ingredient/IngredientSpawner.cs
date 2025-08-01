@@ -45,11 +45,12 @@ public class IngredientSpawner : MonoBehaviour
     /// Menambah bahan ke daftar prioritas saat NPC datang.
     /// </summary>
     private void HandleNewQuest(RequestNPCSpawnEvent e)
-    {
-        if (e.questData?.requiredIngredients == null) return;
+    {   
+        Potion quest = e.questData?.Potion;
+        if (e.questData?.Potion == null) return;
 
-        _neededIngredients.AddRange(e.questData.requiredIngredients);
-        UpdateFillerIngredients(); // Perbarui daftar pengisi
+        _neededIngredients.AddRange(quest.requiredIngredients);
+        UpdateFillerIngredients();
         Debug.Log($"NPC datang. Bahan prioritas ditambahkan. Total prioritas: {_neededIngredients.Count}");
     }
 
@@ -58,9 +59,10 @@ public class IngredientSpawner : MonoBehaviour
     /// </summary>
     private void HandleNPCQuit(RequestNPCQuitEvent e)
     {
-        if (e.questData?.requiredIngredients == null) return;
+        Potion quest = e.questData?.Potion;
+        if (e.questData?.Potion == null) return;
 
-        foreach (var ingredient in e.questData.requiredIngredients)
+        foreach (var ingredient in quest.requiredIngredients)
         {
             if (_neededIngredients.Contains(ingredient))
             {

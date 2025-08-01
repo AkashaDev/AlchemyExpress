@@ -106,7 +106,7 @@ namespace NPC
             if (hasLeft)
                 return;
             EventManager.Raise(new HideDialogueEvent());
-            if (playerPotionName.ToLower() == questData.requiredPotionName.ToLower())
+            if (playerPotionName.ToLower() == questData.Potion.potionName.ToLower())
             {
                 HandleCorrectPotion();
             }

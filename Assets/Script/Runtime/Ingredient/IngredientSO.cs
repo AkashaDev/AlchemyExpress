@@ -7,6 +7,7 @@ public class IngredientSO : ScriptableObject
 {
     public string ingredientName;
     public Sprite itemSprite;
+    public Sprite itemIcon;
 
     public bool canRotate = true;
     public Vector2Int[] shapeCells;

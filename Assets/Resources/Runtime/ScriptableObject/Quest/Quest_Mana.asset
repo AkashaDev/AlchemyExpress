@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Mana
   m_EditorClassIdentifier: 
-  dialogue: Saya membutuhkan Potion untuk <b>Mana</b>
-  requiredPotionName: Mana
+  dialogue: Saya membutuhkan Potion untuk <b>Gatal-Gatal</b>
+  Potion: {fileID: 11400000, guid: f6b901fdc1049384da873c62c1067f67, type: 2}
   levelDifficults: 0
   requiredIngredients:
   - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}

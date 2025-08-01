@@ -12,6 +12,5 @@ public class Potion : ScriptableObject
     public string potionEffect; // Kegunaan potion
     
     [Header("Recipe")]
-    public Ingredient[] requiredIngredients;
-     // Jumlah setiap bahan yang dibutuhkan
+    public IngredientSO[] requiredIngredients;
 }

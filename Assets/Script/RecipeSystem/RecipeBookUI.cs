@@ -83,10 +83,10 @@ public class RecipeBookUI : MonoBehaviour
         
         // Create ingredient items
         
-foreach (Ingredient ingredient in potion.requiredIngredients)
+foreach (IngredientSO ingredient in potion.requiredIngredients)
 {
     GameObject ingredientItem = Instantiate(ingredientPrefab, ingredientsListParent);
-    ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.ingredientImage;
+    ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.itemIcon;
     // Hanya tampilkan nama bahan, karena jumlah diasumsikan 1
     ingredientItem.GetComponentInChildren<TMP_Text>().text = ingredient.ingredientName; 
 }

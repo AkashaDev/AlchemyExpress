@@ -15,6 +15,9 @@ public class RecipeBookUIHandler : MonoBehaviour
     public TMP_Text potionEffectDetail;
     public Transform ingredientsParent;
     public GameObject ingredientItemPrefab;
+    public Sprite BookOpenImage;
+    public Sprite BookClosedImage;
+    public GameObject BookImageTarget;
 
     [Header("Data")]
     public RecipeBookData recipeBookData;
@@ -22,6 +25,7 @@ public class RecipeBookUIHandler : MonoBehaviour
     [Header("Navigation Buttons")]
     public Button previousButton;
     public Button nextButton;
+
 
     private List<Potion> allPotions;
     private int currentPotionIndex = 0;
@@ -41,13 +45,16 @@ public class RecipeBookUIHandler : MonoBehaviour
         recipeBookPanel.SetActive(!recipeBookPanel.activeSelf);
         if (recipeBookPanel.activeSelf)
         {
-            // Tampilkan resep pertama saat buku dibuka
+            BookImageTarget.GetComponent<Image>().sprite = BookOpenImage;
             currentPotionIndex = 0;
             ShowRecipeDetails(allPotions[currentPotionIndex]);
         }
+        else
+        {
+            BookImageTarget.GetComponent<Image>().sprite = BookClosedImage;
+        }
     }
     
-    // Fungsi untuk menampilkan resep berikutnya
     public void ShowNextPotion()
     {
         if (allPotions.Count == 0) return;
@@ -55,12 +62,11 @@ public class RecipeBookUIHandler : MonoBehaviour
         currentPotionIndex++;
         if (currentPotionIndex >= allPotions.Count)
         {
-            currentPotionIndex = 0; // Kembali ke resep pertama jika sudah di akhir
+            currentPotionIndex = 0;
         }
         ShowRecipeDetails(allPotions[currentPotionIndex]);
     }
     
-    // Fungsi untuk menampilkan resep sebelumnya
     public void ShowPreviousPotion()
     {
         if (allPotions.Count == 0) return;
@@ -68,7 +74,7 @@ public class RecipeBookUIHandler : MonoBehaviour
         currentPotionIndex--;
         if (currentPotionIndex < 0)
         {
-            currentPotionIndex = allPotions.Count - 1; // Kembali ke resep terakhir jika sudah di awal
+            currentPotionIndex = allPotions.Count - 1;
         }
         ShowRecipeDetails(allPotions[currentPotionIndex]);
     }
@@ -77,25 +83,22 @@ public class RecipeBookUIHandler : MonoBehaviour
     {
         if (potion == null) return;
         
-        // Update informasi detail
         potionImageDetail.sprite = potion.potionImage;
         potionNameDetail.text = potion.potionName;
         potionEffectDetail.text = potion.potionDescription;
 
-        // Hapus item bahan lama
         foreach (Transform child in ingredientsParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Tampilkan daftar bahan baru
         for (int i = 0; i < potion.requiredIngredients.Length; i++)
         {
-            Ingredient ingredient = potion.requiredIngredients[i];
+            IngredientSO ingredient = potion.requiredIngredients[i];
            
 
             GameObject ingredientItem = Instantiate(ingredientItemPrefab, ingredientsParent);
-            ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.ingredientImage;
+            ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.itemIcon;
             ingredientItem.GetComponentInChildren<TMP_Text>().text = $"{ingredient.ingredientName}";
         }
     }
