@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Cough
   m_EditorClassIdentifier: 
-  dialogue: '*cough cough*, give me some <b>cough medicine</b>, it''s really disturbing
-    my activities.'
+  dialogue: "*Cough cough, give me some cough medicine, it's really disturbing my
+    activities.\r"
   Potion: {fileID: 11400000, guid: d6fa0e1f70b1c9f429a9e01e656b2c6f, type: 2}
   levelDifficults: 0
   rewardHappy: 1000

@@ -46,7 +46,7 @@ public class RecipeBookUIHandler : MonoBehaviour
         if (recipeBookPanel.activeSelf)
         {
             BookImageTarget.GetComponent<Image>().sprite = BookOpenImage;
-            currentPotionIndex = 0;
+            // currentPotionIndex = 0;
             ShowRecipeDetails(allPotions[currentPotionIndex]);
         }
         else
