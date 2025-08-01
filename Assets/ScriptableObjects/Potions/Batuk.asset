@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionId: 4
   potionName: Batuk
-  potionImage: {fileID: 0}
+  potionImage: {fileID: 21300000, guid: ba9926fc0b6ba484b9445c76176506c3, type: 3}
   potionDescription: 
   potionEffect: 
   requiredIngredients:

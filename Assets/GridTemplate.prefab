@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 6976956879440653154}
   - component: {fileID: 5531059190315068390}
   m_Layer: 5
-  m_Name: Image
+  m_Name: GridTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
