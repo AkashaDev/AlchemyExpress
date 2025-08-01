@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientId: 2
   ingredientName: Kodok
-  ingredientImage: {fileID: 0}
+  ingredientImage: {fileID: 21300000, guid: f8929fdcee7913e40ac537b55092793a, type: 3}
   description: evolusi dari kecebong yang dipelihara dengan baik
