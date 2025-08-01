@@ -390,10 +390,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cauldron: {fileID: 8888626543857215866}
-  allRecipes:
-  - {fileID: 11400000, guid: 31cca7b9728e42a44a935616f3553b21, type: 2}
+  allRecipes: []
   potionPrefab: {fileID: 632651140154589539, guid: ea46e04a03544dd46871b5e0aa5a4755, type: 3}
   spawnPoint: {fileID: 1005074428845270025, guid: ea46e04a03544dd46871b5e0aa5a4755, type: 3}
+  recipeBook: {fileID: 11400000, guid: 4884cb0148353334c98394d3edc799b4, type: 2}
 --- !u!1 &373308505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2427,7 +2427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 860e8d0e94c50f94794ff9d2920236a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: ad7653cac58228f46a92e7bf2694856a, type: 2}
+  template: {fileID: 11400000, guid: 96c1e3b7d26c75b4991aeae18200d634, type: 2}
   tilePrefab: {fileID: 2706766671580815269, guid: 8abde7754e6d80b4bb022e03dfa56e8e, type: 3}
   tileParent: {fileID: 1561103547}
   gridBehavior: {fileID: 8888626543857215866}
@@ -2491,9 +2491,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c735230b9bad32d4e92c085756458c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  cauldron: {fileID: 0}
-  trashArea: {fileID: 0}
+  cam: {fileID: 519420031}
+  cauldron: {fileID: 7737047623452160788}
+  trashArea: {fileID: 2115712320}
 --- !u!114 &8888626543857215868
 MonoBehaviour:
   m_ObjectHideFlags: 0

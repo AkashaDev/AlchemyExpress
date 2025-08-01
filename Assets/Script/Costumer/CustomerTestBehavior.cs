@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CustomerTestBehavior : MonoBehaviour
 {
-    public void ReceivePotion(PotionSO potion)
+    public void ReceivePotion(Potion potion)
     {
         Debug.Log($"Customer menerima potion: {potion.potionName}");
     }

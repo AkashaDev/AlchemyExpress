@@ -6,7 +6,7 @@ public class PotionDragHandler : MonoBehaviour
 {
     private Vector3 offset;
     private bool isDragging = false;
-    public PotionSO potionData;
+    public Potion potionData;
 
     private void Update()
     {

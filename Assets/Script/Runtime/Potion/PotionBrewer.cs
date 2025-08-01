@@ -6,7 +6,9 @@ using UnityEngine;
 public class PotionBrewer : MonoBehaviour
 {
     public CauldronGridBehavior cauldron;
-    public List<RecipeSO> allRecipes;
+    // public List<RecipeSO> allRecipes;
+    public GameObject potionPrefab;
+    public Transform spawnPoint;
 
     [Header("Referensi Buku Resep")]
     public RecipeBookData recipeBook;
@@ -67,13 +69,23 @@ public class PotionBrewer : MonoBehaviour
         return requiredNames.SequenceEqual(placedNames);
     }
 
-    void SpawnPotionObject(Potion potion)
+    private void SpawnPotionObject(Potion potion)
     {
-        GameObject go = new GameObject("Potion_" + potion.potionName);
-        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = potion.potionImage;
-        sr.sortingOrder = 10;
+        GameObject go = Instantiate(potionPrefab, spawnPoint != null ? spawnPoint.position : Vector3.zero, Quaternion.identity);
+        go.name = "Potion_" + potion.potionName;
 
-        go.transform.position = new Vector3(0, 0, 0);
+        SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.sprite = potion.potionImage;
+            sr.sortingLayerName = "Gameplay";
+            sr.sortingOrder = 100;
+        }
+
+        PotionDragHandler drag = go.GetComponent<PotionDragHandler>();
+        if (drag != null)
+        {
+            drag.potionData = potion;
+        }
     }
 }
