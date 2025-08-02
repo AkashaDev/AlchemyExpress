@@ -61,6 +61,16 @@ namespace NPC
             this.leavePosition = leavePos;
         }
 
+        private void OnEnable()
+        {
+            EventManager.Subscribe<PotionGivenToNPCEvent>(HandlePotionDelivery);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unsubscribe<PotionGivenToNPCEvent>(HandlePotionDelivery);
+        }
+
         private void Start()
         {
             hasLeft = false;
@@ -116,6 +126,28 @@ namespace NPC
             }
         }
 
+        private void HandlePotionDelivery(PotionGivenToNPCEvent e)
+        {
+            Debug.Log($"NPC menerima event penyerahan Potion: {e.potion.potionName}");
+            ReceivePotion(e.potion);
+        }
+
+        public void ReceivePotion(Potion receivedPotion) 
+        {
+            if (hasLeft) return;
+            
+            EventManager.Raise(new HideDialogueEvent());
+
+            if (receivedPotion.potionName.ToLower() == questData.Potion.potionName.ToLower())
+            {
+                HandleCorrectPotion();
+            }
+            else
+            {
+                HandleWrongPotion();
+            }
+        }
+
         private void HandleCorrectPotion()
         {
             int reward = 0;
@@ -132,7 +164,7 @@ namespace NPC
                     break;
             }
             Debug.Log($"Ramuan Benar! Player mendapat {reward} gold.");
-            Leave();
+            Leave(reward);
         }
 
         private void HandleWrongPotion()
@@ -151,7 +183,7 @@ namespace NPC
             if (currentMood >= MoodState.Angry)
             {
                 Debug.Log("NPC sudah terlalu marah dan pergi!");
-                Leave();
+                Leave(rewardForThisTurn: 0);
                 return;
             }
             currentMood++;
@@ -160,26 +192,25 @@ namespace NPC
             UpdateMoodAndVisuals();
         }
 
-        private void Leave()
+        private void Leave(int rewardForThisTurn)
         {
-            if (hasLeft)
-                return;
+            if (hasLeft) return;
             hasLeft = true;
             isWalking = false;
             currentMood = MoodState.Gone;
-
-            EventManager.Raise(new RequestNPCQuitEvent { questData = this.questData });
+            
+            EventManager.Raise(new RequestNPCQuitEvent { questData = this.questData }); 
 
             UpdateMoodAndVisuals();
             EventManager.Raise(new HideDialogueEvent());
+            
             leaveTarget = FindObjectOfType<WaveManager>().leavePosition;
-
-            transform
-                .DOMove(leaveTarget.position, 2.4f)
+            
+            transform.DOMove(leaveTarget.position, 2.4f)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
-                    EventManager.Raise(new NPCTurnFinishedEvent());
+                    EventManager.Raise(new NPCTurnFinishedEvent { rewardEarned = rewardForThisTurn });
                     Destroy(gameObject);
                 });
 

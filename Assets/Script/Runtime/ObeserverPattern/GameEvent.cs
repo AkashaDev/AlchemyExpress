@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct NPCTurnFinishedEvent { }
+public struct NPCTurnFinishedEvent
+{
+    public int rewardEarned; 
+}
 
 public struct ShowDialogueEvent
 {
@@ -24,4 +27,9 @@ public struct RequestNPCSpawnEvent
 public struct RequestNPCQuitEvent
 {
     public QuestData questData;
+}
+
+public struct PotionGivenToNPCEvent
+{
+    public Potion potion;
 }

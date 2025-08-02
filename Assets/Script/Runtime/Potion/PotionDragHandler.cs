@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using ObeserverPattern;
 
 public class PotionDragHandler : MonoBehaviour
 {
@@ -35,7 +34,7 @@ public class PotionDragHandler : MonoBehaviour
             if (customer != null)
             {
                 Debug.Log($"Potion {potionData.potionName} diberikan ke customer {hit.name}");
-                customer.ReceivePotion(potionData);
+                EventManager.Raise(new PotionGivenToNPCEvent { potion = this.potionData });
             }
 
             Destroy(gameObject);

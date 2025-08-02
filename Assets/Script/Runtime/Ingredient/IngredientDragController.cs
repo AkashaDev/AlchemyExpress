@@ -51,6 +51,7 @@ public class IngredientDragController : MonoBehaviour
                 current = inst;
                 isDragging = true;
                 offset = inst.transform.position - mouseWorld;
+                current.IsBeingDragged = true;
 
                 currentCollider = current.GetComponent<Collider2D>();
                 if (currentCollider != null) currentCollider.enabled = false;
@@ -70,7 +71,7 @@ public class IngredientDragController : MonoBehaviour
                 break;
             }
         }
-        current.IsBeingDragged = true;
+        
     }
 
     void HandleDragging()
