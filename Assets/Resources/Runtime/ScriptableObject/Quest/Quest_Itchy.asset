@@ -15,7 +15,8 @@ MonoBehaviour:
   dialogue: This morning, when I woke up my skin was very red and very <b>itchy</b>,
     I needed some medicine to fix that.
   Potion: {fileID: 11400000, guid: f6b901fdc1049384da873c62c1067f67, type: 2}
-  levelDifficults: 0
+  levelDifficults: 1
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: 42df7380a64b37540a19d24d60bad9ab, type: 2}

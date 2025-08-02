@@ -76,6 +76,27 @@ public class ConveyorBelt : MonoBehaviour
             MoveItemWithSpacing(currentItemCollider, itemInFrontCollider, beltEdgeX, direction);
         }
     }
+    
+    /// <summary>
+    /// Mengecek apakah ada item yang menghalangi titik spawn.
+    /// </summary>
+    /// <param name="checkRadius">Seberapa besar area yang dicek di sekitar spawn point.</param>
+    /// <returns>True jika terhalang, false jika kosong.</returns>
+    public bool IsSpawnPointBlocked(float checkRadius = 0.5f)
+    {
+        if (spawnPoint == null) return true;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint.position, checkRadius);
+        foreach (var col in colliders)
+        {
+            if (col.GetComponent<IngredientInstance>() != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private void MoveItemWithSpacing(Collider2D currentItemCollider, Collider2D itemInFrontCollider, float beltEdgeX, float direction)
     {
@@ -90,7 +111,7 @@ public class ConveyorBelt : MonoBehaviour
         {
             float itemInFrontHalfWidth = itemInFrontCollider.bounds.size.x / 2f;
             float frontItemCenterX = itemInFrontCollider.bounds.center.x;
-            
+
             float spacingLimit = frontItemCenterX - (direction * (itemInFrontHalfWidth + currentItemHalfWidth + minimumItemGap));
 
             finalStopPosition = (direction > 0)
@@ -98,17 +119,14 @@ public class ConveyorBelt : MonoBehaviour
                 : Mathf.Max(edgeStopPosition, spacingLimit);
         }
 
-        // Hitung posisi baru berdasarkan pivot saat ini
         Vector2 potentialNewPosition = currentItemRb.position + (Vector2.right * speed * Time.fixedDeltaTime);
-        
-        // ✨ PERBAIKAN KUNCI 3: Kompensasi perbedaan antara pivot dan pusat bounds
         float pivotToCenterOffsetX = currentItemCollider.bounds.center.x - currentItemRb.position.x;
         float correctedFinalStopPosition = finalStopPosition - pivotToCenterOffsetX;
 
         potentialNewPosition.x = (direction > 0)
             ? Mathf.Min(potentialNewPosition.x, correctedFinalStopPosition)
             : Mathf.Max(potentialNewPosition.x, correctedFinalStopPosition);
-            
+
         currentItemRb.MovePosition(potentialNewPosition);
     }
 }

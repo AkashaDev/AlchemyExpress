@@ -185,20 +185,18 @@ namespace NPC
             if (_questsForCurrentDay != null && _questsForCurrentDay.Count > 0)
             {
                 _npcsSpawnedThisDay++;
-
+                
                 int randomIndex = Random.Range(0, _questsForCurrentDay.Count);
                 QuestData randomQuest = _questsForCurrentDay[randomIndex];
 
-                Debug.Log(
-                    $"Spawning NPC #{_npcsSpawnedThisDay}/{_npcsToSpawnThisDay} untuk hari ke-{_currentDay}."
-                );
+                EventManager.Raise(new QuestAboutToStartEvent { questData = randomQuest });
+                
+                Debug.Log($"Spawning NPC #{_npcsSpawnedThisDay}/{_npcsToSpawnThisDay} untuk hari ke-{_currentDay}.");
                 EventManager.Raise(new RequestNPCSpawnEvent { questData = randomQuest });
             }
             else
             {
-                Debug.LogWarning(
-                    "Quest untuk hari ini telah habis! Tidak ada NPC baru yang bisa di-spawn."
-                );
+                Debug.LogWarning("Quest untuk hari ini telah habis!");
                 return;
             }
         }

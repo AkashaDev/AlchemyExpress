@@ -16,4 +16,7 @@ public class QuestData : ScriptableObject
     public int rewardHappy;
     public int rewardNeutral;
     public int rewardAngry;
+
+    [Header("Pengaturan Gameplay")]
+    public CauldronTemplateSO cauldronTemplate;
 }

@@ -9,9 +9,12 @@ public class IngredientSpawner : MonoBehaviour
 {
     [Header("General Settings")]
     public GameObject ingredientPrefab;
+    
     [Tooltip("Kolam berisi SEMUA kemungkinan bahan yang bisa muncul sebagai pengisi acak.")]
     public IngredientSO[] allIngredientsPool;
 
+    [Header("Referensi Komponen")]
+    [SerializeField] private ConveyorBelt targetConveyor;
     private Transform _spawnPoint;
     private float _spawnInterval;
     private Coroutine _spawnLoopCoroutine;
@@ -30,14 +33,12 @@ public class IngredientSpawner : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Subscribe<RequestNPCSpawnEvent>(HandleNewQuest);
-        // ✨ TAMBAHKAN: Langganan event saat NPC pergi
         EventManager.Subscribe<RequestNPCQuitEvent>(HandleNPCQuit);
     }
 
     private void OnDisable()
     {
         EventManager.Unsubscribe<RequestNPCSpawnEvent>(HandleNewQuest);
-        // ✨ TAMBAHKAN: Hentikan langganan event
         EventManager.Unsubscribe<RequestNPCQuitEvent>(HandleNPCQuit);
     }
 
@@ -101,9 +102,14 @@ public class IngredientSpawner : MonoBehaviour
     private IEnumerator SpawnLoop()
     {
         while (true)
-        {
-            // Logika spawn 50/50 tidak perlu diubah, karena ia sudah
-            // bergantung pada isi dari _neededIngredients.
+        {   
+
+            if (targetConveyor != null && targetConveyor.IsSpawnPointBlocked())
+            {
+                yield return _spawnInterval;
+                continue;
+            }
+        
             IngredientSO ingredientToSpawn = null;
 
             if (_neededIngredients.Count > 0)

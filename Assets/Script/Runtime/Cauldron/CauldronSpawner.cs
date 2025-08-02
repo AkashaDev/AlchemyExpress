@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ObeserverPattern;
 
 public class CauldronSpawner : MonoBehaviour
 {
@@ -12,19 +13,53 @@ public class CauldronSpawner : MonoBehaviour
     [Header("Logic Grid")]
     public CauldronGridBehavior gridBehavior;
     public SpriteRenderer[,] tileRenderers;
+    private CauldronTemplateSO currentTemplate;
+
+    private void OnEnable()
+    {
+        EventManager.Subscribe<QuestAboutToStartEvent>(HandleQuestStart);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe<QuestAboutToStartEvent>(HandleQuestStart);
+    }
 
     void Start()
     {
-        InitializeGridLogic();
-        BuildGridVisual();
         gridBehavior.SetTileRenderers(tileRenderers);
     }
 
-    void BuildGridVisual()
+    private void HandleQuestStart(QuestAboutToStartEvent e)
+    {
+        if (e.questData == null || e.questData.cauldronTemplate == null)
+        {
+            Debug.LogError("QuestData atau CauldronTemplate tidak ada!");
+            return;
+        }
+
+        RebuildGrid(e.questData.cauldronTemplate);
+    }
+
+    public void RebuildGrid(CauldronTemplateSO newTemplate)
+    {
+        if (currentTemplate == newTemplate) return;
+        
+        currentTemplate = newTemplate;
+        
+        foreach (Transform child in tileParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        InitializeGridLogic(newTemplate);
+        BuildGridVisual(newTemplate);
+        gridBehavior.SetTileRenderers(tileRenderers);
+    }
+
+    void BuildGridVisual(CauldronTemplateSO template)
     {
         tileRenderers = new SpriteRenderer[template.width, template.height];
-
-        // Perubahan: Gunakan offset floating point untuk semua ukuran grid
         float xOffset = (template.width - 1) * 0.5f;
         float yOffset = (template.height - 1) * 0.5f;
 
@@ -32,26 +67,20 @@ public class CauldronSpawner : MonoBehaviour
         {
             for (int x = 0; x < template.width; x++)
             {
-                // Perubahan: Hitung posisi grid relatif terhadap pusat
-                float gridX = x - xOffset;
-                float gridY = y - yOffset;
+                bool isBlocked = template.blockedPositions.Contains(new Vector2Int(x - (template.width / 2), y - (template.height / 2)));
 
-                Vector3 worldPos = tileParent.position + new Vector3(gridX, gridY, 0);
+                if (isBlocked) continue;
+
+                float worldX = x - xOffset;
+                float worldY = y - yOffset;
+                Vector3 worldPos = tileParent.position + new Vector3(worldX, worldY, 0);
                 GameObject tile = Instantiate(tilePrefab, worldPos, Quaternion.identity, tileParent);
-
-                SpriteRenderer sr = tile.GetComponent<SpriteRenderer>();
-                tileRenderers[x, y] = sr;
-
-                if (template.IsBlocked(Mathf.RoundToInt(gridX), Mathf.RoundToInt(gridY)))
-                {
-                    if (sr != null)
-                        sr.color = Color.black;
-                }
+                tileRenderers[x, y] = tile.GetComponent<SpriteRenderer>();
             }
         }
     }
 
-    void InitializeGridLogic()
+    void InitializeGridLogic(CauldronTemplateSO template)
     {
         if (gridBehavior == null)
         {

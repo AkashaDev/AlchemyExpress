@@ -33,3 +33,10 @@ public struct PotionGivenToNPCEvent
 {
     public Potion potion;
 }
+
+public struct QuestAboutToStartEvent
+{
+    public QuestData questData;
+}
+
+public struct PotionDisposedEvent {}
