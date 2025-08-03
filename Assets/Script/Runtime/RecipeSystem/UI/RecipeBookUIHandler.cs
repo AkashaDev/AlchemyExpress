@@ -123,10 +123,11 @@ public class RecipeBookUIHandler : MonoBehaviour
 
         for (int i = 0; i < potion.requiredIngredients.Length; i++)
         {
-            Ingredient ingredient = potion.requiredIngredients[i];
+            IngredientSO ingredient = potion.requiredIngredients[i];
+           
             
             GameObject ingredientItem = Instantiate(ingredientItemPrefab, ingredientsParent);
-            ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.ingredientImage;
+            ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.itemIcon;
             ingredientItem.GetComponentInChildren<TMP_Text>().text = $"{ingredient.ingredientName}";
         }
     }
