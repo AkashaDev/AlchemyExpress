@@ -41,4 +41,6 @@ public struct QuestAboutToStartEvent
 
 public struct PotionDisposedEvent {}
 
-public struct BrewSuccessEvent {} 
+public struct BrewSuccessEvent { }
+
+public struct InventoryChangedEvent {}

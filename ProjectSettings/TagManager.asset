@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Customer
   - Trashbin
-  - TrashBin
+  - InventoryDropZone
   layers:
   - Default
   - TransparentFX

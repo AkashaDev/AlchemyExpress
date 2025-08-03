@@ -12,10 +12,8 @@ public class RecipeBookButton : MonoBehaviour
     
     private void Start()
     {
-        // Setup button di pojok kiri
         recipeBookButton.onClick.AddListener(OpenRecipeBook);
         
-        // Pastikan pop-up tertutup saat start
         if(recipeBookUI != null)
             recipeBookUI.SetActive(false);
     }
@@ -26,7 +24,6 @@ public class RecipeBookButton : MonoBehaviour
         {
             recipeBookUI.SetActive(true);
             
-            // Update recipe book content
             RecipeBookUI recipeUI = recipeBookUI.GetComponent<RecipeBookUI>();
             if(recipeUI != null)
             {

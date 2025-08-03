@@ -1,5 +1,5 @@
-using UnityEngine;
 using ObeserverPattern;
+using UnityEngine;
 
 public class PotionDragHandler : MonoBehaviour
 {
@@ -8,8 +8,6 @@ public class PotionDragHandler : MonoBehaviour
     public Potion potionData;
 
     private Vector3 _spawnPosition;
-    private TrashAreaGrid _trashArea;
-
 
     private void Update()
     {
@@ -23,6 +21,7 @@ public class PotionDragHandler : MonoBehaviour
 
     private void OnMouseDown()
     {
+        _spawnPosition = transform.position;
         offset = transform.position - GetMouseWorldPos();
         isDragging = true;
     }
@@ -31,17 +30,31 @@ public class PotionDragHandler : MonoBehaviour
     {
         isDragging = false;
 
-        Collider2D hit = Physics2D.OverlapPoint(transform.position);
+        Collider2D[] hits = Physics2D.OverlapPointAll(transform.position);
 
-        bool droppedOnCustomer = hit != null && hit.CompareTag("Customer");
-        bool droppedInTrash = _trashArea != null && _trashArea.IsInsideTrashArea(transform.position);
+        bool droppedOnCustomer = false;
+        bool droppedInTrash = false;
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.CompareTag("Customer"))
+            {
+                droppedOnCustomer = true;
+            }
+            if (hit.CompareTag("Trashbin"))
+            {
+                droppedInTrash = true;
+            }
+        }
 
-        if (droppedOnCustomer || droppedInTrash)
+        if (droppedOnCustomer)
         {
             EventManager.Raise(new PotionDisposedEvent());
-
-            if(droppedOnCustomer) EventManager.Raise(new PotionGivenToNPCEvent { potion = this.potionData });
-
+            EventManager.Raise(new PotionGivenToNPCEvent { potion = this.potionData });
+            Destroy(gameObject);
+        }
+        else if (droppedInTrash)
+        {
+            EventManager.Raise(new PotionDisposedEvent());
             Destroy(gameObject);
         }
         else
@@ -50,7 +63,7 @@ public class PotionDragHandler : MonoBehaviour
         }
     }
 
-   private Vector3 GetMouseWorldPos()
+    private Vector3 GetMouseWorldPos()
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }

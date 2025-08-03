@@ -16,7 +16,7 @@ MonoBehaviour:
     now <b>my head hurts</b> a lot, please give me medicine to relieve my <b>headache.</b>
   Potion: {fileID: 11400000, guid: 4c3a1dde94eb1a94e94ae3ba75453893, type: 2}
   levelDifficults: 0
-  rewardHappy: 1000
-  rewardNeutral: 700
-  rewardAngry: 500
+  rewardHappy: 10
+  rewardNeutral: 7
+  rewardAngry: 5
   cauldronTemplate: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}

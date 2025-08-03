@@ -23,7 +23,6 @@ public class IngredientInstance : MonoBehaviour
     private int lastCauldronRotationIndex;
     public bool IsBeingDragged { get; set; }
 
-    // === Public API ===
 
     public void Setup(IngredientSO source)
     {
@@ -119,7 +118,6 @@ public class IngredientInstance : MonoBehaviour
         return result;
     }
 
-    // === Rendering & Collision ===
 
     private void Redraw()
     {
