@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Turmeric
   m_EditorClassIdentifier: 
   ingredientName: Turmeric
-  itemSprite: {fileID: 21300000, guid: c2fd1dc42090bc2499ba3bb4f847ae9f, type: 3}
-  itemIcon: {fileID: 21300000, guid: be48a4bfaf12980409f44d8480858f3e, type: 3}
+  itemSprite: {fileID: 21300000, guid: 5aef4177b49fe69449fa7d0c7e9ce67d, type: 3}
+  itemIcon: {fileID: 21300000, guid: 17bb48cd3f32cbd4d929d4f00949141c, type: 3}
   canRotate: 1
   shapeCells:
   - {x: 0, y: 3}

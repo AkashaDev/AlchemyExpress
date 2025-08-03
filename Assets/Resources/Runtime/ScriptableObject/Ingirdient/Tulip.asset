@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: Tulip
   itemSprite: {fileID: 21300000, guid: dd916b78d7dc2d84daba6c1f0ced3d3a, type: 3}
-  itemIcon: {fileID: 21300000, guid: db25ba7383f24ac4e924b962957c9e8b, type: 3}
+  itemIcon: {fileID: 21300000, guid: 2f4da92ab5d65204ebb8a56b0b298173, type: 3}
   canRotate: 1
   shapeCells:
   - {x: 0, y: 2}

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: Honey
   itemSprite: {fileID: 21300000, guid: 008881c7f313df0489f4d6e999e06a4d, type: 3}
-  itemIcon: {fileID: 21300000, guid: 62cdab19fe8c36d4cb8342fe3cb9e8b0, type: 3}
+  itemIcon: {fileID: 21300000, guid: bb2c7a7d0ceee564db2a0e1d635485e3, type: 3}
   canRotate: 1
   shapeCells:
   - {x: 0, y: 2}

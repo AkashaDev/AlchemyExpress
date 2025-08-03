@@ -12,7 +12,8 @@ public class IngredientDragController : MonoBehaviour
     private bool isDragging = false;
     private Collider2D currentCollider;
     [SerializeField] private TrashAreaGrid trashArea;
-
+    private string originalSortingLayer;
+    private int originalSortingOrder;
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !isDragging)
@@ -56,6 +57,16 @@ public class IngredientDragController : MonoBehaviour
                 currentCollider = current.GetComponent<Collider2D>();
                 if (currentCollider != null) currentCollider.enabled = false;
 
+                SpriteRenderer sr = current.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    originalSortingLayer = sr.sortingLayerName;
+                    originalSortingOrder = sr.sortingOrder;
+
+                    sr.sortingLayerName = "Gameplay"; 
+                    sr.sortingOrder = 100;
+                }
+
                 if (cauldron.gridBehavior.IsIngredientPlaced(current))
                 {
                     cauldron.gridBehavior.RemoveIngredient(current);
@@ -92,6 +103,12 @@ public class IngredientDragController : MonoBehaviour
             cauldron.gridBehavior.PreviewPlacement(shape, gridPos, canPlace);
             lastGridPos = gridPos;
         }
+
+        if (trashArea != null)
+        {
+            bool isHoveringTrash = trashArea.IsInsideTrashArea(mouseWorld);
+            trashArea.SetHoverState(isHoveringTrash);
+        }
     }
 
     void Rotate()
@@ -117,11 +134,19 @@ public class IngredientDragController : MonoBehaviour
         if (currentCollider != null) currentCollider.enabled = true;
         cauldron.gridBehavior.ClearPreview();
 
+        SpriteRenderer sr = current.GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.sortingLayerName = originalSortingLayer;
+            sr.sortingOrder = originalSortingOrder;
+        }
+
         if (trashArea != null && trashArea.IsInsideTrashArea(current.transform.position))
         {
             Debug.Log($"Ingredient {current.name} dibuang ke tempat sampah.");
             Destroy(current.gameObject);
-            return; 
+            trashArea.SetHoverState(false);
+            return;
         }
         Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
 
@@ -159,6 +184,11 @@ public class IngredientDragController : MonoBehaviour
             OnRejectedFeedback();
         }
         isDragging = false;
+
+        if (trashArea != null)
+        {
+            trashArea.SetHoverState(false);
+        }
 
         if (current != null)
             current.IsBeingDragged = false;

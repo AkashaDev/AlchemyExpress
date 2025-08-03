@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: Hibiscus
   itemSprite: {fileID: 21300000, guid: 11f28d028ae526040aea93eac27784b5, type: 3}
-  itemIcon: {fileID: 21300000, guid: add4c74bd7c85f640a3c0367429f76eb, type: 3}
+  itemIcon: {fileID: 21300000, guid: 9d9627bd1d75fdb4bb5df7328b89961a, type: 3}
   canRotate: 1
   shapeCells:
   - {x: 0, y: 1}

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: Lizard
   itemSprite: {fileID: 21300000, guid: 354359d2688a5e149a13ab083b7cebbf, type: 3}
-  itemIcon: {fileID: 21300000, guid: 6bb917e918f741a4f86915e3a5466810, type: 3}
+  itemIcon: {fileID: 21300000, guid: 3dae4d5accac57d49adb2d182f4950e4, type: 3}
   canRotate: 1
   shapeCells:
   - {x: -1, y: 0}
