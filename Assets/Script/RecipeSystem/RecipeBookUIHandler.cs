@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections; // BARU: Diperlukan untuk Coroutine
 using System.Collections.Generic;
 using TMPro;
 
@@ -7,7 +8,10 @@ public class RecipeBookUIHandler : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject recipeBookPanel;
-    public GameObject recipeDetailPanel; // Ini akan menjadi panel utama yang menampilkan resep
+    public GameObject recipeDetailPanel;
+
+    // BARU: Tambahkan referensi ke CanvasGroup dari panel detail
+    public CanvasGroup recipeDetailCanvasGroup; 
 
     [Header("Recipe Detail UI")]
     public Image potionImageDetail;
@@ -23,6 +27,11 @@ public class RecipeBookUIHandler : MonoBehaviour
     public Button previousButton;
     public Button nextButton;
 
+    // BARU: Pengaturan untuk transisi
+    [Header("Transition Settings")]
+    public float transitionSpeed = 5f;
+    private bool isTransitioning = false; // Flag untuk mencegah klik ganda saat transisi
+
     private List<Potion> allPotions;
     private int currentPotionIndex = 0;
 
@@ -31,7 +40,6 @@ public class RecipeBookUIHandler : MonoBehaviour
         recipeBookPanel.SetActive(false);
         allPotions = recipeBookData.GetAllPotions();
 
-        // Hubungkan tombol navigasi
         previousButton.onClick.AddListener(ShowPreviousPotion);
         nextButton.onClick.AddListener(ShowNextPotion);
     }
@@ -39,61 +47,84 @@ public class RecipeBookUIHandler : MonoBehaviour
     public void ToggleRecipeBook()
     {
         recipeBookPanel.SetActive(!recipeBookPanel.activeSelf);
-        if (recipeBookPanel.activeSelf)
+        if (recipeBookPanel.activeSelf && allPotions.Count > 0)
         {
-            // Tampilkan resep pertama saat buku dibuka
             currentPotionIndex = 0;
+            // Langsung tampilkan tanpa transisi saat pertama kali dibuka
             ShowRecipeDetails(allPotions[currentPotionIndex]);
+            recipeDetailCanvasGroup.alpha = 1; // Pastikan terlihat jelas
         }
     }
     
-    // Fungsi untuk menampilkan resep berikutnya
+    // MODIFIKASI: Fungsi ini sekarang akan memulai Coroutine transisi
     public void ShowNextPotion()
     {
-        if (allPotions.Count == 0) return;
+        if (allPotions.Count == 0 || isTransitioning) return;
 
         currentPotionIndex++;
         if (currentPotionIndex >= allPotions.Count)
         {
-            currentPotionIndex = 0; // Kembali ke resep pertama jika sudah di akhir
+            currentPotionIndex = 0;
         }
-        ShowRecipeDetails(allPotions[currentPotionIndex]);
+        StartCoroutine(TransitionToPotion(allPotions[currentPotionIndex]));
     }
     
-    // Fungsi untuk menampilkan resep sebelumnya
+    // MODIFIKASI: Fungsi ini juga akan memulai Coroutine transisi
     public void ShowPreviousPotion()
     {
-        if (allPotions.Count == 0) return;
+        if (allPotions.Count == 0 || isTransitioning) return;
 
         currentPotionIndex--;
         if (currentPotionIndex < 0)
         {
-            currentPotionIndex = allPotions.Count - 1; // Kembali ke resep terakhir jika sudah di awal
+            currentPotionIndex = allPotions.Count - 1;
         }
-        ShowRecipeDetails(allPotions[currentPotionIndex]);
+        StartCoroutine(TransitionToPotion(allPotions[currentPotionIndex]));
+    }
+
+    // BARU: Coroutine untuk menangani animasi transisi fade-out dan fade-in
+    private IEnumerator TransitionToPotion(Potion potion)
+    {
+        isTransitioning = true;
+
+        // Fase 1: Fade Out (Memudar)
+        while (recipeDetailCanvasGroup.alpha > 0)
+        {
+            recipeDetailCanvasGroup.alpha -= Time.deltaTime * transitionSpeed;
+            yield return null; // Tunggu frame berikutnya
+        }
+
+        // Fase 2: Ganti Konten Resep (saat tidak terlihat)
+        ShowRecipeDetails(potion);
+
+        // Fase 3: Fade In (Muncul Kembali)
+        while (recipeDetailCanvasGroup.alpha < 1)
+        {
+            recipeDetailCanvasGroup.alpha += Time.deltaTime * transitionSpeed;
+            yield return null; // Tunggu frame berikutnya
+        }
+
+        isTransitioning = false;
     }
     
+    // Fungsi ini tidak berubah, hanya dipanggil di tengah transisi
     public void ShowRecipeDetails(Potion potion)
     {
         if (potion == null) return;
         
-        // Update informasi detail
         potionImageDetail.sprite = potion.potionImage;
         potionNameDetail.text = potion.potionName;
         potionEffectDetail.text = potion.potionDescription;
 
-        // Hapus item bahan lama
         foreach (Transform child in ingredientsParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Tampilkan daftar bahan baru
         for (int i = 0; i < potion.requiredIngredients.Length; i++)
         {
             Ingredient ingredient = potion.requiredIngredients[i];
-           
-
+            
             GameObject ingredientItem = Instantiate(ingredientItemPrefab, ingredientsParent);
             ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.ingredientImage;
             ingredientItem.GetComponentInChildren<TMP_Text>().text = $"{ingredient.ingredientName}";
