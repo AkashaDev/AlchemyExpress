@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e8207baaf0ccc428caa98540e98fdd, type: 3}
+  m_Name: Gastric Ulcer Potion
+  m_EditorClassIdentifier: 
+  potionId: 10
+  potionName: Gastric Ulcer Potion
+  potionImage: {fileID: 21300000, guid: 7b6bf5083cf86654b806a22f6d89699b, type: 3}
+  potionDescription: Crafted from hibiscus for its anti-inflammatory essence and
+    daisy for natural soothing oils, this light elixir promotes mucosal healing and
+    relieves ulcer pain with each sip.
+  potionEffect: 
+  requiredIngredients:
+  - {fileID: 11400000, guid: 8a2fd0d9e4091a543aa773d2182b467c, type: 2}
+  - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}
+  - {fileID: 11400000, guid: c185fc5a3e1604742ae0ae58b7a084d6, type: 2}

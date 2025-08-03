@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionId: 3
   potionName: Toothache
-  potionImage: {fileID: 21300000, guid: 4b2009dfa6ddfdb428ce01d924b952ad, type: 3}
+  potionImage: {fileID: 21300000, guid: 94e91195b7a7e0f40bcae3bebb00f1c0, type: 3}
   potionDescription: Potion to cure toothache
   potionEffect: 
   requiredIngredients:

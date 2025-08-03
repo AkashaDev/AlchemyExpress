@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionId: 1
   potionName: Itch Potion
-  potionImage: {fileID: 21300000, guid: 8e7030803bd624e48bd6f398256aec19, type: 3}
+  potionImage: {fileID: 21300000, guid: f78b6b7c6fb60c2449099cf6df56d325, type: 3}
   potionDescription: Potion to cure itch
   potionEffect: 
   requiredIngredients:

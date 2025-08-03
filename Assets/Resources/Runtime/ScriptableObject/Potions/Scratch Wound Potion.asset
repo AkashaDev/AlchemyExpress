@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionId: 2
   potionName: Scratch Wound Potion
-  potionImage: {fileID: 21300000, guid: 06ae5d98bbb0a9d4d99b3da13decc04f, type: 3}
+  potionImage: {fileID: 21300000, guid: dc6f096890d6f14488e1ea0d3938f872, type: 3}
   potionDescription: Potion to cure wound
   potionEffect: 
   requiredIngredients:

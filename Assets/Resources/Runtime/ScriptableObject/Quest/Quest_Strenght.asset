@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
+  m_Name: Quest_Strenght
+  m_EditorClassIdentifier: 
+  dialogue: It's so strange that they brought up to 5 carts of wood. And the wood
+    is so big. I need something to <b>increase my strength</b>
+  Potion: {fileID: 11400000, guid: b12b8b62d09106a4cba82c9fc43a3bac, type: 2}
+  levelDifficults: 2
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: ba29ddd4c36709e4aac200d7f1770992, type: 2}

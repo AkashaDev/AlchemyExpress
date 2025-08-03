@@ -13,8 +13,19 @@ MonoBehaviour:
   m_Name: Recipe Book Data
   m_EditorClassIdentifier: 
   allPotions:
+  - {fileID: 11400000, guid: 37f3f106caf99a746983e63682e01ae9, type: 2}
+  - {fileID: 11400000, guid: 836bb836292d15a42992e3127d41c9e1, type: 2}
+  - {fileID: 11400000, guid: e210852ccefc82d498804269d5493a5e, type: 2}
+  - {fileID: 11400000, guid: 5cb8b670bd0929a499f92e0b0fa1249a, type: 2}
   - {fileID: 11400000, guid: d6fa0e1f70b1c9f429a9e01e656b2c6f, type: 2}
-  - {fileID: 11400000, guid: f6b901fdc1049384da873c62c1067f67, type: 2}
-  - {fileID: 11400000, guid: 051a20e003a62d640b18d488a2594c98, type: 2}
-  - {fileID: 11400000, guid: e109dda2b7f32874d9f21f9acca45f6f, type: 2}
+  - {fileID: 11400000, guid: 1415de4daa2cc964bbf204d99efe9418, type: 2}
+  - {fileID: 11400000, guid: 8d487fdd16133ec40aa938e843ddd8b8, type: 2}
+  - {fileID: 11400000, guid: 46f0156a81432dd40b41cd4a7e72bc41, type: 2}
   - {fileID: 11400000, guid: 4c3a1dde94eb1a94e94ae3ba75453893, type: 2}
+  - {fileID: 11400000, guid: f6b901fdc1049384da873c62c1067f67, type: 2}
+  - {fileID: 11400000, guid: ba76a9b89580d624cad55d3ae0cd847c, type: 2}
+  - {fileID: 11400000, guid: 051a20e003a62d640b18d488a2594c98, type: 2}
+  - {fileID: 11400000, guid: 76516ba2226d20d4bbbf2f7bd1b7657f, type: 2}
+  - {fileID: 11400000, guid: b12b8b62d09106a4cba82c9fc43a3bac, type: 2}
+  - {fileID: 11400000, guid: e109dda2b7f32874d9f21f9acca45f6f, type: 2}
+  - {fileID: 11400000, guid: 5a02ae903b6492745a9b05229deb63bc, type: 2}

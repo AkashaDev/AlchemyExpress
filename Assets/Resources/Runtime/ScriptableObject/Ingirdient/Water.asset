@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   ingredientName: Water
-  itemSprite: {fileID: 21300000, guid: b7156595d9a37b743bf49790c7a31d39, type: 3}
+  itemSprite: {fileID: 21300000, guid: 45a6ba7ccbb1cd1489e477aa521faade, type: 3}
   itemIcon: {fileID: 21300000, guid: c6f3c952f005dcd44b4688f6e25725af, type: 3}
-  canRotate: 1
+  canRotate: 0
   shapeCells:
   - {x: 0, y: 0}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 using ObeserverPattern;
 
 public class PotionBrewer : MonoBehaviour
@@ -10,6 +11,8 @@ public class PotionBrewer : MonoBehaviour
     // public List<RecipeSO> allRecipes;
     public GameObject potionPrefab;
     public Transform spawnPoint;
+    public Transform dotBetweenTransform;
+    private bool isBrewing = false ;
 
     [Header("Referensi Buku Resep")]
     public RecipeBookData recipeBook;
@@ -23,7 +26,7 @@ public class PotionBrewer : MonoBehaviour
     }
 
     private void TryBrewPotion()
-    {   
+    {
         if (cauldron.IsLocked()) return;
         if (recipeBook == null)
         {
@@ -47,10 +50,62 @@ public class PotionBrewer : MonoBehaviour
             }
         }
 
-        Debug.Log("Tidak cocok dengan resep manapun.");
+        if (isBrewing == false)
+        {
+            Debug.Log("Tidak cocok dengan resep manapun.");
+            isBrewing = true;
+            dotBetweenTransform.DOShakePosition(
+            duration: 0.3f,
+            strength: new Vector3(0.3f, 0f, 0f),
+            vibrato: 10,
+            randomness: 0,
+            snapping: false,
+            fadeOut: true
+        ).OnComplete(() =>
+        {
+            List<IngredientInstance> ingredients = cauldron.GetCurrentIngredients();
+            int completed = 0;
+
+            foreach (var ing in ingredients)
+            {
+                if (ing == null) continue;
+                Collider2D col = ing.GetComponent<Collider2D>();
+                if (col != null) col.enabled = false;
+                Vector3 randomOffset = new Vector3(
+                    Random.Range(-1.5f, 1.5f),
+                    Random.Range(-1f, -2.5f),
+                    0f
+                );
+
+                ing.transform
+                    .DOMove(ing.transform.position + randomOffset, 0.6f)
+                    .SetEase(Ease.OutQuad);
+                ing.transform
+                    .DORotate(new Vector3(0, 0, Random.Range(180f, 720f)), 0.6f, RotateMode.FastBeyond360);
+                DOVirtual.DelayedCall(0.6f, () =>
+                {
+                    Destroy(ing.gameObject);
+                    completed++;
+
+                    if (completed >= ingredients.Count)
+                    {
+                        cauldron.ClearAll();
+                    }
+                });
+            }
+
+            if (ingredients.Count == 0)
+            {
+                cauldron.ClearAll();
+            }
+            isBrewing = false;
+        });
+            
+        }
+        
     }
 
-    bool IsMatch(Potion recipe, List<IngredientInstance> placedIngredients)
+        bool IsMatch(Potion recipe, List<IngredientInstance> placedIngredients)
     {
         List<string> requiredNames = recipe
             .requiredIngredients.Select(ingredient => ingredient.ingredientName)

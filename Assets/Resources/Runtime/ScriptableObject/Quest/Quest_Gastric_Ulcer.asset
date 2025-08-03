@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
+  m_Name: Quest_Gastric_Ulcer
+  m_EditorClassIdentifier: 
+  dialogue: This week I rarely eat because of the many orders, <b>my stomach feels
+    nauseous, bloated,</b> and </b>there is a feeling of wanting to vomit<b>. Give
+    me medicine to cure this.
+  Potion: {fileID: 11400000, guid: 46f0156a81432dd40b41cd4a7e72bc41, type: 2}
+  levelDifficults: 0
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}

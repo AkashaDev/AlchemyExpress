@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionId: 5
   potionName: Headache
-  potionImage: {fileID: 21300000, guid: de4324b4447fb624fa3625cdb40f8001, type: 3}
+  potionImage: {fileID: 21300000, guid: d79b19d205a2bba43be5d89a3f1b3ef4, type: 3}
   potionDescription: Potion to cure Headache
   potionEffect: 
   requiredIngredients:

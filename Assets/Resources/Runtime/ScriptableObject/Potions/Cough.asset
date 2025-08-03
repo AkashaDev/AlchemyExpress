@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionId: 4
   potionName: Cough Potion
-  potionImage: {fileID: 21300000, guid: ffc5cbcacdfe3ae4897521b7e20decbd, type: 3}
+  potionImage: {fileID: 21300000, guid: a4250ffefb64b1f4dafe1c725a7b9791, type: 3}
   potionDescription: Potion to cure cough
   potionEffect: 
   requiredIngredients:
