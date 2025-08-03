@@ -6,6 +6,9 @@ public class TrashAreaGrid : MonoBehaviour
 {
 
     [SerializeField] private BoxCollider2D trashCollider;
+    [SerializeField] private GameObject trashClosedVisual;
+    [SerializeField] private GameObject trashOpenVisual;
+    private bool isHovered = false;
 
     public bool IsInsideTrashArea(Vector3 worldPos)
     {
@@ -24,6 +27,15 @@ public class TrashAreaGrid : MonoBehaviour
         {
             Debug.Log("Bahan di atas trash area");
         }
+    }
+
+    public void SetHoverState(bool hover)
+    {
+        if (hover == isHovered) return;
+
+        isHovered = hover;
+        trashClosedVisual.SetActive(!hover);
+        trashOpenVisual.SetActive(hover);
     }
     /* public Vector2 size = new Vector2(3, 3);
      public CauldronSpawner cauldron;

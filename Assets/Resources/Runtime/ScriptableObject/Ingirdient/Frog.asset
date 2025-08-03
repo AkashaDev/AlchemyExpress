@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: Frog
   itemSprite: {fileID: 21300000, guid: bbf4ef389f2e13341a41252cf921487c, type: 3}
-  itemIcon: {fileID: 21300000, guid: f8929fdcee7913e40ac537b55092793a, type: 3}
+  itemIcon: {fileID: 21300000, guid: a5462e17380f0c64fa055009b68536d7, type: 3}
   canRotate: 0
   shapeCells:
   - {x: 0, y: 0}

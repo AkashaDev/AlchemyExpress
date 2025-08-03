@@ -25,7 +25,7 @@ public class PotionBrewer : MonoBehaviour
         }
     }
 
-    private void TryBrewPotion()
+    public void TryBrewPotion()
     {
         if (cauldron.IsLocked()) return;
         if (recipeBook == null)

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: Oyster shell
   itemSprite: {fileID: 21300000, guid: b576d741f77b8d94d849bc291750f2f0, type: 3}
-  itemIcon: {fileID: 21300000, guid: b822e3cc8d149c9499d457dc137418b0, type: 3}
+  itemIcon: {fileID: 21300000, guid: e1615b7175f6a9840ae1e78ea32d8fe0, type: 3}
   canRotate: 1
   shapeCells:
   - {x: 0, y: 0}

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: 'Storm Fruit '
   itemSprite: {fileID: 21300000, guid: e038fc3dfa3e7ce4fb7c06893a5f931d, type: 3}
-  itemIcon: {fileID: 21300000, guid: 8cf62444c0ebea348b98752046281682, type: 3}
+  itemIcon: {fileID: 21300000, guid: 8e2a2536f5695cb4e9a991fa8545df12, type: 3}
   canRotate: 1
   shapeCells:
   - {x: -1, y: 1}

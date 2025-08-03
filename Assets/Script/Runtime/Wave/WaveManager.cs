@@ -42,6 +42,12 @@ namespace NPC
         private int _targetIncomeThisDay;
         private const float OBJECTIVE_PERCENTAGE = 0.6f;
 
+        public int CurrentDay => _currentDay;
+        public int NPCsToSpawnThisDay => _npcsToSpawnThisDay;
+        public int NPCsSpawnedThisDay => _npcsSpawnedThisDay;
+        public int PlayerIncomeThisDay => _playerIncomeThisDay;
+        public int TargetIncomeThisDay => _targetIncomeThisDay;
+
         private void Awake()
         {
             EasyQuestsPool = QuestsList
