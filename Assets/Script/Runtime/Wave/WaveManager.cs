@@ -32,7 +32,7 @@ namespace NPC
         private List<QuestData> HardQuestsPool;
         private List<QuestData> _activeQuests = new List<QuestData>();
 
-        private int _currentDay = 0;
+        private int _currentDay = 2;
         private int _npcsToSpawnThisDay;
         private int _npcsSpawnedThisDay;
         private List<QuestData> _questsForCurrentDay;

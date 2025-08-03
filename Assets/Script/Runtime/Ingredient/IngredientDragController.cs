@@ -76,6 +76,8 @@ public class IngredientDragController : MonoBehaviour
 
     void HandleDragging()
     {
+        if (cauldron == null || current == null)
+            return;
         Vector3 mouseWorld = cam.ScreenToWorldPoint(Input.mousePosition) + offset;
         mouseWorld.z = 0;
         current.transform.position = mouseWorld;
@@ -105,8 +107,12 @@ public class IngredientDragController : MonoBehaviour
 
     void TryPlace()
     {
+
         isDragging = false;
+        if (cauldron == null || current == null)
+            return;
         current.IsBeingDragged = false;
+
 
         if (currentCollider != null) currentCollider.enabled = true;
         cauldron.gridBehavior.ClearPreview();

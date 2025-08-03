@@ -157,10 +157,13 @@ public class CauldronGridBehavior : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
+                var tile = tileRenderers[x, y];
+                if (tile == null) continue;
+
                 if (gridStatus[x, y] == -1)
-                    tileRenderers[x, y].color = Color.black;
+                    tile.color = Color.black;
                 else
-                    tileRenderers[x, y].color = new Color(1f, 1f, 1f, 0.3f);
+                    tile.color = new Color(1f, 1f, 1f, 0.3f);
             }
         }
     }
@@ -175,7 +178,8 @@ public class CauldronGridBehavior : MonoBehaviour
             if (TryGetArrayIndex(pos, out int x, out int y))
             {
                 var renderer = tileRenderers[x, y];
-                renderer.color = valid ? Color.green : Color.red;
+                if (renderer != null)
+                    renderer.color = valid ? Color.green : Color.red;
             }
         }
     }

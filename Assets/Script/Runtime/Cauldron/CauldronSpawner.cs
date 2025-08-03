@@ -15,6 +15,12 @@ public class CauldronSpawner : MonoBehaviour
     public SpriteRenderer[,] tileRenderers;
     private CauldronTemplateSO currentTemplate;
 
+    [Header("Backgrounds")]
+    public GameObject background3x3;
+    public GameObject background4x4;
+    public GameObject background5x5;
+    private GameObject currentBackgroundInstance;
+
     private void OnEnable()
     {
         EventManager.Subscribe<QuestAboutToStartEvent>(HandleQuestStart);
@@ -55,6 +61,7 @@ public class CauldronSpawner : MonoBehaviour
         InitializeGridLogic(newTemplate);
         BuildGridVisual(newTemplate);
         gridBehavior.SetTileRenderers(tileRenderers);
+        SpawnBackgroundForGrid(newTemplate.width, newTemplate.height);
     }
 
     void BuildGridVisual(CauldronTemplateSO template)
@@ -108,5 +115,29 @@ public class CauldronSpawner : MonoBehaviour
         }
 
         gridBehavior.Initialize(template.width, template.height, tileParent.position, blockedTileArray);
+    }
+
+    private void SpawnBackgroundForGrid(int width, int height)
+    {
+        if (currentBackgroundInstance != null)
+            Destroy(currentBackgroundInstance);
+
+        GameObject selectedPrefab = null;
+
+        if (width == 3 && height == 3)
+            selectedPrefab = background3x3;
+        else if (width == 4 && height == 4)
+            selectedPrefab = background4x4;
+        else if (width == 5 && height == 5)
+            selectedPrefab = background5x5;
+
+        if (selectedPrefab != null)
+        {
+            currentBackgroundInstance = Instantiate(selectedPrefab, tileParent.position, Quaternion.identity, tileParent);
+        }
+        else
+        {
+            Debug.LogWarning($"No background prefab set for grid size {width}x{height}");
+        }
     }
 }
