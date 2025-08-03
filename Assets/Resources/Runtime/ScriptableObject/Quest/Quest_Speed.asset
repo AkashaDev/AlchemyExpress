@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Speed
   m_EditorClassIdentifier: 
-  dialogue: 
-  Potion: {fileID: 0}
-  levelDifficults: 0
-  rewardHappy: 0
-  rewardNeutral: 0
-  rewardAngry: 0
-  cauldronTemplate: {fileID: 0}
+  dialogue: The work is getting more and more, I need something to <b>speed up</b>
+    the body's work, please make me 1
+  Potion: {fileID: 11400000, guid: 76516ba2226d20d4bbbf2f7bd1b7657f, type: 2}
+  levelDifficults: 1
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: fb73879584a0e34469563f6b623393d6, type: 2}

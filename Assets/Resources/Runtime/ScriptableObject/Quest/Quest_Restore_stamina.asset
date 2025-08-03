@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Restore_stamina
   m_EditorClassIdentifier: 
-  dialogue: 
-  Potion: {fileID: 0}
-  levelDifficults: 0
-  rewardHappy: 0
-  rewardNeutral: 0
-  rewardAngry: 0
-  cauldronTemplate: {fileID: 0}
+  dialogue: I'm very tired after running 3 laps, there are still 4 more laps to reach
+    my daily target, please make me a potion to <b>restore my stamina</b>.
+  Potion: {fileID: 11400000, guid: ba76a9b89580d624cad55d3ae0cd847c, type: 2}
+  levelDifficults: 1
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: 89dd633acc7f34a4e8364895f19f593a, type: 2}

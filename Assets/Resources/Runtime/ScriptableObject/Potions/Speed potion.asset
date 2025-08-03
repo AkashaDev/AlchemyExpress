@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e8207baaf0ccc428caa98540e98fdd, type: 3}
   m_Name: Speed potion
   m_EditorClassIdentifier: 
-  potionId: 0
-  potionName: 
-  potionImage: {fileID: 0}
-  potionDescription: 
+  potionId: 13
+  potionName: Speed potion
+  potionImage: {fileID: 21300000, guid: 4ec3f35598b27a24c8c0fcfe355b32ea, type: 3}
+  potionDescription: Temporarily increases movement and action speed. Favored by
+    scouts and escape artists, thanks to its explosive blend of storm-charged fruit
+    and adrenaline-rich lizard extract.
   potionEffect: 
-  requiredIngredients: []
+  requiredIngredients:
+  - {fileID: 11400000, guid: 898770afc3d571641978b150b85cfd19, type: 2}
+  - {fileID: 11400000, guid: 8a2fd0d9e4091a543aa773d2182b467c, type: 2}
+  - {fileID: 11400000, guid: c185fc5a3e1604742ae0ae58b7a084d6, type: 2}
+  - {fileID: 11400000, guid: 6c74ece66d68e0244a8c02ee228082df, type: 2}

@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Cold
   m_EditorClassIdentifier: 
-  dialogue: 
-  Potion: {fileID: 0}
+  dialogue: '*Snort, huh, I can''t stand it anymore, <b>my left nose feels like a
+    waterfall </b> and <b>my right nose feels like dry land</b>, please give me medicine
+    to cure this.'
+  Potion: {fileID: 11400000, guid: 5cb8b670bd0929a499f92e0b0fa1249a, type: 2}
   levelDifficults: 0
-  rewardHappy: 0
-  rewardNeutral: 0
-  rewardAngry: 0
-  cauldronTemplate: {fileID: 0}
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}

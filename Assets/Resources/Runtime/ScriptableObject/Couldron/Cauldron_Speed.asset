@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bce2cd58af824f8438aae14efe08be4a, type: 3}
   m_Name: Cauldron_Speed
   m_EditorClassIdentifier: 
-  width: 0
-  height: 0
-  blockedPositions: []
+  width: 4
+  height: 4
+  blockedPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: -2}

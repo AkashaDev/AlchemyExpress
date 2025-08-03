@@ -150,6 +150,7 @@ public class IngredientSpawner : MonoBehaviour
     {
         if (selectedIngredient == null || _spawnPoint == null) return;
         GameObject obj = Instantiate(ingredientPrefab, _spawnPoint.position, Quaternion.identity);
+        obj.transform.localScale = Vector3.one*0.7f;
         obj.GetComponent<IngredientInstance>()?.Setup(selectedIngredient);
     }
 }

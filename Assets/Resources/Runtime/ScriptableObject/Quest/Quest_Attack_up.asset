@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Attack_up
   m_EditorClassIdentifier: 
-  dialogue: 
-  Potion: {fileID: 0}
-  levelDifficults: 0
-  rewardHappy: 0
-  rewardNeutral: 0
-  rewardAngry: 0
-  cauldronTemplate: {fileID: 0}
+  dialogue: I will go hunting to increase the food supply for my family, give me
+    something so that I can <b>kill easily</b>.
+  Potion: {fileID: 11400000, guid: 836bb836292d15a42992e3127d41c9e1, type: 2}
+  levelDifficults: 2
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: 89c35863cf4b2b642acc7ae9195cf1c7, type: 2}

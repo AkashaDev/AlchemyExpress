@@ -15,8 +15,8 @@ MonoBehaviour:
   dialogue: <b>My hand got scratched</b> when cutting wood, I need medicine to speed
     up the healing
   Potion: {fileID: 11400000, guid: 051a20e003a62d640b18d488a2594c98, type: 2}
-  levelDifficults: 1
+  levelDifficults: 0
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500
-  cauldronTemplate: {fileID: 11400000, guid: 42df7380a64b37540a19d24d60bad9ab, type: 2}
+  cauldronTemplate: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}

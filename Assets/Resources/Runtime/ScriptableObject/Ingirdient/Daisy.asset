@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Daisy
   m_EditorClassIdentifier: 
   ingredientName: Daisy
-  itemSprite: {fileID: 21300000, guid: cbd820762a807bf4187c1da153c0c1c3, type: 3}
+  itemSprite: {fileID: 21300000, guid: 78d3af955e393fb45a74877e21ebca18, type: 3}
   itemIcon: {fileID: 21300000, guid: 1d73c5519ec2a9240a2ca5c96096b11c, type: 3}
   canRotate: 1
   shapeCells:

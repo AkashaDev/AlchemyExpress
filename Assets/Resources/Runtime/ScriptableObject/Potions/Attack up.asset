@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e8207baaf0ccc428caa98540e98fdd, type: 3}
   m_Name: Attack up
   m_EditorClassIdentifier: 
-  potionId: 0
-  potionName: 
-  potionImage: {fileID: 0}
-  potionDescription: 
+  potionId: 15
+  potionName: Attack up
+  potionImage: {fileID: 21300000, guid: 84065b81a7e20ae4c8287f91bf86e921, type: 3}
+  potionDescription: A stimulant tonic that boosts strength and reflexes. Formulated
+    with lizard extract, ginger, and botanical stabilizers for temporary physical
+    enhancement.
   potionEffect: 
-  requiredIngredients: []
+  requiredIngredients:
+  - {fileID: 11400000, guid: 6c74ece66d68e0244a8c02ee228082df, type: 2}
+  - {fileID: 11400000, guid: 887e063d8f76a1d4896657a3a65fbb3a, type: 2}
+  - {fileID: 11400000, guid: 79ea8ef664404bc4cb564e978f5bfde5, type: 2}
+  - {fileID: 11400000, guid: 8a2fd0d9e4091a543aa773d2182b467c, type: 2}
+  - {fileID: 11400000, guid: c185fc5a3e1604742ae0ae58b7a084d6, type: 2}
+  - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}

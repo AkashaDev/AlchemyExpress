@@ -15,8 +15,8 @@ MonoBehaviour:
   dialogue: My <b>teeth hurt</b> because my aunt cooked the meat too hard. I want
     some <b>pain relieving medicine for my teeth.</b>
   Potion: {fileID: 11400000, guid: e109dda2b7f32874d9f21f9acca45f6f, type: 2}
-  levelDifficults: 1
+  levelDifficults: 0
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500
-  cauldronTemplate: {fileID: 11400000, guid: 42df7380a64b37540a19d24d60bad9ab, type: 2}
+  cauldronTemplate: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}

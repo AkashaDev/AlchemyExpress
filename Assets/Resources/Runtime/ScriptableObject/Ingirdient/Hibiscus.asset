@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e27db90002f8a524eac69e2c2c5be2e4, type: 3}
   m_Name: Hibiscus
   m_EditorClassIdentifier: 
-  ingredientName: 
-  itemSprite: {fileID: 0}
-  itemIcon: {fileID: 0}
+  ingredientName: Hibiscus
+  itemSprite: {fileID: 21300000, guid: 11f28d028ae526040aea93eac27784b5, type: 3}
+  itemIcon: {fileID: 21300000, guid: add4c74bd7c85f640a3c0367429f76eb, type: 3}
   canRotate: 1
-  shapeCells: []
+  shapeCells:
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 2, y: 0}

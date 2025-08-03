@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Backache
   m_EditorClassIdentifier: 
-  dialogue: 
-  Potion: {fileID: 0}
+  dialogue: "Riding this horse is killing my back. Give me your best medicine for
+    <b>back pain</b>, I really need it.\r"
+  Potion: {fileID: 11400000, guid: e210852ccefc82d498804269d5493a5e, type: 2}
   levelDifficults: 0
-  rewardHappy: 0
-  rewardNeutral: 0
-  rewardAngry: 0
-  cauldronTemplate: {fileID: 0}
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}

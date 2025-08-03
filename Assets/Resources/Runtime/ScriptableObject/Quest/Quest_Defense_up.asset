@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Defense_up
   m_EditorClassIdentifier: 
-  dialogue: 
-  Potion: {fileID: 0}
-  levelDifficults: 0
-  rewardHappy: 0
-  rewardNeutral: 0
-  rewardAngry: 0
-  cauldronTemplate: {fileID: 0}
+  dialogue: There will be a war soon, and my body is still not strong enough to deal
+    with the enemy. I need something to increase my body's <b>defense</b>.
+  Potion: {fileID: 11400000, guid: 1415de4daa2cc964bbf204d99efe9418, type: 2}
+  levelDifficults: 1
+  rewardHappy: 1000
+  rewardNeutral: 700
+  rewardAngry: 500
+  cauldronTemplate: {fileID: 11400000, guid: 31368ad6d36d951409393e8a5ba0cbf8, type: 2}

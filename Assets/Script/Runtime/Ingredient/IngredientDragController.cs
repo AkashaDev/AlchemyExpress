@@ -52,7 +52,7 @@ public class IngredientDragController : MonoBehaviour
                 isDragging = true;
                 offset = inst.transform.position - mouseWorld;
                 current.IsBeingDragged = true;
-
+                current.transform.localScale = Vector3.one;
                 currentCollider = current.GetComponent<Collider2D>();
                 if (currentCollider != null) currentCollider.enabled = false;
 
@@ -153,6 +153,7 @@ public class IngredientDragController : MonoBehaviour
             else
             {
                 current.ResetToSpawnPoint();
+                current.transform.localScale = Vector3.one*0.7f;
             }
 
             OnRejectedFeedback();
