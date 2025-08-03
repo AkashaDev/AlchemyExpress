@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ObeserverPattern;
 
 public class PotionBrewer : MonoBehaviour
 {
@@ -22,7 +23,8 @@ public class PotionBrewer : MonoBehaviour
     }
 
     private void TryBrewPotion()
-    {
+    {   
+        if (cauldron.IsLocked()) return;
         if (recipeBook == null)
         {
             Debug.LogError("RecipeBookData belum di-assign di PotionBrewer!");
@@ -36,6 +38,7 @@ public class PotionBrewer : MonoBehaviour
             if (IsMatch(potionRecipe, ingredientsInCauldron))
             {
                 Debug.Log("Resep cocok! Menghasilkan: " + potionRecipe.potionName);
+                EventManager.Raise(new BrewSuccessEvent());
 
                 SpawnPotionObject(potionRecipe);
                 cauldron.ClearAll();

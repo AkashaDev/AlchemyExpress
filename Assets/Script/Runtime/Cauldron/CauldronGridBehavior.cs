@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ObeserverPattern;
 
 public class CauldronGridBehavior : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CauldronGridBehavior : MonoBehaviour
 
     private int xOffset;
     private int yOffset;
+    private bool isLocked = false;
+    public bool IsLocked() => isLocked;
 
     private SpriteRenderer[,] tileRenderers;
     [SerializeField] public List<int> debugGrid;
@@ -19,19 +22,29 @@ public class CauldronGridBehavior : MonoBehaviour
     private List<IngredientInstance> placedIngredients = new List<IngredientInstance>();
     [SerializeField] private List<string> debugIngredientNames = new List<string>();
 
+    private void OnEnable()
+    {
+        EventManager.Subscribe<BrewSuccessEvent>(HandleBrewSuccess);
+        EventManager.Subscribe<PotionDisposedEvent>(HandlePotionDisposed);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe<BrewSuccessEvent>(HandleBrewSuccess);
+        EventManager.Unsubscribe<PotionDisposedEvent>(HandlePotionDisposed);
+    }
+
     public void Initialize(int width, int height, Vector3 origin, bool[] blockedTiles)
     {
         this.width = width;
         this.height = height;
 
-        // Perubahan: Sesuaikan origin untuk grid berukuran genap
         this.origin = origin;
-        if (width % 2 == 0) // Jika lebar genap
+        if (width % 2 == 0)
             this.origin.x += 0.5f;
-        if (height % 2 == 0) // Jika tinggi genap
+        if (height % 2 == 0)
             this.origin.y += 0.5f;
 
-        // ... kode existing di bawah tetap sama ...
         xOffset = width / 2;
         yOffset = height / 2;
 
@@ -53,6 +66,18 @@ public class CauldronGridBehavior : MonoBehaviour
         }
     }
 
+    private void HandleBrewSuccess(BrewSuccessEvent e)
+    {
+        isLocked = true;
+        Debug.Log("Kuali dikunci karena resep berhasil.");
+    }
+    
+    private void HandlePotionDisposed(PotionDisposedEvent e)
+    {
+        isLocked = false;
+        Debug.Log("Kuali terbuka karena ramuan telah disingkirkan.");
+    }
+
     public Vector3 GridToWorld(Vector2Int gridPos)
     {
         return origin + new Vector3(gridPos.x, gridPos.y, 0);
@@ -72,7 +97,8 @@ public class CauldronGridBehavior : MonoBehaviour
     }
 
     public bool CanPlaceIngredient(IngredientInstance inst, Vector2Int pivot)
-    {
+    {   
+        if (isLocked) return false;
         Vector2Int[] occupied = inst.GetOccupiedGridPositions(pivot);
 
         foreach (var pos in occupied)

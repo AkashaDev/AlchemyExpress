@@ -7,6 +7,10 @@ public class PotionDragHandler : MonoBehaviour
     private bool isDragging = false;
     public Potion potionData;
 
+    private Vector3 _spawnPosition;
+    private TrashAreaGrid _trashArea;
+
+
     private void Update()
     {
         if (isDragging)
@@ -28,16 +32,21 @@ public class PotionDragHandler : MonoBehaviour
         isDragging = false;
 
         Collider2D hit = Physics2D.OverlapPoint(transform.position);
-        if (hit != null && hit.CompareTag("Customer"))
+
+        bool droppedOnCustomer = hit != null && hit.CompareTag("Customer");
+        bool droppedInTrash = _trashArea != null && _trashArea.IsInsideTrashArea(transform.position);
+
+        if (droppedOnCustomer || droppedInTrash)
         {
-            CustomerTestBehavior customer = hit.GetComponent<CustomerTestBehavior>();
-            if (customer != null)
-            {
-                Debug.Log($"Potion {potionData.potionName} diberikan ke customer {hit.name}");
-                EventManager.Raise(new PotionGivenToNPCEvent { potion = this.potionData });
-            }
+            EventManager.Raise(new PotionDisposedEvent());
+
+            if(droppedOnCustomer) EventManager.Raise(new PotionGivenToNPCEvent { potion = this.potionData });
 
             Destroy(gameObject);
+        }
+        else
+        {
+            transform.position = _spawnPosition;
         }
     }
 
