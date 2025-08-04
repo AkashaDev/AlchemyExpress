@@ -4,6 +4,7 @@ using System.Linq;
 using AlchemyExpress.Quest;
 using ObeserverPattern;
 using UnityEngine;
+using TMPro;
 
 namespace NPC
 {
@@ -27,12 +28,24 @@ namespace NPC
         [SerializeField]
         private List<QuestData> QuestsList;
 
+        [Header("Referensi UI")]
+        [SerializeField] private TextMeshProUGUI npcToSpawenText;
+        [SerializeField] private TextMeshProUGUI dayText;
+        [SerializeField] private TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI GoalText;
+
+        [Header ("Lose UI")]
+        public GameObject losePanel;
+        public TextMeshProUGUI LoseDayText;
+        public TextMeshProUGUI LoseScoreText;
+        public TextMeshProUGUI LoseGoalText;
+
         private List<QuestData> EasyQuestsPool;
         private List<QuestData> MediumQuestsPool;
         private List<QuestData> HardQuestsPool;
         private List<QuestData> _activeQuests = new List<QuestData>();
 
-        private int _currentDay = 2;
+        [SerializeField] private int _currentDay = 0;
         private int _npcsToSpawnThisDay;
         private int _npcsSpawnedThisDay;
         private List<QuestData> _questsForCurrentDay;
@@ -88,6 +101,7 @@ namespace NPC
             _playerIncomeThisDay = 0;
             _targetIncomeThisDay = 0;
             Debug.Log($"--- Memulai Hari ke-{_currentDay} ---");
+            dayText.text = "Day " + _currentDay;
             Debug.Log($"Bonus pendapatan dari hari sebelumnya: {_surplusIncomeFromPreviousDay}");
 
             if (_currentDay == 1)
@@ -127,7 +141,11 @@ namespace NPC
             float requiredIncome = _targetIncomeThisDay * OBJECTIVE_PERCENTAGE;
             float effectiveRequiredIncome = Mathf.Max(0, requiredIncome - _surplusIncomeFromPreviousDay);
 
+            npcToSpawenText.text = "0/" + _npcsToSpawnThisDay;
             Debug.Log($"Target pendapatan mentah: {requiredIncome} (dari total {_targetIncomeThisDay}). Pendapatan yang perlu dicari hari ini: {effectiveRequiredIncome}");
+
+            scoreText.text = _playerIncomeThisDay.ToString();
+            GoalText.text = "Gain at least " + requiredIncome + " coins";
 
             StartCoroutine(SpawnNextNPCWithDelay(1.5f));
         }
@@ -136,7 +154,7 @@ namespace NPC
         /// Menangani event ketika giliran NPC selesai.
         /// </summary>
         private void HandleNPCTurnFinished(NPCTurnFinishedEvent e)
-        {   
+        {
             _playerIncomeThisDay += e.rewardEarned;
             if (_npcsSpawnedThisDay >= _npcsToSpawnThisDay)
             {
@@ -146,6 +164,8 @@ namespace NPC
             {
                 StartCoroutine(SpawnNextNPCWithDelay(2f));
             }
+            npcToSpawenText.text = _npcsSpawnedThisDay + "/" + _npcsToSpawnThisDay;
+            scoreText.text = _playerIncomeThisDay.ToString();
         }
 
         private void CheckEndOfDayObjective()
@@ -169,12 +189,20 @@ namespace NPC
             }
             else
             {
-                // GAGAL
-                Debug.LogError("Objektif GAGAL! PERMAINAN BERAKHIR.");
-                // Reset bonus jika ada sistem 'coba lagi'
+
                 _surplusIncomeFromPreviousDay = 0;
-                // Tambahkan logika Game Over di sini
+                ShowLosePanel();
             }
+        }
+
+        private void ShowLosePanel()
+        {
+            Time.timeScale = 0f;
+            losePanel.SetActive(true);
+            LoseDayText.text = "Day: " + _currentDay;
+            LoseScoreText.text = _playerIncomeThisDay.ToString();
+            LoseGoalText.text = "Gain at least " + (_targetIncomeThisDay * OBJECTIVE_PERCENTAGE) + " <b>X</b>";
+
         }
 
         private IEnumerator StartNextDayAfterDelay(float delay)

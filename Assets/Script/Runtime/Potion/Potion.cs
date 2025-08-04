@@ -7,6 +7,7 @@ public class Potion : ScriptableObject
     public int potionId;
     public string potionName;
     public Sprite potionImage;
+    public Sprite potionImageBook;
     [TextArea(3, 6)]
     public string potionDescription;
     public string potionEffect; // Kegunaan potion

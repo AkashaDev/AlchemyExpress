@@ -15,7 +15,10 @@ MonoBehaviour:
   potionId: 4
   potionName: Cough Potion
   potionImage: {fileID: 21300000, guid: a4250ffefb64b1f4dafe1c725a7b9791, type: 3}
-  potionDescription: Potion to cure cough
+  potionImageBook: {fileID: 21300000, guid: e1f868b636f70fc45ad867426d3af284, type: 3}
+  potionDescription: An herbal infusion crafted with twice-bloomed daisies and woodland
+    leaves. This light remedy relieves coughing and clears the airway without side
+    effects.
   potionEffect: 
   requiredIngredients:
   - {fileID: 11400000, guid: 303558de577c13c43b82a498c2afa4fb, type: 2}

@@ -15,6 +15,7 @@ MonoBehaviour:
   potionId: 7
   potionName: Antidote Potion
   potionImage: {fileID: 21300000, guid: 5975c9c30e7549041ac1d0fcd4099599, type: 3}
+  potionImageBook: {fileID: 21300000, guid: 2237b19b691c13e49a61b314f79e2eab, type: 3}
   potionDescription: A potion that instantly neutralizes the effects of poison and
     heals the damage it causes.
   potionEffect: 

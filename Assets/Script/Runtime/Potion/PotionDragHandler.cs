@@ -6,8 +6,17 @@ public class PotionDragHandler : MonoBehaviour
     private Vector3 offset;
     private bool isDragging = false;
     public Potion potionData;
+    public TrashAreaGrid trashArea;
 
     private Vector3 _spawnPosition;
+
+    private void Awake()
+    {
+        if (trashArea == null)
+        {
+            trashArea = FindObjectOfType<TrashAreaGrid>();
+        }
+    }
 
     private void Update()
     {
@@ -23,6 +32,15 @@ public class PotionDragHandler : MonoBehaviour
     {
         _spawnPosition = transform.position;
         offset = transform.position - GetMouseWorldPos();
+        Collider2D[] hits = Physics2D.OverlapPointAll(transform.position);
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.CompareTag("Trashbin"))
+            {
+                trashArea.SetHoverState(true);
+            }
+        }
         isDragging = true;
     }
 

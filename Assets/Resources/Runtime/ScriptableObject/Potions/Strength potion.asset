@@ -15,6 +15,7 @@ MonoBehaviour:
   potionId: 16
   potionName: Strength potion
   potionImage: {fileID: 21300000, guid: ed9580512b882064eb2252e5dd619eeb, type: 3}
+  potionImageBook: {fileID: 21300000, guid: 780fbb8e707413145991a97d7544f27c, type: 3}
   potionDescription: A mineral-rich tonic formulated from pulverized oyster shell,
     botanical extracts, and natural anti-inflammatory agents. Enhances muscular efficiency
     and physical output for a limited duration, ideal for high-exertion tasks or

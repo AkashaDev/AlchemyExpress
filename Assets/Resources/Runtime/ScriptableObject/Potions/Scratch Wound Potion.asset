@@ -15,7 +15,10 @@ MonoBehaviour:
   potionId: 2
   potionName: Scratch Wound Potion
   potionImage: {fileID: 21300000, guid: dc6f096890d6f14488e1ea0d3938f872, type: 3}
-  potionDescription: Potion to cure wound
+  potionImageBook: {fileID: 21300000, guid: 16b2bfbcea2b8b544b73350b7fdb6df2, type: 3}
+  potionDescription: Crafted from a floral infusion of daisy and tulip blended with
+    dew-soaked leaves, this potion accelerates skin regeneration and reduces irritation
+    from small cuts.
   potionEffect: 
   requiredIngredients:
   - {fileID: 11400000, guid: 6722bdd6eff14bd4a976d0d2e00460eb, type: 2}

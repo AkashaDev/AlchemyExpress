@@ -15,6 +15,7 @@ MonoBehaviour:
   potionId: 10
   potionName: Gastric Ulcer Potion
   potionImage: {fileID: 21300000, guid: 7b6bf5083cf86654b806a22f6d89699b, type: 3}
+  potionImageBook: {fileID: 21300000, guid: a5cdbd3ca1142f14eba2fe97f372cdb4, type: 3}
   potionDescription: Crafted from hibiscus for its anti-inflammatory essence and
     daisy for natural soothing oils, this light elixir promotes mucosal healing and
     relieves ulcer pain with each sip.

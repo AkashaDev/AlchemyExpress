@@ -15,6 +15,7 @@ MonoBehaviour:
   potionId: 8
   potionName: Backache Potion
   potionImage: {fileID: 21300000, guid: a44bf066960b0614ba96a24f8a6542ff, type: 3}
+  potionImageBook: {fileID: 21300000, guid: e9a553f59df12874d9798a0eb0296da3, type: 3}
   potionDescription: A thick, warming liquid. Instantly relieves muscle pain and
     back stiffness, restoring movement speed and evasiveness.
   potionEffect: 

@@ -15,6 +15,7 @@ MonoBehaviour:
   potionId: 14
   potionName: Water breathing
   potionImage: {fileID: 21300000, guid: e24bd713f93b36a4aacac20845e04e2e, type: 3}
+  potionImageBook: {fileID: 21300000, guid: 675899616b88c8c449a5c5b5a6e57d54, type: 3}
   potionDescription: "Blended from amphibian essence, lizard enzymes, and aquatic
     florals, this draught grants temporary aquatic respiration. A single sip lets
     lungs filter water as though it were air.\r"

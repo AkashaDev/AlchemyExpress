@@ -11,7 +11,7 @@ public class RecipeBookUIHandler : MonoBehaviour
     public GameObject recipeDetailPanel;
 
     // BARU: Tambahkan referensi ke CanvasGroup dari panel detail
-    public CanvasGroup recipeDetailCanvasGroup; 
+    public CanvasGroup recipeDetailCanvasGroup;
 
     [Header("Recipe Detail UI")]
     public Image potionImageDetail;
@@ -26,6 +26,16 @@ public class RecipeBookUIHandler : MonoBehaviour
     [Header("Navigation Buttons")]
     public Button previousButton;
     public Button nextButton;
+
+    [Header("Pause Settings")]
+    public GameObject pausePanel;
+    public GameObject SettingsPanel;
+    public Button resumeButton;
+    public Button backToMenuButton;
+    public Button pauseButton;
+    public Button SettingsButton;
+    public Button backToPauseButton;
+    private bool isPaused = false;
 
     // BARU: Pengaturan untuk transisi
     [Header("Transition Settings")]
@@ -55,7 +65,8 @@ public class RecipeBookUIHandler : MonoBehaviour
             recipeDetailCanvasGroup.alpha = 1; // Pastikan terlihat jelas
         }
     }
-    
+
+
     // MODIFIKASI: Fungsi ini sekarang akan memulai Coroutine transisi
     public void ShowNextPotion()
     {
@@ -68,7 +79,7 @@ public class RecipeBookUIHandler : MonoBehaviour
         }
         StartCoroutine(TransitionToPotion(allPotions[currentPotionIndex]));
     }
-    
+
     // MODIFIKASI: Fungsi ini juga akan memulai Coroutine transisi
     public void ShowPreviousPotion()
     {
@@ -106,13 +117,13 @@ public class RecipeBookUIHandler : MonoBehaviour
 
         isTransitioning = false;
     }
-    
+
     // Fungsi ini tidak berubah, hanya dipanggil di tengah transisi
     public void ShowRecipeDetails(Potion potion)
     {
         if (potion == null) return;
-        
-        potionImageDetail.sprite = potion.potionImage;
+
+        potionImageDetail.sprite = potion.potionImageBook;
         potionNameDetail.text = potion.potionName;
         potionEffectDetail.text = potion.potionDescription;
 
@@ -124,11 +135,46 @@ public class RecipeBookUIHandler : MonoBehaviour
         for (int i = 0; i < potion.requiredIngredients.Length; i++)
         {
             IngredientSO ingredient = potion.requiredIngredients[i];
-           
-            
+
+
             GameObject ingredientItem = Instantiate(ingredientItemPrefab, ingredientsParent);
             ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.itemIcon;
             ingredientItem.GetComponentInChildren<TMP_Text>().text = $"{ingredient.ingredientName}";
         }
     }
+
+    #region Pause UI
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        pausePanel.SetActive(isPaused);
+
+        Time.timeScale = isPaused ? 0f : 1f;
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void SettingsGame() 
+    {
+        pausePanel.SetActive(false);
+        SettingsPanel.SetActive(true);
+    }
+
+    public void BackToPause() 
+    {
+        SettingsPanel.SetActive(false);
+        pausePanel.SetActive(true);
+    }
+
+    public void BackToMainMenu(string sceneName = "Main Menu")
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+    }
+    #endregion
 }

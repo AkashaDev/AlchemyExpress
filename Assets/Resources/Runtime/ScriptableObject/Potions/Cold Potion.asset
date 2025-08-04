@@ -15,6 +15,7 @@ MonoBehaviour:
   potionId: 9
   potionName: Cold Potion
   potionImage: {fileID: 21300000, guid: fdee7d83e16129645ad658cc8aa6581d, type: 3}
+  potionImageBook: {fileID: 21300000, guid: 549485ba301f78d468c33e749a9b869c, type: 3}
   potionDescription: A watery blend of wild lily essence and amphibian enzymes, known
     among forest healers to calm sneezing fits and nasal swelling caused by the common
     chill.

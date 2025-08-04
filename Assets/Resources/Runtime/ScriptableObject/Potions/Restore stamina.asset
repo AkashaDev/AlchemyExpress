@@ -15,6 +15,7 @@ MonoBehaviour:
   potionId: 12
   potionName: Restore stamina
   potionImage: {fileID: 21300000, guid: 92298fe5724b0d04ca2894a6ef72b08f, type: 3}
+  potionImageBook: {fileID: 21300000, guid: 60a5c304f49227c48a1fc18668c5bc7a, type: 3}
   potionDescription: A light-green elixir made from a curious mix of reptilian essence
     and highland flora. Known to swiftly recover stamina, this potion is favored
     by travelers, scouts, and those who run beyond their limits.

@@ -15,7 +15,9 @@ MonoBehaviour:
   potionId: 5
   potionName: Headache
   potionImage: {fileID: 21300000, guid: d79b19d205a2bba43be5d89a3f1b3ef4, type: 3}
-  potionDescription: Potion to cure Headache
+  potionImageBook: {fileID: 21300000, guid: 62dbdf69b82277c43a58136be65f7714, type: 3}
+  potionDescription: Commonly prescribed by village healers, this blend of wild leaves
+    and serene lily extract restores mental clarity and soothes tension in the temples.
   potionEffect: 
   requiredIngredients:
   - {fileID: 11400000, guid: c185fc5a3e1604742ae0ae58b7a084d6, type: 2}

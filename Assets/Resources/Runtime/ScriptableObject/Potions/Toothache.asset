@@ -15,7 +15,9 @@ MonoBehaviour:
   potionId: 3
   potionName: Toothache
   potionImage: {fileID: 21300000, guid: 94e91195b7a7e0f40bcae3bebb00f1c0, type: 3}
-  potionDescription: Potion to cure toothache
+  potionImageBook: {fileID: 21300000, guid: 558eeb08ef3015042931a266263a7472, type: 3}
+  potionDescription: A gentle infusion brewed from tulip petals and forest leaves,
+    this soothing potion numbs pain and calms inflamed gums. Best taken warm.
   potionEffect: 
   requiredIngredients:
   - {fileID: 11400000, guid: 3192a005447f8cb4f8130f569ce70e55, type: 2}
