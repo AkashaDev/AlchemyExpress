@@ -8,6 +8,13 @@ public class IngredientDragController : MonoBehaviour
     [SerializeField] private CauldronSpawner cauldron;
     [SerializeField] private TrashAreaGrid trashArea;
     
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip dragSFX;
+    [SerializeField] private AudioClip dropSFX;
+    [SerializeField] private AudioClip rejectSFX;
+    [SerializeField] private AudioClip rotateSFX;
+    
+    private AudioSource audioSource;
 
     private IngredientInstance current;
     private Vector3 offset;
@@ -21,11 +28,14 @@ public class IngredientDragController : MonoBehaviour
     private bool _isFromInventory = false;
     private int _originSlotIndex = -1;
 
-    // private void Awake()
-    // {
-    //     if (Instance != null && Instance != this) { Destroy(gameObject); }
-    //     else { Instance = this; }
-    // }
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
 
     void Update()
     {
@@ -66,6 +76,7 @@ public class IngredientDragController : MonoBehaviour
                 if (itemToTake != null)
                 {
                     StartDragFromInventory(itemToTake, mouseWorld, slot.slotIndex);
+                    if (dragSFX != null) audioSource.PlayOneShot(dragSFX);
                 }
                 return;
             }
@@ -176,6 +187,8 @@ public class IngredientDragController : MonoBehaviour
     void Rotate()
     {
         current.RotateClockwise();
+
+        if (rotateSFX != null) audioSource.PlayOneShot(rotateSFX);
         Vector2Int gridPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
         cauldron.gridBehavior.ClearPreview();
 
@@ -200,7 +213,7 @@ public class IngredientDragController : MonoBehaviour
         }
         
         if (trashArea != null) trashArea.SetHoverState(false);
-
+        
         Collider2D[] hits = Physics2D.OverlapPointAll(current.transform.position);
         
         if (trashArea != null && trashArea.IsInsideTrashArea(current.transform.position))
@@ -216,6 +229,7 @@ public class IngredientDragController : MonoBehaviour
                 if (InventoryManager.Instance.AddItem(current.data))
                 {
                     Destroy(current.gameObject);
+                    if (dropSFX != null) audioSource.PlayOneShot(dropSFX);
                     return;
                 }
             }
@@ -223,7 +237,8 @@ public class IngredientDragController : MonoBehaviour
         
         Vector2Int dropPos = cauldron.gridBehavior.WorldToGrid(current.transform.position);
         if (cauldron.gridBehavior.CanPlaceIngredient(current, dropPos))
-        {
+        {   
+            if (dropSFX != null) audioSource.PlayOneShot(dropSFX);
             current.transform.position = cauldron.gridBehavior.GridToWorld(dropPos);
             current.transform.SetParent(cauldron.tileParent);
             cauldron.gridBehavior.PlaceIngredient(current, dropPos);
@@ -232,7 +247,8 @@ public class IngredientDragController : MonoBehaviour
             return;
         }
         
-        OnRejectedFeedback();
+        if (rejectSFX != null) audioSource.PlayOneShot(rejectSFX);
+        
         if (_isFromInventory)
         {
             InventoryManager.Instance.ReturnItem(_originSlotIndex, current.data);
@@ -246,8 +262,8 @@ public class IngredientDragController : MonoBehaviour
                 cauldron.gridBehavior.PlaceIngredient(current, cauldron.gridBehavior.WorldToGrid(current.transform.position));
             }
             else
-            {   
-                current.transform.localScale = Vector3.one*0.7f;
+            {
+                current.transform.localScale = Vector3.one * 0.7f;
                 current.ResetToSpawnPoint();
             }
         }
