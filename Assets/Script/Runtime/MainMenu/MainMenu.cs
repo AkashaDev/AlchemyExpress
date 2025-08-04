@@ -12,8 +12,8 @@ public class MainMenu : MonoBehaviour
     public Slider musicSlider;
     public Slider sfxSlider;
     public Slider overallSlider;
-    private float musicVolume;
-    private float sfxVolume;
+    private float musicVolume = 1f;
+    private float sfxVolume = 1f;
     private float overralVolume = 1f;
 
     [SerializeField]
@@ -48,6 +48,7 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         MusicManager.Instance.PlayMusic("MainMenu");
+        SaveVolume(1f, 1f, 1f);
     }
     public void PlayGame()
     {

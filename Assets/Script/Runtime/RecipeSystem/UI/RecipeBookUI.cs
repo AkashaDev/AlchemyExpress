@@ -1,15 +1,17 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RecipeBookUI : MonoBehaviour
 {
+    private static Potion lastViewedPotion = null;
+
     [Header("UI References")]
     public Transform recipeListParent; // Parent untuk list resep
     public GameObject recipePrefab; // Prefab untuk setiap resep
     public Button closeButton;
-    
+
     [Header("Recipe Detail Panel")]
     public GameObject recipeDetailPanel;
     public Image potionImageDetail;
@@ -18,106 +20,123 @@ public class RecipeBookUI : MonoBehaviour
     public TextMeshProUGUI potionEffectDetail;
     public Transform ingredientsListParent;
     public GameObject ingredientPrefab;
-    
+
     private List<GameObject> currentRecipeItems = new List<GameObject>();
     private List<GameObject> currentIngredientItems = new List<GameObject>();
-    
+
     private void Start()
     {
-        if(closeButton != null)
+        if (closeButton != null)
             closeButton.onClick.AddListener(CloseRecipeBook);
-            
-        if(recipeDetailPanel != null)
+
+        if (recipeDetailPanel != null)
             recipeDetailPanel.SetActive(false);
     }
-    
+
+    /// <summary>
+    /// Buka buku resep, tampilkan daftar resep, dan buka kembali detail resep terakhir jika ada.
+    /// </summary>
+    public void OpenRecipeBook(List<Potion> potions)
+    {
+        gameObject.SetActive(true);
+        DisplayRecipes(potions);
+
+        if (lastViewedPotion != null)
+        {
+            ShowRecipeDetail(lastViewedPotion);
+        }
+    }
+
     public void DisplayRecipes(List<Potion> potions)
     {
         // Clear existing recipe items
         ClearRecipeList();
-        
+
         // Create recipe items
-        foreach(Potion potion in potions)
+        foreach (Potion potion in potions)
         {
             GameObject recipeItem = Instantiate(recipePrefab, recipeListParent);
-            
-            // Setup recipe item
+
             RecipeItem recipeItemScript = recipeItem.GetComponent<RecipeItem>();
-            if(recipeItemScript != null)
+            if (recipeItemScript != null)
             {
                 recipeItemScript.SetupRecipe(potion, this);
             }
-            
+
             currentRecipeItems.Add(recipeItem);
+
+
         }
+        
     }
-    
+
     public void ShowRecipeDetail(Potion potion)
     {
-        if(recipeDetailPanel != null)
+        if (recipeDetailPanel != null)
         {
+            lastViewedPotion = potion;
             recipeDetailPanel.SetActive(true);
-            
+
             // Set potion info
-            if(potionImageDetail != null)
+            if (potionImageDetail != null)
                 potionImageDetail.sprite = potion.potionImage;
-                
-            if(potionNameDetail != null)
+
+            if (potionNameDetail != null)
                 potionNameDetail.text = potion.potionName;
-                
-            if(potionDescriptionDetail != null)
+
+            if (potionDescriptionDetail != null)
                 potionDescriptionDetail.text = potion.potionDescription;
-                
-            if(potionEffectDetail != null)
+
+            if (potionEffectDetail != null)
                 potionEffectDetail.text = "Kegunaan: " + potion.potionEffect;
-            
+
             // Display ingredients
             DisplayIngredients(potion);
         }
     }
-    
+
     private void DisplayIngredients(Potion potion)
     {
         // Clear existing ingredients
         ClearIngredientsList();
-        
+
         // Create ingredient items
-        
-foreach (IngredientSO ingredient in potion.requiredIngredients)
-{
-    GameObject ingredientItem = Instantiate(ingredientPrefab, ingredientsListParent);
-    ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.itemIcon;
-    // Hanya tampilkan nama bahan, karena jumlah diasumsikan 1
-    ingredientItem.GetComponentInChildren<TMP_Text>().text = ingredient.ingredientName; 
-}
+
+        foreach (IngredientSO ingredient in potion.requiredIngredients)
+        {
+            GameObject ingredientItem = Instantiate(ingredientPrefab, ingredientsListParent);
+            ingredientItem.GetComponentInChildren<Image>().sprite = ingredient.itemIcon;
+            ingredientItem.GetComponentInChildren<TMP_Text>().text = ingredient.ingredientName;
+            currentIngredientItems.Add(ingredientItem);
+        }
     }
-    
+
     public void CloseRecipeDetail()
     {
-        if(recipeDetailPanel != null)
+        if (recipeDetailPanel != null)
             recipeDetailPanel.SetActive(false);
     }
-    
+
     public void CloseRecipeBook()
     {
         gameObject.SetActive(false);
     }
-    
+
     private void ClearRecipeList()
     {
-        foreach(GameObject item in currentRecipeItems)
+        foreach (GameObject item in currentRecipeItems)
         {
-            if(item != null)
+            if (item != null)
                 DestroyImmediate(item);
         }
         currentRecipeItems.Clear();
     }
-    
+
     private void ClearIngredientsList()
     {
-        foreach(GameObject item in currentIngredientItems)
+        foreach (GameObject item in currentIngredientItems)
         {
-            if(item != null)
+            if (item != null)
                 DestroyImmediate(item);
         }
         currentIngredientItems.Clear();
