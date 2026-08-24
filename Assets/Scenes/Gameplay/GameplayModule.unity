@@ -1884,6 +1884,10 @@ MonoBehaviour:
   ingredientPrefab: {fileID: 1393387713619002044, guid: 00fe19d8d737e4e4594ba3d6c18ed0ae, type: 3}
   cauldron: {fileID: 1795707137}
   trashArea: {fileID: 599944069}
+  dragSFX: {fileID: 8300000, guid: 795c4ea2ea1ffc54982c652644a64520, type: 3}
+  dropSFX: {fileID: 8300000, guid: 76900dfe0d15dc34fb621e6ab0cf8466, type: 3}
+  rejectSFX: {fileID: 8300000, guid: cf6c0e7fbef9449c98a0cdb5ea0c4d9f, type: 3}
+  rotateSFX: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
 --- !u!4 &353921925
 Transform:
   m_ObjectHideFlags: 0
@@ -9828,7 +9832,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 733097609
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 9cd699e2481e77f46b8c4d7ce3fe68a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -11291,7 +11295,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 733097609
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 54263fe1eb9196141bd9bccd333ed425, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

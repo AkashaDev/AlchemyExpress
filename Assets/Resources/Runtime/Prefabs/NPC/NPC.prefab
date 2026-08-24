@@ -139,7 +139,7 @@ MonoBehaviour:
   hairRenderer: {fileID: 5522563849685362051}
   faceRenderer: {fileID: 5690168777488592169}
   highopHeight: 0.3
-  timePerMoodLevel: 1
+  timePerMoodLevel: 30
 --- !u!212 &510734829323281433
 SpriteRenderer:
   m_ObjectHideFlags: 0
