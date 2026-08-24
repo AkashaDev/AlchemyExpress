@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 
 public class RecipeBookUIHandler : MonoBehaviour
-{   
-    
+{
     [Header("UI References")]
     public GameObject recipeBookPanel;
     public GameObject recipeDetailPanel;
@@ -60,6 +59,7 @@ public class RecipeBookUIHandler : MonoBehaviour
         recipeBookPanel.SetActive(!recipeBookPanel.activeSelf);
         if (recipeBookPanel.activeSelf && allPotions.Count > 0)
         {
+            currentPotionIndex = 0;
             // Langsung tampilkan tanpa transisi saat pertama kali dibuka
             ShowRecipeDetails(allPotions[currentPotionIndex]);
             recipeDetailCanvasGroup.alpha = 1; // Pastikan terlihat jelas
