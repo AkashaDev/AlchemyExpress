@@ -12,11 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Strenght
   m_EditorClassIdentifier: 
-  dialogue: It's so strange that they brought up to 5 carts of wood. And the wood
-    is so big. I need something to <b>increase my strength</b>
+  dialogue:
+    m_TableReference:
+      m_TableCollectionName: GUID:b63b0fb0e91f6f84291e5fd4603c7f0f
+    m_TableEntryReference:
+      m_KeyId: 12660882903040
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   Potion: {fileID: 11400000, guid: b12b8b62d09106a4cba82c9fc43a3bac, type: 2}
   levelDifficults: 2
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500
   cauldronTemplate: {fileID: 11400000, guid: ba29ddd4c36709e4aac200d7f1770992, type: 2}
+  references:
+    version: 2
+    RefIds: []

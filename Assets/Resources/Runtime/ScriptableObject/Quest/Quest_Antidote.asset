@@ -12,11 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c729412fee77542aea19f79b880c53, type: 3}
   m_Name: Quest_Antidote
   m_EditorClassIdentifier: 
-  dialogue: '*huft huft, please quickly give me <b>something to neutralize the spread
-    of the poison</b>, I''ve been bitten by a snake.'
+  dialogue:
+    m_TableReference:
+      m_TableCollectionName: GUID:b63b0fb0e91f6f84291e5fd4603c7f0f
+    m_TableEntryReference:
+      m_KeyId: 49361555456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   Potion: {fileID: 11400000, guid: 37f3f106caf99a746983e63682e01ae9, type: 2}
   levelDifficults: 0
   rewardHappy: 1000
   rewardNeutral: 700
   rewardAngry: 500
   cauldronTemplate: {fileID: 11400000, guid: cb11ef51422321c409d64f0e9a733235, type: 2}
+  references:
+    version: 2
+    RefIds: []

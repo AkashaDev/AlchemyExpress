@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: QuestDialogues Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: QuestDialogues
+  m_TableCollectionNameGuidString: b63b0fb0e91f6f84291e5fd4603c7f0f
+  m_Entries:
+  - m_Id: 49361555456
+    m_Key: quest_Antidote
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9867824566272
+    m_Key: quest_Itchy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10587302891520
+    m_Key: quest_Scratch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10712880353280
+    m_Key: quest_Toothache
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11072902631424
+    m_Key: quest_AttackUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11321968791552
+    m_Key: quest_Backache
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11409222897664
+    m_Key: quest_Cold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11516395753472
+    m_Key: quest_Cough
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11620640985088
+    m_Key: quest_DefenseUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11783178653696
+    m_Key: quest_Fever
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11927693398016
+    m_Key: quest_GastricUlcer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12090071683072
+    m_Key: quest_Headache
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12282669928448
+    m_Key: quest_RestoreStamina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12551902302208
+    m_Key: quest_Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12660882903040
+    m_Key: quest_Streght
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12771276984320
+    m_Key: quest_WaterBreath
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 2371060128569098264
+  references:
+    version: 2
+    RefIds:
+    - rid: 2371060128569098264
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1788075638856

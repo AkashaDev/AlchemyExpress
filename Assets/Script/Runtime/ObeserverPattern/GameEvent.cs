@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization; // 1. Wajib tambahkan namespace ini
 
 public struct NPCTurnFinishedEvent
 {
@@ -9,7 +10,8 @@ public struct NPCTurnFinishedEvent
 
 public struct ShowDialogueEvent
 {
-    public string dialogueText;
+    // 2. Ubah tipe data di sini
+    public LocalizedString dialogueText; 
 }
 
 public struct HideDialogueEvent {}

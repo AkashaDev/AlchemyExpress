@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: QuestDialogues_en-US
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-US
+  m_SharedData: {fileID: 11400000, guid: b63b0fb0e91f6f84291e5fd4603c7f0f, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 49361555456
+    m_Localized: '*huft huft*, please quickly give me <b>something to neutralize
+      the spread of the poison</b>, I''ve been bitten by a snake.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9867824566272
+    m_Localized: '"By the gods, I woke up this morning with my skin red as a tomato
+      and itching like mad. I need a remedy to soothe this, quickly!"'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10587302891520
+    m_Localized: '"A nasty branch tore my hand open while I was chopping firewood.
+      I need a salve or potion to hasten the healing."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10712880353280
+    m_Localized: '"Blast it, my teeth are throbbing! My aunt cooked the boar meat
+      as tough as leather. I need something to dull this wretched pain."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11072902631424
+    m_Localized: '"Winter approaches, and I must hunt fierce beasts to feed my family.
+      Give me an elixir of might, something that will let my blade strike true and
+      bring them down easily."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11321968791552
+    m_Localized: '"Riding that stubborn mule is absolute torture on my back. Hand
+      me your finest remedy for a sore back, I''m desperate."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11409222897664
+    m_Localized: '"Sniff... By the heavens, I can''t bear this! One nostril flows
+      like the river, and the other is dry as a bone. Do you have a cure for this
+      wretched cold?"'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11516395753472
+    m_Localized: '"Cough, cough! Master Alchemist, I beg of you, give me a cough
+      remedy. This hacking is ruining my day''s labor at the farm."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11620640985088
+    m_Localized: '"Whispers say the enemy army marches upon us soon. My old bones
+      aren''t tough enough to survive the clash. I need an elixir to harden my flesh
+      and boost my defenses."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11783178653696
+    m_Localized: "\"My boy is burning up! I gave him my mother's old herbal brew,
+      but it\u2019s done no good. I beg you, I need a potion to break his fever.\""
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11927693398016
+    m_Localized: '"With the guild orders piling up, I''ve barely eaten a morsel all
+      week. My belly is bloated, churning, and I feel dreadful. Do you have a tonic
+      to settle my stomach?"'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12090071683072
+    m_Localized: '"I pushed myself too hard scavenging fodder for my horse last night.
+      Now my head is pounding like a blacksmith''s anvil. Have you a cure?"'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12282669928448
+    m_Localized: '"I''m completely drained after patrolling three times around the
+      city walls, and I still have four more rounds before dusk! Brew me a potion
+      to restore my vigor, quickly."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12551902302208
+    m_Localized: '"The guild master keeps piling on the work! I need something to
+      hasten my hands and make me move swifter. Brew me a speed potion, will you?"'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12660882903040
+    m_Localized: '"Those royal guards ordered me to haul five massive carts of heavy
+      timber! My back will break! I need a potion of raw physical strength to lift
+      those cursed logs."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12771276984320
+    m_Localized: '"Lately, I''ve been diving for pearls in the deep lake beyond the
+      village. I need a rare concoction that will let me hold my breath longer in
+      the water, so I can explore the sunken ruins."'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
